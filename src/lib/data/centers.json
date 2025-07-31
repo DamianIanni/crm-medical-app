@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "name": "Amager Hospital",
+    "address": "Amager"
+  },
+  {
+    "id": 2,
+    "name": "Copenhagen Hospital",
+    "address": "Copenhagen"
+  }
+]
