@@ -10,13 +10,7 @@
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { ToastFeedback } from "@/components/feedback/toastFeedback";
 import { Patient } from "@/types/patient";
-import {
-  createPatient,
-  updatePatient,
-  deletePatient,
-  getPatients,
-  getPatientById,
-} from "@/app/api/simulatedAPI/patientMethods";
+import { createPatient, updatePatient, deletePatient, getAllPatients, getPatientById, createPatientNote, updatePatientNote, PatientPayload } from "@/services/api/patient";
 import { useInvalidateQuery } from "../useInvalidateQuery";
 import { useDeleteState } from "@/components/providers/ContextProvider";
 
@@ -26,10 +20,10 @@ import { useDeleteState } from "@/components/providers/ContextProvider";
  * It shows a success toast on successful creation and an error toast if the creation fails.
  * @returns {object} A mutation object from `@tanstack/react-query`.
  */
-export function useCreatePatient() {
+export function useCreatePatient(centerId: string | number) {
   const invalidate = useInvalidateQuery(["allPatient"]);
   return useMutation({
-    mutationFn: createPatient,
+    mutationFn: (data: PatientPayload) => createPatient(centerId, data),
     onSuccess: (data: Partial<Patient>) => {
       invalidate();
       ToastFeedback({
@@ -54,13 +48,11 @@ export function useCreatePatient() {
  * It displays a success toast upon a successful update and an error toast if the update fails.
  * @returns {object} A mutation object from `@tanstack/react-query`.
  */
-export function useUpdatePatient() {
+export function useUpdatePatient(centerId: string | number) {
   const invalidate = useInvalidateQuery(["patient"]);
   const invalidateAll = useInvalidateQuery(["allPatient"]);
-
   return useMutation({
-    mutationFn: ({ id, updated }: { id: number; updated: Partial<Patient> }) =>
-      updatePatient(id, updated),
+    mutationFn: ({ patientId, updated }: { patientId: string | number; updated: Partial<PatientPayload> }) => updatePatient(centerId, patientId, updated),
     onSuccess: (data: Partial<Patient>) => {
       invalidate();
       invalidateAll();
@@ -86,11 +78,11 @@ export function useUpdatePatient() {
  * It shows an info toast on successful deletion and an error toast if the deletion fails.
  * @returns {object} A mutation object from `@tanstack/react-query`.
  */
-export function useDeletePatient() {
+export function useDeletePatient(centerId: string | number) {
   const invalidate = useInvalidateQuery(["allPatient"]);
   const { setIsDeleting } = useDeleteState();
   return useMutation({
-    mutationFn: (id: number) => deletePatient(id),
+    mutationFn: (patientId: string | number) => deletePatient(centerId, patientId),
     onSuccess: () => {
       setIsDeleting(false);
       invalidate();
@@ -111,23 +103,21 @@ export function useDeletePatient() {
   });
 }
 
-export function useGetSinglePatient(
-  patientId: number
-): UseQueryResult<Patient, Error> {
+export function useGetSinglePatient(centerId: string | number, userId: string | number): UseQueryResult<Patient, Error> {
   return useQuery<Patient, Error>({
-    queryKey: ["patient", patientId],
-    queryFn: () => getPatientById(patientId),
-    enabled: !!patientId,
+    queryKey: ["patient", centerId, userId],
+    queryFn: () => getPatientById(centerId, userId),
+    enabled: !!centerId && !!userId,
     refetchOnMount: true,
     staleTime: 30_000,
     refetchOnWindowFocus: false,
   });
 }
 
-export function useGetPatients(): UseQueryResult<Patient[], Error> {
+export function useGetPatients(centerId: string | number): UseQueryResult<Patient[], Error> {
   return useQuery<Patient[], Error>({
-    queryKey: ["allPatient"],
-    queryFn: () => getPatients(),
+    queryKey: ["allPatient", centerId],
+    queryFn: () => getAllPatients(centerId),
     staleTime: 60_000,
     refetchOnWindowFocus: false,
   });

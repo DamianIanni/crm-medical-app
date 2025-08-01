@@ -9,7 +9,7 @@
 
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { verifyJWT } from "@/lib/api/jwtUtil";
+// import { verifyJWT } from "@/lib/api/jwtUtil";
 
 // Force dynamic rendering to ensure fresh authentication checks on each request
 export const dynamic = "force-dynamic";
@@ -37,14 +37,5 @@ export default async function Home() {
     redirect("/login");
   }
 
-  // Verify the JWT token and get user information
-  const user = await verifyJWT(token);
-
-  // Redirect to login if token is invalid or user doesn't exist
-  if (!user) {
-    redirect("/login");
-  }
-
-  // User is authenticated, redirect to dashboard
   redirect("/dashboard");
 }

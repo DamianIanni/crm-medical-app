@@ -43,7 +43,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   // Get authentication functions and state from auth context
-  const { login, isLoginPending, isErrorLogin } = useAuth();
+  const { loginHandler, isLoginPending, isErrorLogin } = useAuth();
   const router = useRouter();
 
   // Initialize form with validation schema and default values
@@ -75,7 +75,7 @@ export function LoginForm({
    * @param values - Form values containing email and password
    */
   async function onSubmit(values: LoginSchemaType) {
-    const res = await login(values);
+    const res = await loginHandler(values);
     if (res) {
       navigateToDashboard();
     } else {

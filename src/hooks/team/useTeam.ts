@@ -10,13 +10,7 @@
 import { useMutation, UseQueryResult, useQuery } from "@tanstack/react-query";
 import { ToastFeedback } from "@/components/feedback/toastFeedback";
 import { User } from "@/types/user";
-import {
-  createUser,
-  updateUser,
-  deleteUser,
-  getUserById,
-  getUsers,
-} from "@/app/api/simulatedAPI/userMethods";
+import { inviteUser, updateUser, deleteUser, getUserById, getAllUsers, UserPayload } from "@/services/api/user";
 import { useInvalidateQuery } from "../useInvalidateQuery";
 import { useDeleteState } from "@/components/providers/ContextProvider";
 
@@ -27,10 +21,10 @@ import { useDeleteState } from "@/components/providers/ContextProvider";
  * @returns {object} A mutation object from `@tanstack/react-query`.
  */
 
-export function useCreateMember() {
+export function useCreateMember(centerId: string | number) {
   const invalidate = useInvalidateQuery(["allUsers"]);
   return useMutation({
-    mutationFn: createUser,
+    mutationFn: (data: any) => inviteUser(centerId, data),
     onSuccess: (data: Partial<User>) => {
       invalidate();
       ToastFeedback({
@@ -42,7 +36,7 @@ export function useCreateMember() {
     onError: () => {
       ToastFeedback({
         type: "error",
-        title: "Failed to invite patient", // Note: Typo in original "inivite", corrected to "invite".
+        title: "Failed to invite team member",
         description: "Please try again later.",
       });
     },
@@ -55,13 +49,11 @@ export function useCreateMember() {
  * It displays a success toast upon a successful update and an error toast if the update fails.
  * @returns {object} A mutation object from `@tanstack/react-query`.
  */
-export function useUpdateTeamMember() {
-  const invalidate = useInvalidateQuery(["user"]);
+export function useUpdateTeamMember(centerId: string | number) {
+  const invalidate = useInvalidateQuery(["allUsers"]);
   const invalidateAll = useInvalidateQuery(["allUsers"]);
-
   return useMutation({
-    mutationFn: ({ id, updated }: { id: number; updated: Partial<User> }) =>
-      updateUser(id, updated),
+    mutationFn: ({ userId, updated }: { userId: string | number; updated: Partial<UserPayload> }) => updateUser(centerId, userId, updated),
     onSuccess: (data: Partial<User>) => {
       invalidate();
       invalidateAll();
@@ -87,12 +79,12 @@ export function useUpdateTeamMember() {
  * It shows an info toast on successful deletion and an error toast if the deletion fails.
  * @returns {object} A mutation object from `@tanstack/react-query`.
  */
-export function useDeleteTeamMember() {
+export function useDeleteTeamMember(centerId: string | number) {
   const invalidateAll = useInvalidateQuery(["allUsers"]);
   const { setIsDeleting } = useDeleteState();
 
   return useMutation({
-    mutationFn: (id: number) => deleteUser(id),
+    mutationFn: (userId: string | number) => deleteUser(centerId, userId),
     onSuccess: () => {
       setIsDeleting(false);
       invalidateAll();
@@ -104,7 +96,6 @@ export function useDeleteTeamMember() {
     },
     onError: () => {
       setIsDeleting(false);
-
       ToastFeedback({
         type: "error",
         title: "Failed to delete team member",
@@ -114,21 +105,21 @@ export function useDeleteTeamMember() {
   });
 }
 
-export function useGetSingleUser(userId: number): UseQueryResult<User, Error> {
+export function useGetSingleUser(centerId: string | number, userId: string | number): UseQueryResult<User, Error> {
   return useQuery<User, Error>({
-    queryKey: ["user", userId],
-    queryFn: () => getUserById(userId),
-    enabled: !!userId,
+    queryKey: ["user", centerId, userId],
+    queryFn: () => getUserById(centerId, userId),
+    enabled: !!centerId && !!userId,
     refetchOnMount: true,
     staleTime: 30_000,
     refetchOnWindowFocus: false,
   });
 }
 
-export function useGetUsers(): UseQueryResult<User[], Error> {
+export function useGetUsers(centerId: string | number): UseQueryResult<User[], Error> {
   return useQuery<User[], Error>({
-    queryKey: ["allUsers"],
-    queryFn: () => getUsers(),
+    queryKey: ["allUsers", centerId],
+    queryFn: () => getAllUsers(centerId),
     staleTime: 60_000,
     refetchOnWindowFocus: false,
   });

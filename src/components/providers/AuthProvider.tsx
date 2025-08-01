@@ -13,18 +13,18 @@ import { createContext, useContext, ReactNode } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { User } from "@/types/user/index";
-
 import {
-  loginWithCredentials,
-  userDoesLogout,
-} from "@/lib/api/auth/userActions";
-import { getCurrentUser } from "@/lib/api/auth/userActions";
+  login,
+  getCurrentUser,
+  userLogout,
+  LoginBody,
+} from "@/services/api/auth";
 
 // Type definition for the authentication context
 type AuthContextType = {
   user: User | null | undefined;
   isAuthenticated: boolean;
-  login: (credentials: { email: string; password: string }) => Promise<boolean>;
+  loginHandler: (credentials: LoginBody) => Promise<boolean>;
   logout: () => Promise<void>;
   isLoginPending: boolean;
   isErrorLogin: boolean;
@@ -49,45 +49,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Mutation for handling user login
   const {
-    mutateAsync: loginMutate,
+    mutateAsync,
     isError: isErrorLogin,
     isSuccess: isSuccessLogin,
     error: errorLogin,
     isPending: isLoginPending,
   } = useMutation({
-    mutationFn: loginWithCredentials,
+    mutationFn: (credentials: LoginBody) => login(credentials),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["me"] }),
   });
 
-  /**
-   * Login function that handles user authentication
-   *
-   * @param credentials - User email and password
-   * @returns Promise<boolean> - True if login successful, false otherwise
-   */
-  const login = async (credentials: {
-    email: string;
-    password: string;
-  }): Promise<boolean> => {
+  // Provide login function for UI
+  const loginHandler = async (credentials: LoginBody): Promise<boolean> => {
     try {
-      await loginMutate(credentials);
+      await mutateAsync(credentials);
       return true;
-    } catch (error) {
-      console.log(error);
+    } catch {
       return false;
     }
   };
 
   // Mutation for handling user logout
-  const {
-    mutateAsync: logoutMutate,
-    isError: isErrorLogout,
-    isSuccess: isSuccessLogout,
-    error: errorLogout,
-  } = useMutation({
-    mutationFn: userDoesLogout,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["me"] }),
-  });
+  const { mutateAsync: logoutMutate, isSuccess: isSuccessLogout } = useMutation(
+    {
+      mutationFn: userLogout,
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: ["me"] }),
+    }
+  );
 
   /**
    * Logout function that handles user sign out
@@ -103,8 +91,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return (
     <AuthContext.Provider
       value={{
-        user,
-        login,
+        user: user as User | null,
+        loginHandler,
         logout,
         isAuthenticated: !!user,
         isLoginPending,

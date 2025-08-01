@@ -7,27 +7,21 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { verifyJWT } from "./lib/api/jwtUtil";
-import { User } from "./types/user";
-import { requireAuth } from "./lib/middlewareHelpers/requireAuthHelper";
 
-export default async function middleware(req: NextRequest) {
+export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get("token")?.value;
 
-  let user: Partial<User> = token ? await verifyJWT(token) : null;
-
-  if (token && token.split(".").length === 3) {
-    user = await verifyJWT(token);
+  // Si no hay token y quiere acceder al dashboard, redirige a login
+  if (!token && pathname.startsWith("/dashboard")) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
   }
-
-  const authRedirect = requireAuth(user, pathname, req);
-  if (authRedirect) return authRedirect;
 
   return NextResponse.next();
 }
 
 export const config = {
-  // runtime: "nodejs",
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/login"],
 };
