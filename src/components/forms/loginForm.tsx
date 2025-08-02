@@ -14,8 +14,8 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { TextField } from "./fields/textField";
+import { PasswordField } from "./fields/passwordField";
 
 import { useAuth } from "../providers/AuthProvider";
 
@@ -29,11 +29,6 @@ import { useRouter } from "next/navigation";
 
 import {
   Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 
 import { ButtonLoading } from "../ui/ButtonLoading";
@@ -43,7 +38,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   // Get authentication functions and state from auth context
-  const { loginHandler, isLoginPending, isErrorLogin } = useAuth();
+  const { login, isLoginPending, isErrorLogin } = useAuth();
   const router = useRouter();
 
   // Initialize form with validation schema and default values
@@ -75,7 +70,7 @@ export function LoginForm({
    * @param values - Form values containing email and password
    */
   async function onSubmit(values: LoginSchemaType) {
-    const res = await loginHandler(values);
+    const res = await login(values);
     if (res) {
       navigateToDashboard();
     } else {
@@ -140,37 +135,11 @@ export function LoginForm({
                   label="Email"
                   disabled={isLoginPending}
                 />
-                <FormField
+                <PasswordField
                   control={form.control}
                   name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="grid gap-3">
-                        <div className="flex items-center">
-                          <FormLabel>Password</FormLabel>
-                          <Link
-                            href="#"
-                            className={cn(
-                              "ml-auto text-xs underline-offset-4 hover:underline",
-                              isLoginPending &&
-                                "pointer-events-none text-muted-foreground opacity-50"
-                            )}
-                          >
-                            Forgot your password?
-                          </Link>
-                        </div>
-                      </div>
-                      <FormControl>
-                        <Input
-                          type={"password"}
-                          className="pr-10"
-                          {...field}
-                          disabled={isLoginPending}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="Password"
+                  disabled={isLoginPending}
                 />
                 {/* Submit button with loading state */}
                 {isLoginPending ? (
@@ -180,6 +149,20 @@ export function LoginForm({
                     Login
                   </Button>
                 )}
+                {/* Register link */}
+                <div className="text-center text-sm">
+                  Don&apos;t have an account?{" "}
+                  <Link
+                    href="/register"
+                    className={cn(
+                      "underline underline-offset-4 hover:text-primary",
+                      isLoginPending &&
+                        "pointer-events-none text-muted-foreground opacity-50"
+                    )}
+                  >
+                    Sign up
+                  </Link>
+                </div>
               </form>
             </Form>
             {/* Error message display for failed login attempts */}

@@ -2,9 +2,10 @@
 import { request } from "./http";
 
 export interface RegisterBody {
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
-  name?: string;
 }
 
 export interface LoginBody {

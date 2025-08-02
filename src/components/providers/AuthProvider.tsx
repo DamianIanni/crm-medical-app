@@ -13,22 +13,21 @@ import { createContext, useContext, ReactNode } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { User } from "@/types/user/index";
-import {
-  login,
-  getCurrentUser,
-  userLogout,
-  LoginBody,
-} from "@/services/api/auth";
+import { login, getCurrentUser, userLogout, register, LoginBody, RegisterBody } from "@/services/api/auth";
 
 // Type definition for the authentication context
 type AuthContextType = {
-  user: User | null | undefined;
+  user: User | null;
   isAuthenticated: boolean;
-  loginHandler: (credentials: LoginBody) => Promise<boolean>;
+  login: (credentials: LoginBody) => Promise<boolean>;
+  register: (data: RegisterBody) => Promise<boolean>;
   logout: () => Promise<void>;
   isLoginPending: boolean;
   isErrorLogin: boolean;
   isSuccessLogin: boolean;
+  isRegisterPending: boolean;
+  isErrorRegister: boolean;
+  isSuccessRegister: boolean;
   isSuccessLogout: boolean;
 };
 
@@ -49,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Mutation for handling user login
   const {
-    mutateAsync,
+    mutateAsync: loginMutate,
     isError: isErrorLogin,
     isSuccess: isSuccessLogin,
     error: errorLogin,
@@ -62,7 +61,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Provide login function for UI
   const loginHandler = async (credentials: LoginBody): Promise<boolean> => {
     try {
-      await mutateAsync(credentials);
+      await loginMutate(credentials);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  // Mutation for handling user registration
+  const {
+    mutateAsync: registerMutate,
+    isError: isErrorRegister,
+    isSuccess: isSuccessRegister,
+    isPending: isRegisterPending,
+  } = useMutation({
+    mutationFn: (data: RegisterBody) => register(data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["me"] }),
+  });
+
+  // Provide register function for UI
+  const registerUser = async (data: RegisterBody): Promise<boolean> => {
+    try {
+      await registerMutate(data);
       return true;
     } catch {
       return false;
@@ -92,12 +112,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user: user as User | null,
-        loginHandler,
+        login: loginHandler,
+        register: registerUser,
         logout,
         isAuthenticated: !!user,
         isLoginPending,
         isErrorLogin,
         isSuccessLogin,
+        isRegisterPending,
+        isErrorRegister,
+        isSuccessRegister,
         isSuccessLogout,
       }}
     >
