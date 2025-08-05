@@ -13,11 +13,8 @@ const api = axios.create({
 
 // Generic request wrapper
 export async function request<T = any>(config: AxiosRequestConfig): Promise<T> {
-  console.log("CONFIG", config);
-
   try {
     const response: AxiosResponse<T> = await api.request<T>(config);
-    console.log(response);
 
     return response.data;
   } catch (error: any) {

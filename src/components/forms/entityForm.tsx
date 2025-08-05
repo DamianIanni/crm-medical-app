@@ -8,12 +8,12 @@
 import { LoginForm } from "./loginForm";
 import { PatientForm } from "./patientForm";
 import { MemberForm } from "./memberForm";
-
-import { Center } from "@/types/center";
+import { CenterForm } from "./centerForm";
 import { User } from "@/types/user";
 import { Patient } from "@/types/patient";
+import { Center } from "@/types/center"; 
 
-type FormType = "patient" | "member" | "auth" | "center";
+type FormType = "patient" | "member" | "auth" | "center"; 
 
 type EntityFormProps = {
   formType: FormType;
@@ -40,6 +40,8 @@ export function EntityForm({
       return <PatientForm mode={mode} data={data as Partial<Patient>} />;
     case "member":
       return <MemberForm mode={mode} data={data as Partial<User>} />;
+    case "center":
+      return <CenterForm mode={mode} data={data as Partial<Center>} />;
     case "auth":
     default:
       return <LoginForm />;

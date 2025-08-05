@@ -1,15 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { ChevronsUpDown, Plus } from "lucide-react";
+import { ChevronsUpDown, Plus, Building2 } from "lucide-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -19,23 +16,31 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { redirect } from "next/navigation";
-export function TeamSwitcher({
-  teams,
-}: {
-  teams: {
-    name: string;
-    logo: React.ElementType;
-  }[];
-}) {
-  const { isMobile } = useSidebar();
-  const [activeTeam, setActiveTeam] = React.useState(teams[0]);
+import { useEffect, useState } from "react";
 
-  if (!activeTeam) {
-    return null;
+export function TeamSwitcher() {
+  const { isMobile } = useSidebar();
+  const [selectedCenterName, setSelectedCenterName] = useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+    // Try to get selected center info from localStorage or cookies
+    // Here we assume you store center name in localStorage as 'selectedCenterName'
+    // If you only store the ID, you might need to fetch the name from a list or API
+    const name =
+      typeof window !== "undefined"
+        ? localStorage.getItem("selectedCenterName")
+        : null;
+    if (name) setSelectedCenterName(name);
+  }, []);
+
+  function handleCenters() {
+    redirect("/centers");
   }
 
   function handleAddCenter() {
-    redirect("/dashboard/centers/newCenter");
+    redirect("/centers/new");
   }
 
   return (
@@ -45,15 +50,15 @@ export function TeamSwitcher({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              className="w-full justify-between cursor-pointer"
             >
-              <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                <activeTeam.logo className="size-4" />
+              <div className="flex items-center gap-2">
+                {/* <activeTeam.logo className="size-5" /> */}
+                <span className="font-semibold">
+                  {selectedCenterName || "Select center"}
+                </span>
               </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{activeTeam.name}</span>
-              </div>
-              <ChevronsUpDown className="ml-auto" />
+              <ChevronsUpDown className="size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -62,32 +67,24 @@ export function TeamSwitcher({
             side={isMobile ? "bottom" : "right"}
             sideOffset={4}
           >
-            <DropdownMenuLabel className="text-muted-foreground text-xs">
-              Centers
-            </DropdownMenuLabel>
-            {teams.map((team, index) => (
-              <DropdownMenuItem
-                key={team.name}
-                onClick={() => setActiveTeam(team)}
-                className="gap-2 p-2"
-              >
-                <div className="flex size-6 items-center justify-center rounded-md border">
-                  <team.logo className="size-3.5 shrink-0" />
-                </div>
-                {team.name}
-                <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
-              </DropdownMenuItem>
-            ))}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 p-2 ">
-              <button
-                onClick={handleAddCenter}
-                className="flex size-6 items-center justify-center rounded-md border bg-transparent hover:cursor-pointer"
-              >
-                <Plus className="size-4 hover:bg-blue-600" />
-              </button>
+            <DropdownMenuItem
+              className="gap-2 p-2 cursor-pointer"
+              onClick={handleCenters}
+            >
+              <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
+                <Building2 className="size-3.5 shrink-0" />
+              </div>
+              <div className="text-muted-foreground font-medium">Centers</div>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="gap-2 p-2 cursor-pointer"
+              onClick={handleAddCenter}
+            >
+              <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
+                <Plus className="size-3.5 shrink-0" />
+              </div>
               <div className="text-muted-foreground font-medium">
-                Add center
+                New center
               </div>
             </DropdownMenuItem>
           </DropdownMenuContent>

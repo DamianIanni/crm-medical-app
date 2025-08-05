@@ -11,11 +11,20 @@ import { NextRequest, NextResponse } from "next/server";
 export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get("token")?.value;
+  const selectedCenter = req.cookies.get("selectedCenter")?.value;
 
-  // Si no hay token y quiere acceder al dashboard, redirige a login
+  // If no token and trying to access dashboard, redirect to login
   if (!token && pathname.startsWith("/dashboard")) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
+  // If has token but no selected center, and trying to access dashboard routes
+  // redirect to select-center page (outside dashboard)
+  if (token && !selectedCenter && pathname.startsWith("/dashboard")) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/centers";
     return NextResponse.redirect(url);
   }
 
@@ -23,5 +32,5 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login"],
+  matcher: ["/dashboard/:path*", "/login", "/centers/:path*"],
 };

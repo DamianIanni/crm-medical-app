@@ -52,17 +52,13 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         },
       ],
     },
+    // Centers navigation removed - now handled via center selection page
   ];
 
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher
-          teams={[
-            { name: "Amager Hospital", logo: LucideHospital },
-            { name: "Copenhagen Clinic", logo: HousePlus },
-          ]}
-        />
+        <TeamSwitcher />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navItems} />

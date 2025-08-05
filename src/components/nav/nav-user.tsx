@@ -47,6 +47,7 @@ export function NavUser({
   async function handleLogout() {
     try {
       await logout();
+      document.cookie = "selectedCenter=; path=/; max-age=0";
       router.replace("/login");
     } catch (error) {
       console.log(error);
