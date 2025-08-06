@@ -1,25 +1,24 @@
-/**
- * Login Page Component
- *
- * This page provides the authentication interface for users to sign in to the application.
- * It checks if a user is already authenticated and redirects them to the dashboard if so.
- * Otherwise, it displays the login form for credential entry.
- */
+"use client";
 
-// "use server";
+import { useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useAuth } from '@/components/providers/AuthProvider';
+import { EntityForm } from '@/components/forms/entityForm';
 
-import { EntityForm } from "@/components/forms/entityForm";
+export default function LoginPage() {
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const from = searchParams.get('from') || '/centers';
 
-export const dynamic = "force-dynamic";
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.replace(from);
+    }
+  }, [isAuthenticated, from, router]);
 
-export const metadata = {
-  title: "Login - Patient Management System",
-  description: "Sign in to access your dashboard and manage patients.",
-};
-
-export default async function LoginPage() {
   return (
-    <div className=" flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+    <div className="flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
       <div className="flex w-full max-w-sm flex-col gap-6">
         <EntityForm formType="auth" />
       </div>

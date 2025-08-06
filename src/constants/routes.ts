@@ -7,4 +7,8 @@ export const ROUTES = {
   team: "/dashboard/team/",
   teamMemberDetail: (id: number | string) => `/dashboard/team/${id}`,
   teamMemberEdit: (id: number | string) => `/dashboard/team/${id}/edit`,
+  centers: "/centers/",
+  centerDetail: (id: number | string) => `/centers/${id}`,
+  centerEdit: (id: number | string) => `/centers/${id}/edit`,
+  centerCreate: "/centers/new",
 };

@@ -27,9 +27,7 @@ import { AlertMessage } from "../feedback/AlertMessage";
 
 import { useRouter } from "next/navigation";
 
-import {
-  Form,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 
 import { ButtonLoading } from "../ui/ButtonLoading";
 
@@ -58,10 +56,12 @@ export function LoginForm({
   };
 
   /**
-   * Navigates user to dashboard after successful login
+   * Navigates user to the intended page after successful login
    */
   function navigateToDashboard() {
-    router.replace("/dashboard");
+    const searchParams = new URLSearchParams(window.location.search);
+    const from = searchParams.get('from') || '/centers';
+    router.replace(from);
   }
 
   /**

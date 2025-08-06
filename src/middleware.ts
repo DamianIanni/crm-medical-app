@@ -2,8 +2,7 @@
  * Next.js Middleware for Authentication and Route Protection
  *
  * This middleware handles JWT token verification and route protection for the application.
- * It runs on specified routes (configured in the matcher) and ensures users are properly
- * authenticated before accessing protected dashboard routes.
+ * It ensures users are properly authenticated before accessing protected routes.
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -13,16 +12,32 @@ export default function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
   const selectedCenter = req.cookies.get("selectedCenter")?.value;
 
-  // If no token and trying to access dashboard, redirect to login
-  if (!token && pathname.startsWith("/dashboard")) {
+  // Public routes that don't require authentication
+  const publicRoutes = ["/login", "/register", "/forgot-password"];
+  if (publicRoutes.includes(pathname)) {
+    // If user is already logged in, redirect to appropriate page
+    if (token) {
+      const url = req.nextUrl.clone();
+      url.pathname = selectedCenter ? "/dashboard" : "/centers";
+      return NextResponse.redirect(url);
+    }
+    return NextResponse.next();
+  }
+
+  // Protected routes
+  const protectedRoutes = ["/dashboard", "/centers"];
+  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
+
+  // If no token and trying to access protected routes, redirect to login
+  if (!token && isProtectedRoute) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";
+    url.searchParams.set("from", pathname);
     return NextResponse.redirect(url);
   }
 
-  // If has token but no selected center, and trying to access dashboard routes
-  // redirect to select-center page (outside dashboard)
-  if (token && !selectedCenter && pathname.startsWith("/dashboard")) {
+  // If user has token but no selected center, only allow /centers route
+  if (token && !selectedCenter && pathname !== "/centers") {
     const url = req.nextUrl.clone();
     url.pathname = "/centers";
     return NextResponse.redirect(url);
@@ -32,5 +47,5 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login", "/centers/:path*"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
