@@ -13,12 +13,15 @@ import Link from "next/link";
 import { useDeleteTeamMember } from "@/hooks/team/useTeam";
 import { useDeletePatient } from "@/hooks/patient/usePatient";
 import { ActionDialog } from "@/components/feedback/actionDialog";
+import { useDeleteCenter } from "@/hooks/center/useCenter";
 import { User } from "@/types/user";
 import { Patient } from "@/types/patient";
 import { Center } from "@/types/center";
 import { ROUTES } from "@/constants/routes";
 import { useAuth } from "../providers/AuthProvider";
 import { GeneralTooltip } from "../feedback/generalTooltip";
+import { useRouter } from "next/navigation";
+import React from "react";
 
 /**
  * @typedef {("patients" | "team" | "centers")} Route - Defines the possible routes for actions.
@@ -45,9 +48,17 @@ type ActionsProps = {
  */
 export default function Actions(props: ActionsProps): React.ReactElement {
   const { data, route, inInfo } = props;
-  const deleteMember = useDeleteTeamMember();
-  const deletePatient = useDeletePatient();
+  // Obtain selected center ID from cookie (set elsewhere in the app)
+  const selectedCenterId =
+    typeof document !== "undefined"
+      ? document.cookie.match(/selectedCenter=(\d+)/)?.[1] ?? ""
+      : "";
+
+  const deleteMember = useDeleteTeamMember(selectedCenterId);
+  const deletePatient = useDeletePatient(selectedCenterId);
+  const deleteCenter = useDeleteCenter();
   const { user } = useAuth();
+  const router = useRouter();
 
   /**
    * Handles the delete action based on the current route.
@@ -65,9 +76,11 @@ export default function Actions(props: ActionsProps): React.ReactElement {
       // return;
     }
     if (route === "centers") {
-      // TODO: Implement center deletion when hook is available
-      console.log(`Delete center: ${data.id}`);
-      // return;
+      deleteCenter.mutate(String(data.id!));
+      localStorage.setItem("selectedCenterName", "");
+      // Store selected center in cookies
+      document.cookie = `selectedCenter=${data.id}; path=/; max-age=0`;
+      router.replace("/centers");
     }
     // deleteMember.mutate(data.id!);
   };
@@ -87,8 +100,6 @@ export default function Actions(props: ActionsProps): React.ReactElement {
       : route === "centers"
       ? editCenterIdCookieSetter()
       : ROUTES.teamMemberEdit(data.id!);
-
-  console.log(editRoute);
 
   // Determines the title for the delete confirmation dialog.
   const TITLE =
@@ -151,6 +162,7 @@ export default function Actions(props: ActionsProps): React.ReactElement {
             cancelLabel="Cancel"
             triggerProps={{
               "aria-label": "Delete",
+              onClick: (e) => e.stopPropagation(),
             }}
             onConfirm={() => {
               handleDeleteAction();

@@ -9,19 +9,29 @@ import {
 } from "@/components/ui/card";
 import { Phone, MapPin } from "lucide-react";
 import Actions from "@/components/tables/actions";
+import { useRouter } from "next/navigation";
+import { Center } from "@/types/center/index";
 
 interface CenterCardProps {
-  center: {
-    id: string;
-    name: string;
-    phone: string;
-    address: string;
-  };
+  center: Center;
 }
 
 export function CenterCard({ center }: CenterCardProps) {
+  const router = useRouter();
+
+  const handleSelectCenter = () => {
+    // Store selected center name in localStorage
+    localStorage.setItem("selectedCenterName", center.name);
+    // Store selected center in cookies
+    document.cookie = `selectedCenter=${center.id}; path=/; max-age=86400`; // 24 hours
+    router.replace("/dashboard");
+  };
+
   return (
-    <Card className="bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:shadow-lg hover:scale-[1.025] transition-all duration-200 ease-in-out flex flex-col h-full cursor-pointer ">
+    <Card
+      onClick={() => handleSelectCenter()}
+      className="bg-background  hover:shadow-lg hover:scale-[1.025] transition-all duration-200 ease-in-out flex flex-col h-full cursor-pointer "
+    >
       <CardHeader className="pb-1 px-4">
         <div className="flex items-center gap-1 mb-0.5">
           <CardTitle className="text-xl font-bold text-gray-900 dark:text-gray-100 line-clamp-2 text-left">

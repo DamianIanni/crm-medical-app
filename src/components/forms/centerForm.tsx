@@ -13,23 +13,28 @@ import { useRouter } from "next/navigation";
 import { Form } from "@/components/ui/form";
 import { TextField } from "./fields/textField";
 import { Center } from "@/types/center";
-import { toast } from "sonner";
+
+import { useCreateCenter, useUpdateCenter } from "@/hooks/center/useCenter";
 
 type CenterFormProps = {
   mode?: "create" | "edit";
-  data?: Partial<Center>;
+  data?: Partial<Center>[];
 };
 
 export function CenterForm(props: CenterFormProps): React.ReactElement {
   const { mode, data } = props;
   const router = useRouter();
+  const createCenter = useCreateCenter();
+  const updateCenter = useUpdateCenter();
+
+  const center = data?.[0];
 
   const form = useForm({
     resolver: zodResolver(centerSchema),
     defaultValues: {
-      name: data?.name || "",
-      phone: data?.phone || "",
-      address: data?.address || "",
+      name: center?.name || "",
+      phone: center?.phone || "",
+      address: center?.address || "",
     },
   });
 
@@ -38,18 +43,19 @@ export function CenterForm(props: CenterFormProps): React.ReactElement {
     phone: string;
     address: string;
   }) {
+    const mutation = mode === "edit" ? updateCenter : createCenter;
+    const payload =
+      mode === "edit" && center?.id
+        ? { id: center.id, center: values }
+        : values;
+
     try {
-      if (mode === "edit" && data?.id) {
-        console.log("Updating center:", data.id, values);
-        toast("Center updated successfully");
-      } else {
-        console.log("Creating center:", values);
-        toast("Center created successfully");
-      }
+      // @ts-expect-error - This is a workaround for a type inference issue with the mutation hook
+      await mutation.mutateAsync(payload);
       router.replace("/centers");
     } catch (error) {
-      console.error("Error submitting form:", error);
-      toast("Error submitting form");
+      console.error("Form submission error:", error);
+      // The hook will display its own error toast
     }
   }
 
@@ -59,7 +65,7 @@ export function CenterForm(props: CenterFormProps): React.ReactElement {
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn("w-full max-w-2xl mx-auto space-y-6")}
       >
-        <div className="bg-card  rounded-lg p-6 shadow-sm">
+        <div className="rounded-lg p-6 ">
           <div className="space-y-6">
             <div>
               <div className="grid gap-4">
@@ -68,17 +74,20 @@ export function CenterForm(props: CenterFormProps): React.ReactElement {
                   name="name"
                   label="Center Name"
                   placeholder="Enter center name"
+                  disabled={createCenter.isPending || updateCenter.isPending}
                 />
                 <TextField
                   control={form.control}
                   name="phone"
                   label="Phone Number"
                   placeholder="(555) 123-4567"
+                  disabled={createCenter.isPending || updateCenter.isPending}
                 />
                 <TextField
                   control={form.control}
                   name="address"
                   label="Address"
+                  disabled={createCenter.isPending || updateCenter.isPending}
                   placeholder="123 Main Street, City, State 12345"
                 />
               </div>
@@ -86,10 +95,22 @@ export function CenterForm(props: CenterFormProps): React.ReactElement {
           </div>
         </div>
 
-        <div className="flex justify-end">
-          <Button type="submit" className="w-auto">
-            {mode === "edit" ? "Save Changes" : "Create Center"}
-          </Button>
+        <div className="rounded-lg p-6  px-6">
+          <div className="flex justify-end">
+            <Button
+              type="submit"
+              className="w-full sm:w-auto"
+              disabled={createCenter.isPending || updateCenter.isPending}
+            >
+              {createCenter.isPending || updateCenter.isPending ? (
+                <span className="mr-2">Saving...</span>
+              ) : mode === "edit" ? (
+                "Save Changes"
+              ) : (
+                "Create Center"
+              )}
+            </Button>
+          </div>
         </div>
       </form>
     </Form>

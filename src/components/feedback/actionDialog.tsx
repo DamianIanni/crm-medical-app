@@ -40,6 +40,7 @@ export function ActionDialog(props: ActionDialogProps) {
       <DialogTrigger asChild>
         <Button
           size="sm"
+          onClick={(e) => e.stopPropagation()}
           className="hover:bg-red-500 hover:text-white p-2 cursor-pointer"
           {...props.triggerProps}
         >
@@ -62,7 +63,11 @@ export function ActionDialog(props: ActionDialogProps) {
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline" className="cursor-pointer">
+            <Button
+              onClick={(e) => e.stopPropagation()}
+              variant="outline"
+              className="cursor-pointer"
+            >
               {cancelLabel}
             </Button>
           </DialogClose>
@@ -70,7 +75,10 @@ export function ActionDialog(props: ActionDialogProps) {
             <Button
               variant="destructive"
               className="cursor-pointer"
-              onClick={onConfirm}
+              onClick={(e) => {
+                e.stopPropagation();
+                onConfirm();
+              }}
             >
               {confirmLabel}
             </Button>
