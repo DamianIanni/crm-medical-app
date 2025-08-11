@@ -58,10 +58,10 @@ export function LoginForm({
   /**
    * Navigates user to the intended page after successful login
    */
-  function navigateToDashboard() {
-    const searchParams = new URLSearchParams(window.location.search);
-    const from = searchParams.get('from') || '/centers';
-    router.replace(from);
+  function navigateToSelectCenters() {
+    // const searchParams = new URLSearchParams(window.location.search);
+    // const from = searchParams.get("from") || "/centers";
+    router.replace("/centers");
   }
 
   /**
@@ -72,7 +72,7 @@ export function LoginForm({
   async function onSubmit(values: LoginSchemaType) {
     const res = await login(values);
     if (res) {
-      navigateToDashboard();
+      navigateToSelectCenters();
     } else {
       console.log("Login failed");
     }

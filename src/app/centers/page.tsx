@@ -23,11 +23,14 @@ export default function CentersPage() {
   } = useGetAllCenters();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const filteredCenters: Center[] = centers?.centers?.filter(
-    (center: Center) =>
-      center.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      center.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      center.phone.includes(searchQuery)
+  // Esta haciendo la reuqest esperando el finalToken, por eso no esta autorizado
+  // Crear condicion que en caso de que no tenga el finalToken, llame a la otra ruta
+
+  const filteredCenters: Center[] = centers?.filter(
+    (center) =>
+      center.center_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      center.center_address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      center.center_phone.includes(searchQuery)
   );
 
   const handleAddCenter = () => {
@@ -77,21 +80,64 @@ export default function CentersPage() {
           </div>
         )}
         {!isPending && !isFetching && !isError && centers && (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredCenters?.map((center: Center) => (
-                <CenterCard key={center.id} center={center} />
-              ))}
-            </div>
+          <div className="space-y-8">
+            {/* My Centers (Admin) Section - Only show if there are admin centers or no search query */}
+            {(filteredCenters?.some(center => center.role === 'admin') || !searchQuery) && (
+              <div>
+                <h2 className="text-xl font-semibold mb-4 text-foreground">My Centers</h2>
+                {filteredCenters?.filter(center => center.role === 'admin').length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredCenters
+                      .filter(center => center.role === 'admin')
+                      .map((center) => (
+                        <CenterCard key={center.center_id} center={center} isAdmin={true} />
+                      ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-6 bg-muted/50 rounded-lg">
+                    <p className="text-muted-foreground">
+                      {searchQuery 
+                        ? "No admin centers match your search."
+                        : "You don't have any centers yet."}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
 
+            {/* Invited Centers Section - Only show if there are invited centers or no search query */}
+            {(filteredCenters?.some(center => center.role !== 'admin') || !searchQuery) && (
+              <div>
+                <h2 className="text-xl font-semibold mb-4 text-foreground">Invited Centers</h2>
+                {filteredCenters?.filter(center => center.role !== 'admin').length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredCenters
+                      .filter(center => center.role !== 'admin')
+                      .map((center) => (
+                        <CenterCard key={center.center_id} center={center} isAdmin={false} />
+                      ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-6 bg-muted/50 rounded-lg">
+                    <p className="text-muted-foreground">
+                      {searchQuery 
+                        ? "No invited centers match your search."
+                        : "You haven't been invited to any centers yet."}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* No results message - Only show if there are no centers at all */}
             {filteredCenters?.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-gray-500">
+                <p className="text-muted-foreground">
                   No centers found matching your search.
                 </p>
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

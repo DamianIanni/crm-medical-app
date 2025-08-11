@@ -36,7 +36,8 @@ export function AccountActions() {
     try {
       await logout();
       router.replace("/login");
-      document.cookie = "selectedCenter=; path=/; max-age=0";
+      sessionStorage.removeItem("selectedCenterId");
+      sessionStorage.removeItem("selectedCenterName");
     } catch (error) {
       console.error("Logout failed:", error);
     }

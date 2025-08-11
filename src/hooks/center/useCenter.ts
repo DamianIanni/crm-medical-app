@@ -1,8 +1,14 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient, UseQueryResult } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import { centerService } from "@/services/api/center";
 import { Center } from "@/types/center";
+import { UserRole } from "@/types/user";
 import { ToastFeedback } from "@/components/feedback/toastFeedback";
 
 // Helper hook for invalidating queries
@@ -36,15 +42,15 @@ export function useGetAllCenters(): UseQueryResult<Center[], Error> {
 
 /**
  * Hook to get a single center by ID
- * @param {string} id - The center ID
  * @returns {UseQueryResult} A query result object from `@tanstack/react-query`
  */
-export function useGetCenterById(id: string): UseQueryResult<Center, Error> {
+export function useGetCenterById(): UseQueryResult<Center, Error> {
+  const center_id = sessionStorage.getItem("selectedCenterId");
+
   return useQuery<Center, Error>({
-    queryKey: ["center", id],
-    queryFn: () => centerService.getById(id),
-    enabled: !!id,
-    refetchOnMount: true,
+    queryKey: ["center", center_id],
+    queryFn: () => centerService.getById(),
+    enabled: !!center_id,
     staleTime: 30_000,
     refetchOnWindowFocus: false,
   });
@@ -70,6 +76,29 @@ export function useCreateCenter() {
       ToastFeedback({
         type: "error",
         title: "Failed to create center",
+        description: "Please try again later.",
+      });
+    },
+  });
+}
+
+export function useSelectCenter() {
+  // const invalidate = useInvalidateQuery(["allCenters"]);
+  return useMutation<void, Error, { center_id: string; role: UserRole }>({
+    mutationFn: ({ center_id, role }) =>
+      centerService.selectCenter(center_id, role),
+    // onSuccess: () => {
+    //   invalidate();
+    //   ToastFeedback({
+    //     type: "success",
+    //     title: "Center Selected",
+    //     description: "Center created successfully.",
+    //   });
+    // },
+    onError: () => {
+      ToastFeedback({
+        type: "error",
+        title: "Failed to enter center",
         description: "Please try again later.",
       });
     },
@@ -132,10 +161,10 @@ export function useDeleteCenter() {
   });
 }
 
-export const useGetSingleCenter = (id: string) => {
-  return useQuery({
-    queryKey: ["center", id],
-    queryFn: () => centerService.getById(id),
-    enabled: !!id,
-  });
-};
+// export const useGetSingleCenter = (id: string) => {
+//   return useQuery({
+//     queryKey: ["center", id],
+//     queryFn: () => centerService.getById(id),
+//     enabled: !!id,
+//   });
+// };

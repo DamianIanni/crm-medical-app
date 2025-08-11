@@ -8,36 +8,33 @@ import { EntityForm } from "@/components/forms/entityForm";
 import { useGetCenterById } from "@/hooks/center/useCenter";
 import { CenterFormSkeleton } from "@/components/skeletons/centerFormSkeleton";
 import { AlertMessage } from "@/components/feedback/AlertMessage";
-import { useParams } from "next/navigation";
+import DashboardPageWrapper from "@/components/wrappers/dashboardPageWrapper";
 
 export default function EditCenterPage() {
   const router = useRouter();
-  const params = useParams();
-  const id = params.id as string;
-
   const {
     data: center,
     isPending,
     isFetching,
     isError,
     refetch,
-  } = useGetCenterById(id);
+  } = useGetCenterById();
 
   if (isPending || isFetching) {
     return (
-      <div className="min-h-screen ">
+      <DashboardPageWrapper>
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-2xl mx-auto">
             <CenterFormSkeleton />
           </div>
         </div>
-      </div>
+      </DashboardPageWrapper>
     );
   }
 
   if (isError) {
     return (
-      <div className="min-h-screen ">
+      <DashboardPageWrapper>
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-2xl mx-auto">
             <div className="w-full flex flex-col items-center justify-center mx-auto mt-10">
@@ -51,22 +48,22 @@ export default function EditCenterPage() {
             </div>
           </div>
         </div>
-      </div>
+      </DashboardPageWrapper>
     );
   }
 
   return (
-    <div className="min-h-screen ">
+    <DashboardPageWrapper>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <div className="mb-6">
             <Button
               variant="ghost"
-              onClick={() => router.push("/centers")}
+              onClick={() => router.back()}
               className="mb-4"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Centers
+              Back
             </Button>
 
             <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
@@ -84,11 +81,11 @@ export default function EditCenterPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <EntityForm formType="center" mode="edit" data={center.center} />
+              <EntityForm formType="center" mode="edit" data={center} />
             </CardContent>
           </Card>
         </div>
       </div>
-    </div>
+    </DashboardPageWrapper>
   );
 }

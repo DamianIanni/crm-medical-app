@@ -49,13 +49,8 @@ type ActionsProps = {
 export default function Actions(props: ActionsProps): React.ReactElement {
   const { data, route, inInfo } = props;
   // Obtain selected center ID from cookie (set elsewhere in the app)
-  const selectedCenterId =
-    typeof document !== "undefined"
-      ? document.cookie.match(/selectedCenter=(\d+)/)?.[1] ?? ""
-      : "";
-
-  const deleteMember = useDeleteTeamMember(selectedCenterId);
-  const deletePatient = useDeletePatient(selectedCenterId);
+  const deleteMember = useDeleteTeamMember(data.id!);
+  const deletePatient = useDeletePatient(data.id!);
   const deleteCenter = useDeleteCenter();
   const { user } = useAuth();
   const router = useRouter();
@@ -66,7 +61,7 @@ export default function Actions(props: ActionsProps): React.ReactElement {
    */
 
   function editCenterIdCookieSetter() {
-    document.cookie = `selectedCenter=${data.id!}; path=/; max-age=86400`;
+    sessionStorage.setItem("selectedCenterId", data.id!);
     return ROUTES.centerEdit(data.id!);
   }
 
@@ -77,9 +72,8 @@ export default function Actions(props: ActionsProps): React.ReactElement {
     }
     if (route === "centers") {
       deleteCenter.mutate(String(data.id!));
-      localStorage.setItem("selectedCenterName", "");
-      // Store selected center in cookies
-      document.cookie = `selectedCenter=${data.id}; path=/; max-age=0`;
+      sessionStorage.removeItem("selectedCenterName");
+      sessionStorage.removeItem("selectedCenterId");
       router.replace("/centers");
     }
     // deleteMember.mutate(data.id!);

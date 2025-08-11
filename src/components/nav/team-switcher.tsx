@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChevronsUpDown, Plus, Building2, Home } from "lucide-react";
+import { ChevronsUpDown, Plus, Building2, Home, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   SidebarMenu,
@@ -40,10 +40,10 @@ export function TeamSwitcher() {
   useEffect(() => {
     const updateCenterName = () => {
       try {
-        const name = localStorage.getItem("selectedCenterName");
+        const name = sessionStorage.getItem("selectedCenterName");
         if (name) setSelectedCenterName(name);
       } catch (error) {
-        console.error("Error accessing localStorage:", error);
+        console.error("Error accessing sessionStorage:", error);
       }
     };
 
@@ -56,14 +56,18 @@ export function TeamSwitcher() {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
 
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [isOpen]);
 
@@ -81,6 +85,14 @@ export function TeamSwitcher() {
     setTimeout(() => {
       router.push("/centers/new");
     }, 100);
+  };
+
+  const handleViewCenter = () => {
+    const centerId = sessionStorage.getItem("selectedCenterId");
+    if (centerId) {
+      router.push(`/centers/${centerId}`);
+      setIsOpen(false);
+    }
   };
 
   const toggleDropdown = () => {
@@ -118,7 +130,7 @@ export function TeamSwitcher() {
               </div>
             )}
           </SidebarMenuButton>
-          
+
           {isOpen && (
             <div
               className={cn(
@@ -143,9 +155,18 @@ export function TeamSwitcher() {
               <div className="h-px bg-border my-1" />
               <div
                 className="flex items-center gap-2 p-2 text-sm rounded-sm cursor-pointer hover:bg-accent hover:text-accent-foreground"
+                onClick={handleViewCenter}
+              >
+                <div className="flex size-6 items-center justify-center rounded-md border">
+                  <Info className="size-4" />
+                </div>
+                <span className="font-medium">Info Center</span>
+              </div>
+              <div
+                className="flex items-center gap-2 p-2 text-sm rounded-sm cursor-pointer hover:bg-accent hover:text-accent-foreground"
                 onClick={handleAddCenter}
               >
-                <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
+                <div className="flex size-6 items-center justify-center rounded-md border">
                   <Plus className="size-4" />
                 </div>
                 <span className="font-medium">Add center</span>

@@ -18,7 +18,7 @@ import { useCreateCenter, useUpdateCenter } from "@/hooks/center/useCenter";
 
 type CenterFormProps = {
   mode?: "create" | "edit";
-  data?: Partial<Center>[];
+  data?: Center;
 };
 
 export function CenterForm(props: CenterFormProps): React.ReactElement {
@@ -27,7 +27,7 @@ export function CenterForm(props: CenterFormProps): React.ReactElement {
   const createCenter = useCreateCenter();
   const updateCenter = useUpdateCenter();
 
-  const center = data?.[0];
+  const center = data;
 
   const form = useForm({
     resolver: zodResolver(centerSchema),
@@ -52,7 +52,7 @@ export function CenterForm(props: CenterFormProps): React.ReactElement {
     try {
       // @ts-expect-error - This is a workaround for a type inference issue with the mutation hook
       await mutation.mutateAsync(payload);
-      router.replace("/centers");
+      router.back();
     } catch (error) {
       console.error("Form submission error:", error);
       // The hook will display its own error toast

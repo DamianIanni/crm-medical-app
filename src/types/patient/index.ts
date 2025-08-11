@@ -4,7 +4,7 @@ export type Session = {
 };
 
 export type Patient = {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;

@@ -22,8 +22,6 @@ export async function register(data: RegisterBody) {
 }
 
 export async function login(data: LoginBody) {
-  console.log("loginBody", data);
-
   return request({
     url: "/auth/login",
     method: "POST",

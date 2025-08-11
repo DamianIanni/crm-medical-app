@@ -47,7 +47,8 @@ export function NavUser({
   async function handleLogout() {
     try {
       await logout();
-      document.cookie = "selectedCenter=; path=/; max-age=0";
+      sessionStorage.removeItem("selectedCenterId");
+      sessionStorage.removeItem("selectedCenterName");
       router.replace("/login");
     } catch (error) {
       console.log(error);

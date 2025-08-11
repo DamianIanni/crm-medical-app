@@ -1,8 +1,10 @@
 export type User = {
-  id: number;
-  firstName: string;
-  lastName: string;
+  id: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  role: "admin" | "employee" | "manager";
+  role: UserRole;
   organization: string;
 };
+
+export type UserRole = "admin" | "employee" | "manager";

@@ -1,24 +1,20 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { useGetSingleCenter } from "@/hooks/center/useCenter";
-import EntityInfo from "@/components/feedback/entityInfo";
+import { useGetCenterById } from "@/hooks/center/useCenter";
 import DashboardPageWrapper from "@/components/wrappers/dashboardPageWrapper";
 import { Button } from "@/components/ui/button";
 import { AlertMessage } from "@/components/feedback/AlertMessage";
 import { EntityInfoSkeleton } from "@/components/skeletons/entityInfoSkeleton";
+import CenterInfo from "@/components/feedback/centerInfo";
 
 export default function CenterInfoPage() {
-  const params = useParams();
-  const id = params.id as string;
-
   const {
     data: center,
     isPending,
     isFetching,
     isError,
     refetch,
-  } = useGetSingleCenter(id);
+  } = useGetCenterById();
 
   return (
     <DashboardPageWrapper>
@@ -37,7 +33,7 @@ export default function CenterInfoPage() {
       )}
 
       {!isPending && !isFetching && !isError && center && (
-        <EntityInfo data={center} />
+        <CenterInfo data={center} />
       )}
     </DashboardPageWrapper>
   );

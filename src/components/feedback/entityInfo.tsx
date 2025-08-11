@@ -12,7 +12,7 @@ import { useAuth } from "../providers/AuthProvider";
 import Actions from "../tables/actions";
 
 type Props = {
-  data: Partial<User | Patient>;
+  data: User | Patient;
 };
 
 export default function EntityInfo(props: Props) {
