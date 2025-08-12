@@ -84,17 +84,18 @@ export function useCreateCenter() {
 
 export function useSelectCenter() {
   // const invalidate = useInvalidateQuery(["allCenters"]);
+  const invalidateUser = useInvalidateQuery(["me"]);
   return useMutation<void, Error, { center_id: string; role: UserRole }>({
     mutationFn: ({ center_id, role }) =>
       centerService.selectCenter(center_id, role),
-    // onSuccess: () => {
-    //   invalidate();
-    //   ToastFeedback({
-    //     type: "success",
-    //     title: "Center Selected",
-    //     description: "Center created successfully.",
-    //   });
-    // },
+    onSuccess: () => {
+      invalidateUser();
+      // ToastFeedback({
+      //   type: "success",
+      //   title: "Center Selected",
+      //   description: "Center created successfully.",
+      // });
+    },
     onError: () => {
       ToastFeedback({
         type: "error",

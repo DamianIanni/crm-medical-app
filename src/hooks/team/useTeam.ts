@@ -7,12 +7,25 @@
 
 "use client";
 
-import { useMutation, UseQueryResult, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  UseQueryResult,
+  useQuery,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 import { ToastFeedback } from "@/components/feedback/toastFeedback";
 import { User } from "@/types/user";
-import { inviteUser, updateUser, deleteUser, getUserById, getAllUsers, UserPayload } from "@/services/api/user";
+import {
+  inviteUser,
+  updateUser,
+  deleteUser,
+  getUserById,
+  getAllUsers,
+  UserPayload,
+} from "@/services/api/user";
 import { useInvalidateQuery } from "../useInvalidateQuery";
 import { useDeleteState } from "@/components/providers/ContextProvider";
+import { DataUserFilter } from "@/lib/schemas/memberSchema";
 
 /**
  * useCreateMember hook.
@@ -21,16 +34,17 @@ import { useDeleteState } from "@/components/providers/ContextProvider";
  * @returns {object} A mutation object from `@tanstack/react-query`.
  */
 
-export function useCreateMember(centerId: string | number) {
+export function useCreateMember() {
   const invalidate = useInvalidateQuery(["allUsers"]);
   return useMutation({
-    mutationFn: (data: any) => inviteUser(centerId, data),
-    onSuccess: (data: Partial<User>) => {
+    mutationFn: (data: { email: string; role: "manager" | "employee" }) =>
+      inviteUser(data),
+    onSuccess: () => {
       invalidate();
       ToastFeedback({
         type: "success",
         title: "Team member invited",
-        description: `Team member ${data.firstName} invited successfully.`,
+        description: `Team member invited successfully.`,
       });
     },
     onError: () => {
@@ -49,18 +63,24 @@ export function useCreateMember(centerId: string | number) {
  * It displays a success toast upon a successful update and an error toast if the update fails.
  * @returns {object} A mutation object from `@tanstack/react-query`.
  */
-export function useUpdateTeamMember(centerId: string | number) {
+export function useUpdateTeamMember() {
   const invalidate = useInvalidateQuery(["allUsers"]);
   const invalidateAll = useInvalidateQuery(["allUsers"]);
   return useMutation({
-    mutationFn: ({ userId, updated }: { userId: string | number; updated: Partial<UserPayload> }) => updateUser(centerId, userId, updated),
-    onSuccess: (data: Partial<User>) => {
+    mutationFn: ({
+      userId,
+      updated,
+    }: {
+      userId: string;
+      updated: Partial<UserPayload>;
+    }) => updateUser(userId, updated),
+    onSuccess: () => {
       invalidate();
       invalidateAll();
       ToastFeedback({
         type: "success",
         title: "Team member updated",
-        description: `Team member ${data.firstName} updated successfully.`,
+        description: `Team member updated successfully.`,
       });
     },
     onError: () => {
@@ -79,12 +99,12 @@ export function useUpdateTeamMember(centerId: string | number) {
  * It shows an info toast on successful deletion and an error toast if the deletion fails.
  * @returns {object} A mutation object from `@tanstack/react-query`.
  */
-export function useDeleteTeamMember(centerId: string | number) {
+export function useDeleteTeamMember() {
   const invalidateAll = useInvalidateQuery(["allUsers"]);
   const { setIsDeleting } = useDeleteState();
 
   return useMutation({
-    mutationFn: (userId: string | number) => deleteUser(centerId, userId),
+    mutationFn: (userId: string) => deleteUser(userId),
     onSuccess: () => {
       setIsDeleting(false);
       invalidateAll();
@@ -105,21 +125,23 @@ export function useDeleteTeamMember(centerId: string | number) {
   });
 }
 
-export function useGetSingleUser(centerId: string | number, userId: string | number): UseQueryResult<User, Error> {
+export function useGetSingleUser(userId: string): UseQueryResult<User, Error> {
   return useQuery<User, Error>({
-    queryKey: ["user", centerId, userId],
-    queryFn: () => getUserById(centerId, userId),
-    enabled: !!centerId && !!userId,
+    queryKey: ["user", userId],
+    queryFn: () => getUserById(userId),
+    enabled: !!userId,
     refetchOnMount: true,
     staleTime: 30_000,
     refetchOnWindowFocus: false,
   });
 }
 
-export function useGetUsers(centerId: string | number): UseQueryResult<User[], Error> {
-  return useQuery<User[], Error>({
+export function useGetUsers(
+  centerId: string
+): UseQueryResult<DataUserFilter[], Error> {
+  return useQuery<DataUserFilter[], Error>({
     queryKey: ["allUsers", centerId],
-    queryFn: () => getAllUsers(centerId),
+    queryFn: () => getAllUsers(),
     staleTime: 60_000,
     refetchOnWindowFocus: false,
   });

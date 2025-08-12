@@ -5,10 +5,10 @@ export type Session = {
 
 export type Patient = {
   id: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  phoneNumber: string;
+  phone: string;
   dob: string; // ISO date
   treatment: string;
   sessionsCompleted: number;

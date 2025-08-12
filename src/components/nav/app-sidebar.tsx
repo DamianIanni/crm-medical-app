@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Bot, LucideHospital, HousePlus, BookUser } from "lucide-react";
+import { Bot, BookUser } from "lucide-react";
 
 import { NavMain } from "@/components/nav/nav-main";
 import { NavUser } from "@/components/nav/nav-user";
@@ -25,12 +25,17 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       ? [
           {
             title: "Team",
+            isActive: true,
             url: "#",
             icon: Bot,
             items: [
               {
                 title: "Members",
                 url: "/dashboard/team",
+              },
+              {
+                title: "Add new member",
+                url: "/dashboard/team/new",
               },
             ],
           },
@@ -66,8 +71,8 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <NavUser
           user={{
-            name: user.firstName,
-            lastname: user.lastName,
+            name: user.first_name,
+            lastname: user.last_name,
             email: user.email,
           }}
         />

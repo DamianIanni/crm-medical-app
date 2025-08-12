@@ -6,13 +6,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { User } from "@/types/user";
 import { Patient } from "@/types/patient";
 import { useAuth } from "../providers/AuthProvider";
 import Actions from "../tables/actions";
+import { DataUserFilter } from "@/lib/schemas/memberSchema";
 
 type Props = {
-  data: User | Patient;
+  data: DataUserFilter | Patient;
 };
 
 export default function EntityInfo(props: Props) {
@@ -35,7 +35,10 @@ export default function EntityInfo(props: Props) {
         { label: "Phone", value: data.phoneNumber },
         { label: "Date of Birth", value: data.dob },
       ]
-    : [{ label: "Email", value: data.email }];
+    : [
+        { label: "Email", value: data.email },
+        { label: "Role", value: data.role },
+      ];
 
   const patientDetails = isPatient
     ? [
@@ -52,7 +55,7 @@ export default function EntityInfo(props: Props) {
       <div className="mb-4">
         <div className="flex justify-between items-center mb-2">
           <h3 className="mb-1 text-2xl font-bold tracking-tight">
-            {data.firstName} {data.lastName}
+            {data.first_name} {data.last_name}
           </h3>
           <Actions
             route={isPatient ? "patients" : "team"}
@@ -61,7 +64,7 @@ export default function EntityInfo(props: Props) {
           />
         </div>
         <span className="text-sm font-semibold text-muted-foreground">
-          ID: {data.id}
+          ID: {data.user_id}
         </span>
       </div>
 

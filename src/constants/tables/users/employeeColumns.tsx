@@ -1,13 +1,13 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { User } from "@/types/user";
+import { DataUserFilter } from "@/lib/schemas/memberSchema";
 import { TableCellFallback } from "@/components/tables/cellFallback";
 
-export const employeeTeamColumns: ColumnDef<User>[] = [
+export const employeeTeamColumns: ColumnDef<DataUserFilter>[] = [
   {
     header: "Full name",
-    accessorFn: (row) => `${row.firstName} ${row.lastName}`,
+    accessorFn: (row) => `${row.first_name} ${row.last_name}`,
     cell: ({ getValue }) => {
       const treatment = getValue() as string | undefined | null;
 

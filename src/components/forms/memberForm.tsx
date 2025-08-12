@@ -8,10 +8,10 @@ import { memberSchema, MemberFormValues } from "@/lib/schemas/memberSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { SelectField } from "./fields/selectField";
-import { User } from "@/types/user";
 import { useRouter } from "next/navigation";
 import { useCreateMember, useUpdateTeamMember } from "@/hooks/team/useTeam";
 import { Form } from "@/components/ui/form";
+import { DataUserFilter } from "@/lib/schemas/memberSchema";
 import { TextField } from "./fields/textField";
 import { OverlayLoader } from "../loaders/loader";
 import { ROUTES } from "@/constants/routes";
@@ -23,7 +23,7 @@ const selectOptionList = [
 
 type MemberFormProps = {
   mode?: "create" | "edit";
-  data?: Partial<User>;
+  data?: Partial<DataUserFilter>;
 };
 
 export function MemberForm(props: MemberFormProps): React.ReactElement {
@@ -34,28 +34,23 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
   const form = useForm<MemberFormValues>({
     resolver: zodResolver(memberSchema),
     defaultValues: {
-      email: "",
-      role:
-        (data?.role as "manager" | "employee" | "admin" | undefined) ||
-        "manager",
+      email: data?.email ?? "",
+      role: data?.role ?? "manager",
     },
   });
 
   const isSubmitting = form.formState.isSubmitting;
 
   async function onSubmit(values: MemberFormValues) {
-    if (mode === "edit" && data?.id) {
-      updatePatient.mutate({
-        id: data.id,
-        updated: { ...values },
+    if (mode === "edit" && data?.user_id) {
+      await updatePatient.mutateAsync({
+        userId: data.user_id,
+        updated: { role: values.role },
       });
-    } else {
-      createMember.mutate({
-        ...values,
-
-        firstName: "",
-        lastName: "",
-        organization: "",
+    } else if (mode === "create") {
+      await createMember.mutateAsync({
+        email: values.email,
+        role: values.role,
       });
     }
     router.replace(ROUTES.team);
@@ -82,12 +77,14 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
           className={cn("flex h-[calc(90%)] flex-col justify-between gap-6")}
         >
           <div className="grid h-min-full grid-cols-1 gap-4 md:grid-cols-2">
-            <TextField
-              control={form.control}
-              name="email"
-              label="Email"
-              type="email"
-            />
+            {mode === "create" && (
+              <TextField
+                control={form.control}
+                name="email"
+                label="Email"
+                type="email"
+              />
+            )}
 
             <div className="md:col-span-2">
               <SelectField

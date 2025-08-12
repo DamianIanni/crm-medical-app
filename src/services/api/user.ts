@@ -1,5 +1,5 @@
 // src/services/api/user.ts
-import { request } from './http';
+import { request } from "./http";
 
 export interface UserPayload {
   email: string;
@@ -9,39 +9,39 @@ export interface UserPayload {
   [key: string]: any;
 }
 
-export async function inviteUser(centerId: string | number, data: UserPayload) {
+export async function inviteUser(data: UserPayload) {
   return request({
-    url: `/${centerId}/users/invite`,
-    method: 'POST',
+    url: `/center/users/`,
+    method: "POST",
     data,
   });
 }
 
-export async function getAllUsers(centerId: string | number) {
+export async function getAllUsers() {
   return request({
-    url: `/${centerId}/users/`,
-    method: 'GET',
+    url: `/center/users`,
+    method: "GET",
   });
 }
 
-export async function getUserById(centerId: string | number, userId: string | number) {
+export async function getUserById(userId: string) {
   return request({
-    url: `/${centerId}/users/${userId}`,
-    method: 'GET',
+    url: `/center/users/${userId}`,
+    method: "GET",
   });
 }
 
-export async function updateUser(centerId: string | number, userId: string | number, data: Partial<UserPayload>) {
+export async function updateUser(userId: string, data: Partial<UserPayload>) {
   return request({
-    url: `/${centerId}/users/${userId}`,
-    method: 'PATCH',
+    url: `/center/users/${userId}`,
+    method: "PATCH",
     data,
   });
 }
 
-export async function deleteUser(centerId: string | number, userId: string | number) {
+export async function deleteUser(userId: string) {
   return request({
-    url: `/${centerId}/users/${userId}`,
-    method: 'DELETE',
+    url: `/center/users/${userId}`,
+    method: "DELETE",
   });
 }

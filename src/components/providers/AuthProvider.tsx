@@ -13,7 +13,14 @@ import { createContext, useContext, ReactNode } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { User } from "@/types/user/index";
-import { login, getCurrentUser, userLogout, register, LoginBody, RegisterBody } from "@/services/api/auth";
+import {
+  login,
+  getCurrentUser,
+  userLogout,
+  register,
+  LoginBody,
+  RegisterBody,
+} from "@/services/api/auth";
 
 // Type definition for the authentication context
 type AuthContextType = {
@@ -44,6 +51,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryKey: ["me"],
     queryFn: getCurrentUser,
     retry: false,
+    staleTime: 0,
+    refetchOnWindowFocus: true,
   });
 
   // Mutation for handling user login

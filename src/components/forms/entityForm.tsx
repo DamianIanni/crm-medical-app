@@ -11,14 +11,15 @@ import { MemberForm } from "./memberForm";
 import { CenterForm } from "./centerForm";
 import { User } from "@/types/user";
 import { Patient } from "@/types/patient";
-import { Center } from "@/types/center"; 
+import { Center } from "@/types/center";
+import { DataUserFilter } from "@/lib/schemas/memberSchema";
 
-type FormType = "patient" | "member" | "auth" | "center"; 
+type FormType = "patient" | "member" | "auth" | "center";
 
 type EntityFormProps = {
   formType: FormType;
   mode?: "create" | "edit";
-  data?: Partial<Patient | User | Center>;
+  data?: Patient | DataUserFilter | Center;
 };
 
 /**
@@ -39,7 +40,7 @@ export function EntityForm({
     case "patient":
       return <PatientForm mode={mode} data={data as Partial<Patient>} />;
     case "member":
-      return <MemberForm mode={mode} data={data as Partial<User>} />;
+      return <MemberForm mode={mode} data={data as Partial<DataUserFilter>} />;
     case "center":
       return <CenterForm mode={mode} data={data as Partial<Center>} />;
     case "auth":
