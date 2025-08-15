@@ -25,9 +25,7 @@ import { AlertMessage } from "../feedback/AlertMessage";
 
 import { useRouter } from "next/navigation";
 
-import {
-  Form,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 
 import { ButtonLoading } from "../ui/ButtonLoading";
 
@@ -36,7 +34,11 @@ export function RegisterForm({
   ...props
 }: React.ComponentProps<"div">) {
   // Get authentication functions and state from auth context
-  const { register: registerUser, isRegisterPending, isErrorRegister } = useAuth();
+  const {
+    register: registerUser,
+    isRegisterPending,
+    isErrorRegister,
+  } = useAuth();
   const router = useRouter();
 
   // Initialize form with validation schema and default values
@@ -55,14 +57,18 @@ export function RegisterForm({
   const registrationError = {
     title: "Registration failed",
     description: "Please check your information and try again.",
-    data: ["Check your email format", "Password must be at least 6 characters", "Passwords must match"],
+    data: [
+      "Check your email format",
+      "Password must be at least 6 characters",
+      "Passwords must match",
+    ],
   };
 
   /**
    * Navigates user to dashboard after successful registration
    */
   function navigateToDashboard() {
-    router.replace("/dashboard");
+    router.replace("/login");
   }
 
   /**
@@ -78,7 +84,7 @@ export function RegisterForm({
       email: values.email,
       password: values.password,
     };
-    
+
     const res = await registerUser(registerData);
     if (res) {
       navigateToDashboard();
@@ -107,7 +113,7 @@ export function RegisterForm({
                   placeholder="Enter your first name"
                   disabled={isRegisterPending}
                 />
-                
+
                 <TextField
                   control={form.control}
                   name="lastName"
@@ -115,7 +121,7 @@ export function RegisterForm({
                   placeholder="Enter your last name"
                   disabled={isRegisterPending}
                 />
-                
+
                 <TextField
                   control={form.control}
                   name="email"
@@ -124,7 +130,7 @@ export function RegisterForm({
                   placeholder="john@example.com"
                   disabled={isRegisterPending}
                 />
-                
+
                 <PasswordField
                   control={form.control}
                   name="password"
@@ -132,7 +138,7 @@ export function RegisterForm({
                   placeholder="Create a password"
                   disabled={isRegisterPending}
                 />
-                
+
                 <PasswordField
                   control={form.control}
                   name="confirmPassword"
@@ -140,7 +146,7 @@ export function RegisterForm({
                   placeholder="Confirm your password"
                   disabled={isRegisterPending}
                 />
-                
+
                 {/* Submit button with loading state */}
                 {isRegisterPending ? (
                   <ButtonLoading text="Creating account..." />
@@ -151,7 +157,7 @@ export function RegisterForm({
                 )}
               </form>
             </Form>
-            
+
             {/* Error message display for failed registration */}
             {isErrorRegister && (
               <AlertMessage

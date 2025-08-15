@@ -1,17 +1,7 @@
-/**
- * Authentication Provider Component
- *
- * This component provides authentication context and functionality throughout the application.
- * It manages user authentication state, login/logout operations, and provides authentication
- * status to child components. Uses React Query for server state management and caching.
- */
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { createContext, useContext, ReactNode } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { User } from "@/types/user/index";
 import {
   login,
@@ -20,7 +10,12 @@ import {
   register,
   LoginBody,
   RegisterBody,
+  acceptInvitation,
+  rejectInvitation,
 } from "@/services/api/auth";
+import { useInvalidateQuery } from "@/hooks/useInvalidateQuery";
+import { useRouter } from "next/navigation";
+import { removeEntitySessionStorage } from "@/lib/utils";
 
 // Type definition for the authentication context
 type AuthContextType = {
@@ -29,6 +24,8 @@ type AuthContextType = {
   login: (credentials: LoginBody) => Promise<boolean>;
   register: (data: RegisterBody) => Promise<boolean>;
   logout: () => Promise<void>;
+  acceptInvitation: (center_id: string) => Promise<void>;
+  rejectInvitation: (center_id: string) => Promise<void>;
   isLoginPending: boolean;
   isErrorLogin: boolean;
   isSuccessLogin: boolean;
@@ -36,6 +33,12 @@ type AuthContextType = {
   isErrorRegister: boolean;
   isSuccessRegister: boolean;
   isSuccessLogout: boolean;
+  isAcceptInvitationPending: boolean;
+  isRejectInvitationPending: boolean;
+  isErrorAcceptInvitation: boolean;
+  isErrorRejectInvitation: boolean;
+  isSuccessAcceptInvitation: boolean;
+  isSuccessRejectInvitation: boolean;
 };
 
 // Create authentication context with undefined default value
@@ -60,14 +63,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     mutateAsync: loginMutate,
     isError: isErrorLogin,
     isSuccess: isSuccessLogin,
-    error: errorLogin,
     isPending: isLoginPending,
   } = useMutation({
     mutationFn: (credentials: LoginBody) => login(credentials),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["me"] }),
   });
 
-  // Provide login function for UI
   const loginHandler = async (credentials: LoginBody): Promise<boolean> => {
     try {
       await loginMutate(credentials);
@@ -88,7 +89,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["me"] }),
   });
 
-  // Provide register function for UI
   const registerUser = async (data: RegisterBody): Promise<boolean> => {
     try {
       await registerMutate(data);
@@ -99,20 +99,58 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   // Mutation for handling user logout
+  const router = useRouter();
   const { mutateAsync: logoutMutate, isSuccess: isSuccessLogout } = useMutation(
     {
       mutationFn: userLogout,
-      onSuccess: () => queryClient.invalidateQueries({ queryKey: ["me"] }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["me"] });
+        removeEntitySessionStorage("selectedCenterId");
+        removeEntitySessionStorage("selectedCenterName");
+        removeEntitySessionStorage("dataEntityteam");
+        removeEntitySessionStorage("dataEntitycenter");
+        removeEntitySessionStorage("dataEntitypatient");
+        router.replace("/login");
+      },
     }
   );
 
-  /**
-   * Logout function that handles user sign out
-   * Clears authentication state and invalidates user queries
-   */
   const logout = async () => {
     await logoutMutate();
   };
+
+  const acceptInvitationHandler = async (center_id: string) => {
+    await acceptInvitationMutate(center_id);
+  };
+
+  const rejectInvitationHandler = async (center_id: string) => {
+    await rejectInvitationMutate(center_id);
+  };
+
+  const invalidate = useInvalidateQuery(["allCenters"]);
+
+  const {
+    mutateAsync: acceptInvitationMutate,
+    isError: isErrorAcceptInvitation,
+    isSuccess: isSuccessAcceptInvitation,
+    isPending: isAcceptInvitationPending,
+  } = useMutation({
+    mutationFn: (center_id: string) => acceptInvitation(center_id),
+    onSuccess: () => invalidate(),
+  });
+
+  const {
+    mutateAsync: rejectInvitationMutate,
+    isError: isErrorRejectInvitation,
+    isSuccess: isSuccessRejectInvitation,
+    isPending: isRejectInvitationPending,
+  } = useMutation({
+    mutationFn: (center_id: string) => rejectInvitation(center_id),
+    onSuccess: () => {
+      invalidate();
+      router.replace("/centers");
+    },
+  });
 
   // Show loading state while fetching user data
   if (isLoading) return null;
@@ -120,7 +158,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return (
     <AuthContext.Provider
       value={{
+        //User
         user: user as User | null,
+        //login
         login: loginHandler,
         register: registerUser,
         logout,
@@ -128,10 +168,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoginPending,
         isErrorLogin,
         isSuccessLogin,
+        //Register
         isRegisterPending,
         isErrorRegister,
         isSuccessRegister,
+        //Logout
         isSuccessLogout,
+        //Invitation
+        acceptInvitation: acceptInvitationHandler,
+        rejectInvitation: rejectInvitationHandler,
+        isAcceptInvitationPending,
+        isRejectInvitationPending,
+        isErrorAcceptInvitation,
+        isErrorRejectInvitation,
+        isSuccessAcceptInvitation,
+        isSuccessRejectInvitation,
       }}
     >
       {children}

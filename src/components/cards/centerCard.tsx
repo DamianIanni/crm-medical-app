@@ -8,18 +8,73 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Phone, MapPin } from "lucide-react";
-import { useRouter } from "next/navigation";
+import React from "react";
 import { Center } from "@/types/center/index";
 import { useSelectCenter } from "@/hooks/center/useCenter";
+import { ToastFeedback } from "../feedback/toastFeedback";
+import { Button } from "../ui/button";
+import { useAuth } from "@/components/providers/AuthProvider";
+import { RoleBadge } from "../badges/role-badge";
 
 interface CenterCardProps {
   center: Center;
   isAdmin: boolean;
 }
 
-export function CenterCard({ center, isAdmin = false }: CenterCardProps) {
-  const router = useRouter();
+export function CenterCard({ center }: CenterCardProps) {
   const selectCenter = useSelectCenter();
+  const {
+    acceptInvitation,
+    rejectInvitation,
+    isAcceptInvitationPending,
+    isRejectInvitationPending,
+  } = useAuth();
+
+  React.useEffect(() => {
+    if (isAcceptInvitationPending || isRejectInvitationPending) {
+      console.log("INVITATION");
+
+      return;
+    }
+  }, [isAcceptInvitationPending, isRejectInvitationPending]);
+
+  const handleAcceptInvitation = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await acceptInvitation(center.center_id);
+      ToastFeedback({
+        type: "success",
+        title: "Invitation Accepted",
+        description: "You've successfully joined the center.",
+      });
+    } catch (err) {
+      console.error("Error accepting invitation:", err);
+      ToastFeedback({
+        type: "error",
+        title: "Error",
+        description: "Failed to accept invitation. Please try again.",
+      });
+    }
+  };
+
+  const handleRejectInvitation = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await rejectInvitation(center.center_id);
+      ToastFeedback({
+        type: "info",
+        title: "Invitation Rejected",
+        description: "You've declined the invitation.",
+      });
+    } catch (err) {
+      console.error("Error rejecting invitation:", err);
+      ToastFeedback({
+        type: "error",
+        title: "Error",
+        description: "Failed to reject invitation. Please try again.",
+      });
+    }
+  };
 
   const setSelectedCenterName = (name: string) => {
     sessionStorage.setItem("selectedCenterName", name);
@@ -30,13 +85,21 @@ export function CenterCard({ center, isAdmin = false }: CenterCardProps) {
   };
 
   const handleSelectCenter = () => {
+    if (center.status === "pending") {
+      ToastFeedback({
+        type: "info",
+        title: "Invitation",
+        description: "Please accept/reject the invitation first.",
+      });
+      return;
+    }
+
     setSelectedCenterName(center.center_name);
     setSelectedCenterCookie(center.center_id);
     selectCenter.mutateAsync({
       center_id: center.center_id,
       role: center.role,
     });
-    router.replace("/dashboard");
   };
 
   return (
@@ -67,14 +130,28 @@ export function CenterCard({ center, isAdmin = false }: CenterCardProps) {
               {center.center_address}
             </CardDescription>
           </div>
-          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-            isAdmin 
-              ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
-              : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-          }`}>
-            {isAdmin ? 'Admin' : center.role}
-          </span>
+          <RoleBadge role={center.role} />
         </div>
+
+        {center.status === "pending" && (
+          <div className="mt-6 flex justify-end gap-4 w-full">
+            <Button
+              onClick={handleRejectInvitation}
+              variant="outline"
+              className="flex-1 gap-2"
+              disabled={isRejectInvitationPending}
+            >
+              {isRejectInvitationPending ? "Rejecting..." : "Reject"}
+            </Button>
+            <Button
+              onClick={handleAcceptInvitation}
+              className="flex-1 gap-2"
+              disabled={isAcceptInvitationPending}
+            >
+              {isAcceptInvitationPending ? "Accepting..." : "Accept"}
+            </Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

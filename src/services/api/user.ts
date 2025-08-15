@@ -3,10 +3,7 @@ import { request } from "./http";
 
 export interface UserPayload {
   email: string;
-  password?: string;
-  firstName?: string;
-  lastName?: string;
-  [key: string]: any;
+  role: "manager" | "employee";
 }
 
 export async function inviteUser(data: UserPayload) {
@@ -31,7 +28,10 @@ export async function getUserById(userId: string) {
   });
 }
 
-export async function updateUser(userId: string, data: Partial<UserPayload>) {
+export async function updateUser(
+  userId: string,
+  data: Pick<UserPayload, "role">
+) {
   return request({
     url: `/center/users/${userId}`,
     method: "PATCH",

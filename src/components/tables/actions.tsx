@@ -14,7 +14,6 @@ import { useDeleteTeamMember } from "@/hooks/team/useTeam";
 import { useDeletePatient } from "@/hooks/patient/usePatient";
 import { ActionDialog } from "@/components/feedback/actionDialog";
 import { useDeleteCenter } from "@/hooks/center/useCenter";
-import { User } from "@/types/user";
 import { Patient } from "@/types/patient";
 import { Center } from "@/types/center";
 import { ROUTES } from "@/constants/routes";
@@ -34,19 +33,11 @@ import { setEntitySessionStorage } from "@/lib/utils";
 export type Route = "patients" | "team" | "centers";
 
 type ActionsProps = {
-  data: Partial<DataUserFilter | Patient | Center>;
+  data: DataUserFilter | Patient | Center;
   route: Route;
   inInfo?: boolean;
 };
 
-/**
- * Actions component.
- * Renders a set of action buttons (View details, Edit, Delete) for either patient or team member entities.
- * The visibility and behavior of these buttons are determined by the `route`, user's `role`, and `inInfo` prop.
- *
- * @param {ActionsProps} props - The props for the component.
- * @returns {React.ReactElement} The rendered action buttons.
- */
 export default function Actions({
   data,
   route,
@@ -79,7 +70,7 @@ export default function Actions({
       title: "Patient",
       detailUrl: ROUTES.patientDetail(entityId),
       editUrl: ROUTES.patientEdit(entityId),
-      displayName: data.firstName || "Patient",
+      displayName: `${data.first_name} ${data.last_name}` || "Patient",
       onDelete: () => deletePatient.mutate(entityId),
     },
     centers: {
@@ -110,13 +101,15 @@ export default function Actions({
     },
   };
 
-  const { title, detailUrl, editUrl, displayName, onDelete, hideDetails } =
-    helpers[route];
+  const { title, detailUrl, editUrl, displayName, onDelete } = helpers[route];
 
   /* --------------------------------------------------
    * Render
    * --------------------------------------------------*/
-  const canDelete = !(route === "team" && user?.role === "manager");
+  const canDelete = !(
+    route === "team" &&
+    (user?.role === "manager" || user?.role === "employee")
+  );
 
   const handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.stopPropagation();
@@ -151,13 +144,8 @@ export default function Actions({
           <ActionDialog
             title={`Delete ${title}`}
             description={`Are you sure you want to delete ${displayName}? This action cannot be undone.`}
-            triggerLabel="Delete"
             confirmLabel="Delete"
             cancelLabel="Cancel"
-            triggerProps={{
-              "aria-label": "Delete",
-              onClick: (e) => e.stopPropagation(),
-            }}
             onConfirm={onDelete}
           />
         </GeneralTooltip>

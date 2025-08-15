@@ -9,12 +9,12 @@ import {
   SunIcon,
   MoonIcon,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -36,26 +36,23 @@ export function NavUser({
     name: string | undefined;
     lastname: string | undefined;
     email: string | undefined;
-    // avatar: string;
   };
 }) {
   const { isMobile } = useSidebar();
   const { logout } = useAuth();
-  const router = useRouter();
   const { theme, setTheme } = useTheme();
 
   async function handleLogout() {
     try {
       await logout();
-      sessionStorage.removeItem("selectedCenterId");
-      sessionStorage.removeItem("selectedCenterName");
-      router.replace("/login");
     } catch (error) {
       console.log(error);
     }
   }
 
-  const FirstLett = `${user.name?.charAt(0)}${user.lastname?.charAt(0)}`;
+  const FirstLett = `${user.name?.charAt(0).toLocaleUpperCase()}${user.lastname
+    ?.charAt(0)
+    .toLocaleUpperCase()}`;
 
   return (
     <SidebarMenu>
@@ -72,7 +69,9 @@ export function NavUser({
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-medium">
+                  {user.name} {user.lastname}
+                </span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -92,7 +91,9 @@ export function NavUser({
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
+                  <span className="truncate font-medium">
+                    {user.name} {user.lastname}
+                  </span>
                   <span className="truncate text-xs">{user.email}</span>
                 </div>
               </div>
@@ -131,14 +132,13 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
 
-            <Button
-              variant={"ghost"}
-              onClick={() => handleLogout()}
-              className="hover:cursor-pointer hover:bg-cover w-full flex justify-start"
+            <DropdownMenuItem
+              className="hover:cursor-pointer text-destructive focus:text-destructive"
+              onClick={handleLogout}
             >
               <LogOut />
-              Log out
-            </Button>
+              <span className="font-bold">Log out</span>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

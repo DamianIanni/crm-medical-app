@@ -21,12 +21,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/components/providers/AuthProvider";
-import { useRouter } from "next/navigation";
 
 export function AccountActions() {
   const { theme, setTheme } = useTheme();
   const { user, logout } = useAuth();
-  const router = useRouter();
 
   const getInitials = (name: string, lastname: string) => {
     return `${name?.[0] || ""}${lastname?.[0] || ""}`.toUpperCase();
@@ -35,9 +33,6 @@ export function AccountActions() {
   const handleLogout = async () => {
     try {
       await logout();
-      router.replace("/login");
-      sessionStorage.removeItem("selectedCenterId");
-      sessionStorage.removeItem("selectedCenterName");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -55,7 +50,7 @@ export function AccountActions() {
           <Avatar className="h-8 w-8">
             <AvatarImage />
             <AvatarFallback className="text-background bg-primary font-bold">
-              {getInitials(user.first_name, user.last_Name)}
+              {getInitials(user.first_name, user.last_name)}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -75,7 +70,7 @@ export function AccountActions() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {user.firstName} {user.lastName}
+              {user.first_name} {user.last_name}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
               {user.email}

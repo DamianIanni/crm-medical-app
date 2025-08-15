@@ -7,12 +7,7 @@
 
 "use client";
 
-import {
-  useMutation,
-  UseQueryResult,
-  useQuery,
-  UseQueryOptions,
-} from "@tanstack/react-query";
+import { useMutation, UseQueryResult, useQuery } from "@tanstack/react-query";
 import { ToastFeedback } from "@/components/feedback/toastFeedback";
 import { User } from "@/types/user";
 import {
@@ -26,6 +21,13 @@ import {
 import { useInvalidateQuery } from "../useInvalidateQuery";
 import { useDeleteState } from "@/components/providers/ContextProvider";
 import { DataUserFilter } from "@/lib/schemas/memberSchema";
+import { getEntitySessionStorage } from "@/lib/utils";
+
+const getDisplayName = () => {
+  const member = getEntitySessionStorage("dataEntityteam");
+  const displayName = `${member?.first_name} ${member?.last_name}`;
+  return displayName;
+};
 
 /**
  * useCreateMember hook.
@@ -72,7 +74,7 @@ export function useUpdateTeamMember() {
       updated,
     }: {
       userId: string;
-      updated: Partial<UserPayload>;
+      updated: Pick<UserPayload, "role">;
     }) => updateUser(userId, updated),
     onSuccess: () => {
       invalidate();
@@ -80,7 +82,7 @@ export function useUpdateTeamMember() {
       ToastFeedback({
         type: "success",
         title: "Team member updated",
-        description: `Team member updated successfully.`,
+        description: `${getDisplayName()} updated successfully.`,
       });
     },
     onError: () => {

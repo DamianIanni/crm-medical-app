@@ -10,6 +10,7 @@ import { centerService } from "@/services/api/center";
 import { Center } from "@/types/center";
 import { UserRole } from "@/types/user";
 import { ToastFeedback } from "@/components/feedback/toastFeedback";
+import { useRouter } from "next/navigation";
 
 // Helper hook for invalidating queries
 function useInvalidateQuery(keys: string[]) {
@@ -31,9 +32,11 @@ function useDeleteState() {
  * Hook to get all centers
  * @returns {UseQueryResult} A query result object from `@tanstack/react-query`
  */
-export function useGetAllCenters(): UseQueryResult<Center[], Error> {
+export function useGetAllCenters(
+  user_id: string
+): UseQueryResult<Center[], Error> {
   return useQuery<Center[], Error>({
-    queryKey: ["allCenters"],
+    queryKey: ["allCenters", user_id],
     queryFn: () => centerService.getAll(),
     staleTime: 60_000,
     refetchOnWindowFocus: false,
@@ -84,17 +87,14 @@ export function useCreateCenter() {
 
 export function useSelectCenter() {
   // const invalidate = useInvalidateQuery(["allCenters"]);
+  const router = useRouter();
   const invalidateUser = useInvalidateQuery(["me"]);
   return useMutation<void, Error, { center_id: string; role: UserRole }>({
     mutationFn: ({ center_id, role }) =>
       centerService.selectCenter(center_id, role),
     onSuccess: () => {
       invalidateUser();
-      // ToastFeedback({
-      //   type: "success",
-      //   title: "Center Selected",
-      //   description: "Center created successfully.",
-      // });
+      router.replace("/dashboard");
     },
     onError: () => {
       ToastFeedback({

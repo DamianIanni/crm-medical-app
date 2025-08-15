@@ -10,17 +10,19 @@ import { AlertMessage } from "@/components/feedback/AlertMessage";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Center } from "@/types/center/index";
 import { AccountActions } from "@/components/nav/account-actions";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 export default function CentersPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
+  const { user } = useAuth();
   const {
     data: centers,
     isPending,
     isError,
     refetch,
     isFetching,
-  } = useGetAllCenters();
+  } = useGetAllCenters(user!.id);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   // Esta haciendo la reuqest esperando el finalToken, por eso no esta autorizado
@@ -64,7 +66,7 @@ export default function CentersPage() {
               className="w-full px-4 py-2 border rounded-lg "
             />
           </div>
-          <Button onClick={handleAddCenter}>Add New Center</Button>
+          <Button onClick={handleAddCenter}>New Center</Button>
         </div>
 
         {(isPending || isFetching) && <CentersSkeleton isMobile={isMobile} />}
@@ -82,21 +84,29 @@ export default function CentersPage() {
         {!isPending && !isFetching && !isError && centers && (
           <div className="space-y-8">
             {/* My Centers (Admin) Section - Only show if there are admin centers or no search query */}
-            {(filteredCenters?.some(center => center.role === 'admin') || !searchQuery) && (
+            {(filteredCenters?.some((center) => center.role === "admin") ||
+              !searchQuery) && (
               <div>
-                <h2 className="text-xl font-semibold mb-4 text-foreground">My Centers</h2>
-                {filteredCenters?.filter(center => center.role === 'admin').length > 0 ? (
+                <h2 className="text-xl font-semibold mb-4 text-foreground">
+                  My Centers
+                </h2>
+                {filteredCenters?.filter((center) => center.role === "admin")
+                  .length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredCenters
-                      .filter(center => center.role === 'admin')
+                      .filter((center) => center.role === "admin")
                       .map((center) => (
-                        <CenterCard key={center.center_id} center={center} isAdmin={true} />
+                        <CenterCard
+                          key={center.center_id}
+                          center={center}
+                          isAdmin={true}
+                        />
                       ))}
                   </div>
                 ) : (
                   <div className="text-center py-6 bg-muted/50 rounded-lg">
                     <p className="text-muted-foreground">
-                      {searchQuery 
+                      {searchQuery
                         ? "No admin centers match your search."
                         : "You don't have any centers yet."}
                     </p>
@@ -106,21 +116,29 @@ export default function CentersPage() {
             )}
 
             {/* Invited Centers Section - Only show if there are invited centers or no search query */}
-            {(filteredCenters?.some(center => center.role !== 'admin') || !searchQuery) && (
+            {(filteredCenters?.some((center) => center.role !== "admin") ||
+              !searchQuery) && (
               <div>
-                <h2 className="text-xl font-semibold mb-4 text-foreground">Invited Centers</h2>
-                {filteredCenters?.filter(center => center.role !== 'admin').length > 0 ? (
+                <h2 className="text-xl font-semibold mb-4 text-foreground">
+                  Invited Centers
+                </h2>
+                {filteredCenters?.filter((center) => center.role !== "admin")
+                  .length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredCenters
-                      .filter(center => center.role !== 'admin')
+                      .filter((center) => center.role !== "admin")
                       .map((center) => (
-                        <CenterCard key={center.center_id} center={center} isAdmin={false} />
+                        <CenterCard
+                          key={center.center_id}
+                          center={center}
+                          isAdmin={false}
+                        />
                       ))}
                   </div>
                 ) : (
                   <div className="text-center py-6 bg-muted/50 rounded-lg">
                     <p className="text-muted-foreground">
-                      {searchQuery 
+                      {searchQuery
                         ? "No invited centers match your search."
                         : "You haven't been invited to any centers yet."}
                     </p>

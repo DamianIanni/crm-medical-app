@@ -1,8 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { ChevronsUpDown, Plus, Building2, Home, Info } from "lucide-react";
+import {
+  ChevronsUpDown,
+  Plus,
+  Building2,
+  Home,
+  Info,
+  Trash2,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -12,9 +20,18 @@ import {
 import { useEffect, useState, useRef } from "react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/components/providers/AuthProvider";
+import { ToastFeedback } from "../feedback/toastFeedback";
+import { ActionDialog } from "../feedback/actionDialog";
 
 export function TeamSwitcher() {
   const { isMobile } = useSidebar();
+  const { user } = useAuth();
+  const {
+    rejectInvitation,
+    isSuccessRejectInvitation,
+    isErrorRejectInvitation,
+  } = useAuth();
   const [isCollapsed, setIsCollapsed] = React.useState(false);
   const router = useRouter();
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
@@ -25,8 +42,11 @@ export function TeamSwitcher() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const showIconOnly = isCollapsed || isMobile || isSmallScreen;
 
+  // Refs para los elementos
+  const dialogTriggerRef = useRef<HTMLButtonElement>(null);
+
   // Check if sidebar is collapsed by checking the cookie
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof window !== "undefined") {
       const isSidebarCollapsed = document.cookie
         .split("; ")
@@ -56,9 +76,15 @@ export function TeamSwitcher() {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
+      // 👇🏼 2. Lógica de comprobación actualizada
+      // Cierra el menú solo si el clic NO fue dentro del menú Y NO fue en el botón del diálogo.
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        !dropdownRef.current.contains(target) &&
+        dialogTriggerRef.current &&
+        !dialogTriggerRef.current.contains(target)
       ) {
         setIsOpen(false);
       }
@@ -97,6 +123,31 @@ export function TeamSwitcher() {
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLeaveCenter = async () => {
+    const centerId = sessionStorage.getItem("selectedCenterId");
+    if (!centerId) return;
+    await rejectInvitation(centerId);
+    console.log(isSuccessRejectInvitation);
+
+    if (isSuccessRejectInvitation) {
+      console.log("Left center successfully");
+
+      ToastFeedback({
+        type: "info",
+        title: "Left Center",
+        description: "You've successfully left the center.",
+      });
+    }
+
+    if (isErrorRejectInvitation) {
+      ToastFeedback({
+        type: "error",
+        title: "Error",
+        description: "Failed to leave center. Please try again.",
+      });
+    }
   };
 
   return (
@@ -147,30 +198,48 @@ export function TeamSwitcher() {
                 className="flex items-center gap-2 p-2 text-sm rounded-sm cursor-pointer hover:bg-accent hover:text-accent-foreground"
                 onClick={handleCenters}
               >
-                <div className="flex size-6 items-center justify-center rounded-md border">
+                <div className="flex size-6 items-center justify-center rounded-md">
                   <Building2 className="size-3.5 shrink-0" />
                 </div>
-                <span className="font-medium">Centers</span>
-              </div>
-              <div className="h-px bg-border my-1" />
-              <div
-                className="flex items-center gap-2 p-2 text-sm rounded-sm cursor-pointer hover:bg-accent hover:text-accent-foreground"
-                onClick={handleViewCenter}
-              >
-                <div className="flex size-6 items-center justify-center rounded-md border">
-                  <Info className="size-4" />
-                </div>
-                <span className="font-medium">Info Center</span>
+                <span className="font-bold">Centers</span>
               </div>
               <div
                 className="flex items-center gap-2 p-2 text-sm rounded-sm cursor-pointer hover:bg-accent hover:text-accent-foreground"
                 onClick={handleAddCenter}
               >
-                <div className="flex size-6 items-center justify-center rounded-md border">
+                <div className="flex size-6 items-center justify-center rounded-2xl border ">
                   <Plus className="size-4" />
                 </div>
-                <span className="font-medium">Add center</span>
+                <span className="font-bold">Add center</span>
               </div>
+              <div className="h-px bg-border my-1" />
+              {user?.role === "admin" ? (
+                <div
+                  className="flex items-center gap-2 p-2 text-sm rounded-sm cursor-pointer hover:bg-accent hover:text-accent-foreground"
+                  onClick={handleViewCenter}
+                >
+                  <div className="flex size-6 items-center justify-center rounded-md">
+                    <Info className="size-4" />
+                  </div>
+                  <span className="font-bold">Info Center</span>
+                </div>
+              ) : (
+                <ActionDialog
+                  title="Leave Center?"
+                  description="Are you sure you want to leave this center? This action cannot be undone."
+                  onConfirm={handleLeaveCenter}
+                  confirmLabel="Leave Center"
+                >
+                  {/* Le pasamos un botón normal como activador (children) */}
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start p-2 text-sm font-bold text-destructive hover:bg-red-500 hover:text-white"
+                  >
+                    <Trash2 className="size-4" />
+                    Leave Center
+                  </Button>
+                </ActionDialog>
+              )}
             </div>
           )}
         </div>

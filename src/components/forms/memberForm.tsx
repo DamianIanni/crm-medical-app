@@ -13,7 +13,6 @@ import { useCreateMember, useUpdateTeamMember } from "@/hooks/team/useTeam";
 import { Form } from "@/components/ui/form";
 import { DataUserFilter } from "@/lib/schemas/memberSchema";
 import { TextField } from "./fields/textField";
-import { OverlayLoader } from "../loaders/loader";
 import { ROUTES } from "@/constants/routes";
 
 const selectOptionList = [
@@ -23,14 +22,15 @@ const selectOptionList = [
 
 type MemberFormProps = {
   mode?: "create" | "edit";
-  data?: Partial<DataUserFilter>;
+  data?: DataUserFilter;
 };
 
 export function MemberForm(props: MemberFormProps): React.ReactElement {
   const { mode, data } = props;
   const router = useRouter();
   const createMember = useCreateMember();
-  const updatePatient = useUpdateTeamMember();
+  const updateMember = useUpdateTeamMember();
+  const isPending = createMember.isPending || updateMember.isPending;
   const form = useForm<MemberFormValues>({
     resolver: zodResolver(memberSchema),
     defaultValues: {
@@ -39,19 +39,35 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
     },
   });
 
-  const isSubmitting = form.formState.isSubmitting;
+  const sameRole = form.watch("role") === data?.role;
 
-  async function onSubmit(values: MemberFormValues) {
-    if (mode === "edit" && data?.user_id) {
-      await updatePatient.mutateAsync({
-        userId: data.user_id,
+  async function editing(values: MemberFormValues) {
+    try {
+      await updateMember.mutateAsync({
+        userId: data!.user_id!,
         updated: { role: values.role },
       });
-    } else if (mode === "create") {
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function creating(values: MemberFormValues) {
+    try {
       await createMember.mutateAsync({
         email: values.email,
         role: values.role,
       });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function onSubmit(values: MemberFormValues) {
+    if (mode === "edit" && data?.user_id) {
+      await editing(values);
+    } else if (mode === "create") {
+      await creating(values);
     }
     router.replace(ROUTES.team);
   }
@@ -83,6 +99,7 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
                 name="email"
                 label="Email"
                 type="email"
+                disabled={isPending}
               />
             )}
 
@@ -92,18 +109,18 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
                 name="role"
                 label="Role"
                 options={selectOptionList}
+                disabled={isPending}
               />
             </div>
           </div>
 
           <div className="flex justify-end">
-            <Button type="submit">
+            <Button type="submit" disabled={isPending || sameRole}>
               {mode === "edit" ? "Save changes" : "Invite"}
             </Button>
           </div>
         </form>
       </Form>
-      {isSubmitting && <OverlayLoader />}
     </div>
   );
 }

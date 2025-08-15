@@ -31,7 +31,6 @@ export async function login(data: LoginBody) {
 
 export async function getCurrentUser() {
   return request({
-    // update route later, the user shoeld be authenticated to logout
     url: "/account/me",
     method: "GET",
   });
@@ -40,6 +39,20 @@ export async function getCurrentUser() {
 export async function userLogout() {
   return request({
     url: "/auth/logout",
+    method: "POST",
+  });
+}
+
+export async function acceptInvitation(center_id: string) {
+  return request({
+    url: `/account/accept/${center_id}`,
+    method: "POST",
+  });
+}
+
+export async function rejectInvitation(center_id: string) {
+  return request({
+    url: `/account/reject/${center_id}`,
     method: "POST",
   });
 }
