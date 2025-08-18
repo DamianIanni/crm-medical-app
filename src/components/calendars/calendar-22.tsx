@@ -34,7 +34,7 @@ export default function Calendar22(props: Calendar22Props) {
   return (
     <FormField
       control={control}
-      name="dob"
+      name="date_of_birth"
       render={({ field }) => {
         const date = field.value ? new Date(field.value) : undefined;
 
@@ -47,7 +47,7 @@ export default function Calendar22(props: Calendar22Props) {
                   <Button
                     disabled={disabled}
                     variant="outline"
-                    id="dob"
+                    id="date_of_birth"
                     className="w-full justify-between font-normal"
                   >
                     {date ? format(date, "PPP") : <span>Select a date</span>}

@@ -1,30 +1,30 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { useGetSinglePatient } from "@/hooks/patient/usePatient";
-import { EntityInfoSkeleton } from "@/components/skeletons/entityInfoSkeleton";
+// import { useParams } from "next/navigation";
+// import { useGetSinglePatient } from "@/hooks/patient/usePatient";
+// import { EntityInfoSkeleton } from "@/components/skeletons/entityInfoSkeleton";
 import DashboardPageWrapper from "@/components/wrappers/dashboardPageWrapper";
 import EntityInfo from "@/components/feedback/entityInfo";
-import { Button } from "@/components/ui/button";
-import { AlertMessage } from "@/components/feedback/AlertMessage";
-import { useDeleteState } from "@/components/providers/ContextProvider";
+// import { Button } from "@/components/ui/button";
+// import { AlertMessage } from "@/components/feedback/AlertMessage";
+// import { useDeleteState } from "@/components/providers/ContextProvider";
+import { getEntitySessionStorage } from "@/lib/utils";
 
 export default function PatientInfoPage() {
-  const params = useParams();
-  const id = Number(params.id);
-  const { isDeleting } = useDeleteState();
+  // const { isDeleting } = useDeleteState();
+  const patient = getEntitySessionStorage("dataEntitypatients");
 
-  const {
-    data: patient,
-    isPending,
-    isError,
-    isFetching,
-    refetch,
-  } = useGetSinglePatient(id);
+  // const {
+  //   data: patient,
+  //   isPending,
+  //   isError,
+  //   isFetching,
+  //   refetch,
+  // } = useGetSinglePatient(id);
 
   return (
     <DashboardPageWrapper>
-      {(isPending || isFetching || isDeleting) && <EntityInfoSkeleton />}
+      {/* {(isPending || isFetching || isDeleting) && <EntityInfoSkeleton />}
 
       {isError && (
         <div className="w-full max-w-2xl flex flex-col items-center justify-center mx-auto mt-10">
@@ -39,8 +39,8 @@ export default function PatientInfoPage() {
       )}
 
       {!isPending && !isDeleting && !isFetching && !isError && patient && (
-        <EntityInfo data={patient} />
-      )}
+      )} */}
+      <EntityInfo data={patient} type="patient" />
     </DashboardPageWrapper>
   );
 }

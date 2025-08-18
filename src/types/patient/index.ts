@@ -1,6 +1,7 @@
-export type Session = {
-  date: string;
+export type Notes = {
+  date: string; // ISO date;
   notes: string;
+  id: string;
 };
 
 export type Patient = {
@@ -9,8 +10,7 @@ export type Patient = {
   last_name: string;
   email: string;
   phone: string;
-  dob: string; // ISO date
-  treatment: string;
-  sessionsCompleted: number;
-  sessions: Session[];
+  date_of_birth: string; // ISO date
+  short_description: string;
+  notes: Notes[];
 };

@@ -9,7 +9,7 @@ import { TableCellFallback } from "@/components/tables/cellFallback";
 export const adminPatientsColumns: ColumnDef<Patient>[] = [
   {
     header: "Full name",
-    accessorFn: (row) => `${row.firstName} ${row.lastName}`,
+    accessorFn: (row) => `${row.first_name} ${row.last_name}`,
     cell: ({ getValue }) => {
       const treatment = getValue() as string | undefined | null;
 
@@ -22,17 +22,17 @@ export const adminPatientsColumns: ColumnDef<Patient>[] = [
     header: "Email",
   },
   {
-    accessorKey: "phoneNumber",
+    accessorKey: "phone",
     header: "Phone",
   },
   {
-    accessorKey: "treatment",
-    header: "Treatment",
+    accessorKey: "short_description",
+    header: "Diagnosis",
     cell: ({ getValue }) => {
       const treatment = getValue() as string | undefined | null;
 
       return (
-        <TableCellFallback value={treatment} fallback="No treatment info" />
+        <TableCellFallback value={treatment} fallback="No description info" />
       );
     },
   },

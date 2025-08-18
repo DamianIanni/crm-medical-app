@@ -1,11 +1,3 @@
-/**
- * Patients Dashboard Page
- *
- * This page displays a comprehensive list of patients in a data table format.
- * The table columns and available actions are dynamically determined based on
- * the user's role (admin, manager, or employee) to ensure appropriate access
- * control and functionality.
- */
 "use client";
 
 import DashboardPageWrapper from "@/components/wrappers/dashboardPageWrapper";
@@ -23,13 +15,19 @@ import { useDeleteState } from "@/components/providers/ContextProvider";
 export default function PatientsPage() {
   const { user } = useAuth();
   const { isDeleting } = useDeleteState();
+
+  // Retrieve selected center ID from sessionStorage
+  const center_id = sessionStorage.getItem("selectedCenterId");
+
   const {
     data: patients,
     isPending,
     isError,
     refetch,
     isFetching,
-  } = useGetPatients();
+  } = useGetPatients(center_id!);
+
+  console.log("PACIENTES", patients);
 
   /**
    * Determines which table columns to display based on user role

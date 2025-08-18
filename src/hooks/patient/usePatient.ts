@@ -10,26 +10,33 @@
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { ToastFeedback } from "@/components/feedback/toastFeedback";
 import { Patient } from "@/types/patient";
-import { createPatient, updatePatient, deletePatient, getAllPatients, getPatientById, createPatientNote, updatePatientNote, PatientPayload } from "@/services/api/patient";
+import {
+  createPatient,
+  updatePatient,
+  deletePatient,
+  getAllPatients,
+  getPatientById,
+  PatientPayload,
+} from "@/services/api/patient";
+import { deletePatientNote } from "@/services/api/notes";
 import { useInvalidateQuery } from "../useInvalidateQuery";
 import { useDeleteState } from "@/components/providers/ContextProvider";
+import { createPatientNote } from "@/services/api/notes";
 
-/**
- * useCreatePatient hook.
- * A custom hook that provides a mutation for creating a new patient record.
- * It shows a success toast on successful creation and an error toast if the creation fails.
- * @returns {object} A mutation object from `@tanstack/react-query`.
- */
-export function useCreatePatient(centerId: string | number) {
+export type NewNotePayload = {
+  note: string;
+};
+
+export function useCreatePatient() {
   const invalidate = useInvalidateQuery(["allPatient"]);
   return useMutation({
-    mutationFn: (data: PatientPayload) => createPatient(centerId, data),
-    onSuccess: (data: Partial<Patient>) => {
+    mutationFn: (data: PatientPayload) => createPatient(data),
+    onSuccess: (data: Omit<Patient, "id" & "notes">) => {
       invalidate();
       ToastFeedback({
         type: "success",
         title: "Patient created",
-        description: `Patient ${data.firstName} added successfully.`,
+        description: `Patient ${data.first_name} added successfully.`,
       });
     },
     onError: () => {
@@ -42,24 +49,24 @@ export function useCreatePatient(centerId: string | number) {
   });
 }
 
-/**
- * useUpdatePatient hook.
- * A custom hook that provides a mutation for updating an existing patient's information.
- * It displays a success toast upon a successful update and an error toast if the update fails.
- * @returns {object} A mutation object from `@tanstack/react-query`.
- */
-export function useUpdatePatient(centerId: string | number) {
+export function useUpdatePatient() {
   const invalidate = useInvalidateQuery(["patient"]);
   const invalidateAll = useInvalidateQuery(["allPatient"]);
   return useMutation({
-    mutationFn: ({ patientId, updated }: { patientId: string | number; updated: Partial<PatientPayload> }) => updatePatient(centerId, patientId, updated),
+    mutationFn: ({
+      patientId,
+      updated,
+    }: {
+      patientId: string;
+      updated: Partial<PatientPayload>;
+    }) => updatePatient(patientId, updated),
     onSuccess: (data: Partial<Patient>) => {
       invalidate();
       invalidateAll();
       ToastFeedback({
         type: "success",
         title: "Patient updated",
-        description: `Patient ${data.firstName} updated successfully.`,
+        description: `Patient ${data.first_name} updated successfully.`,
       });
     },
     onError: () => {
@@ -72,17 +79,11 @@ export function useUpdatePatient(centerId: string | number) {
   });
 }
 
-/**
- * useDeletePatient hook.
- * A custom hook that provides a mutation for deleting a patient record.
- * It shows an info toast on successful deletion and an error toast if the deletion fails.
- * @returns {object} A mutation object from `@tanstack/react-query`.
- */
-export function useDeletePatient(centerId: string | number) {
+export function useDeletePatient() {
   const invalidate = useInvalidateQuery(["allPatient"]);
   const { setIsDeleting } = useDeleteState();
   return useMutation({
-    mutationFn: (patientId: string | number) => deletePatient(centerId, patientId),
+    mutationFn: (patientId: string) => deletePatient(patientId),
     onSuccess: () => {
       setIsDeleting(false);
       invalidate();
@@ -103,22 +104,71 @@ export function useDeletePatient(centerId: string | number) {
   });
 }
 
-export function useGetSinglePatient(centerId: string | number, userId: string | number): UseQueryResult<Patient, Error> {
+export function useGetSinglePatient(
+  userId: string
+): UseQueryResult<Patient, Error> {
   return useQuery<Patient, Error>({
-    queryKey: ["patient", centerId, userId],
-    queryFn: () => getPatientById(centerId, userId),
-    enabled: !!centerId && !!userId,
+    queryKey: ["patient", userId],
+    queryFn: () => getPatientById(userId),
+    enabled: !!userId,
     refetchOnMount: true,
     staleTime: 30_000,
     refetchOnWindowFocus: false,
   });
 }
 
-export function useGetPatients(centerId: string | number): UseQueryResult<Patient[], Error> {
+export function useGetPatients(
+  centerId?: string
+): UseQueryResult<Patient[], Error> {
   return useQuery<Patient[], Error>({
     queryKey: ["allPatient", centerId],
-    queryFn: () => getAllPatients(centerId),
+    queryFn: () => getAllPatients(),
+    enabled: !!centerId,
     staleTime: 60_000,
     refetchOnWindowFocus: false,
+  });
+}
+
+export function useCreateNote(patientId: string) {
+  const invalidate = useInvalidateQuery(["allPatient", patientId]);
+  return useMutation<void, Error, NewNotePayload>({
+    mutationFn: (data: NewNotePayload) => createPatientNote(patientId, data),
+    onSuccess: () => {
+      invalidate();
+      ToastFeedback({
+        type: "success",
+        title: "Note created",
+        description: `Note added successfully.`,
+      });
+    },
+    onError: () => {
+      ToastFeedback({
+        type: "error",
+        title: "Failed to create note",
+        description: "Please try again later.",
+      });
+    },
+  });
+}
+
+export function useDeleteNote(patientId: string) {
+  const invalidate = useInvalidateQuery(["allPatient", patientId]);
+  return useMutation<string, unknown, string>({
+    mutationFn: (noteId: string) => deletePatientNote(patientId, noteId),
+    onSuccess: () => {
+      invalidate();
+      ToastFeedback({
+        type: "success",
+        title: "Note deleted",
+        description: `Note deleted successfully.`,
+      });
+    },
+    onError: () => {
+      ToastFeedback({
+        type: "error",
+        title: "Failed to delete note",
+        description: "Please try again later.",
+      });
+    },
   });
 }

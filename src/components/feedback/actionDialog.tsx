@@ -132,7 +132,6 @@ export function ActionDialog(props: ActionDialogProps) {
   const [isPending, setIsPending] = useState(false);
 
   const handleConfirm = async () => {
-    alert("¡El botón de confirmar fue presionado!");
     setIsPending(true);
     try {
       await onConfirm(); // 3. Esperamos a que la promesa de onConfirm se resuelva
@@ -155,14 +154,14 @@ export function ActionDialog(props: ActionDialogProps) {
           children
         ) : (
           <Button
-            // variant="ghost"
-            className="hover:bg-red-500 hover:text-white cursor-pointer flex items-center justify-start"
+            variant="ghost"
+            className="hover:bg-destructive hover:text-white cursor-pointer flex items-center justify-start"
           >
             <Trash2 className="size-4" />
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] font-bold">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}

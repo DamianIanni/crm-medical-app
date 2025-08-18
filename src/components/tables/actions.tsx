@@ -82,7 +82,7 @@ export default function Actions({
       })(),
       displayName: (data as Center).name ?? "Center",
       onDelete: () => {
-        deleteCenter.mutate(String(entityId));
+        deleteCenter.mutate(entityId);
         sessionStorage.removeItem("selectedCenterName");
         sessionStorage.removeItem("selectedCenterId");
         router.replace("/centers");
@@ -117,7 +117,7 @@ export default function Actions({
   };
 
   return (
-    <div className="flex justify-end gap-2 min-w-[100px]">
+    <div className="flex justify-end gap-1 min-w-[100px]">
       {/* Details */}
       {!inInfo && detailUrl && (
         <GeneralTooltip message="View details">

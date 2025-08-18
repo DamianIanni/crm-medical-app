@@ -23,17 +23,9 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 type PatientFormProps = {
   mode?: "create" | "edit";
-  data?: Partial<Patient>;
+  data?: Patient;
 };
 
-/**
- * PatientForm component.
- * A versatile form component used for both adding new patient records and editing existing ones.
- * It dynamically adjusts its behavior and display based on the 'mode' prop.
- *
- * @param {PatientFormProps} props - The props for the component.
- * @returns {React.ReactElement} The rendered form component.
- */
 export function PatientForm(props: PatientFormProps): React.ReactElement {
   const { mode, data } = props;
   const createPatient = useCreatePatient();
@@ -42,42 +34,26 @@ export function PatientForm(props: PatientFormProps): React.ReactElement {
   const router = useRouter();
   const isMobile = useIsMobile();
 
-  /**
-   * Initializes the form with React Hook Form.
-   * Configures form validation using Zod and sets default values based on the provided 'data' prop (for edit mode).
-   */
   const form = useForm<PatientFormValues>({
     resolver: zodResolver(patientSchema), // Integrates Zod for schema validation.
     defaultValues: {
-      firstName: data?.firstName || "",
-      lastName: data?.lastName || "",
-      email: data?.email || "",
-      phoneNumber: data?.phoneNumber || "",
-      treatment: data?.treatment || "",
-      dob: data?.dob || "",
+      first_name: data?.first_name ?? "",
+      last_name: data?.last_name ?? "",
+      email: data?.email ?? "",
+      phone: data?.phone ?? "",
+      short_description: data?.short_description ?? "",
+      date_of_birth: data?.date_of_birth ?? "",
     },
   });
 
-  // const isSubmitting = form.formState.isSubmitting; // Boolean indicating if the form is currently being submitted.
-
-  /**
-   * Handles the form submission logic.
-   * Depending on the 'mode' prop, it either calls the createPatient or updatePatient mutation.
-   * After a successful operation, it redirects the user to the patients dashboard.
-   * @param {PatientFormValues} values - The form values submitted by the user.
-   */
   async function onSubmit(values: PatientFormValues) {
     if (mode === "edit" && data?.id) {
       await updatePatient.mutateAsync({
-        id: data.id,
+        patientId: data.id,
         updated: { ...values },
       });
     } else {
-      await createPatient.mutateAsync({
-        ...values,
-        sessions: [], // Initialize sessions as an empty array for new patients.
-        sessionsCompleted: 0, // Initialize sessions completed count to zero for new patients.
-      });
+      await createPatient.mutateAsync(values);
     }
     router.replace("/dashboard/patients"); // Redirects to the patients list page.
   }
@@ -109,7 +85,7 @@ export function PatientForm(props: PatientFormProps): React.ReactElement {
                 {/* Text field for the patient's first name */}
                 <TextField
                   control={form.control}
-                  name="firstName"
+                  name="first_name"
                   label="First name"
                   disabled={isPending}
                 />
@@ -118,7 +94,7 @@ export function PatientForm(props: PatientFormProps): React.ReactElement {
                 {/* Text field for the patient's last name */}
                 <TextField
                   control={form.control}
-                  name="lastName"
+                  name="last_name"
                   label="Last name"
                   disabled={isPending}
                 />
@@ -140,7 +116,7 @@ export function PatientForm(props: PatientFormProps): React.ReactElement {
                 {/* Text field for the patient's phone number */}
                 <TextField
                   control={form.control}
-                  name="phoneNumber"
+                  name="phone"
                   label="Phone number"
                   disabled={isPending}
                 />
@@ -151,9 +127,10 @@ export function PatientForm(props: PatientFormProps): React.ReactElement {
               {/* Text field for the patient's treatment */}
               <TextField
                 control={form.control}
-                name="treatment"
-                label="Treatment"
+                name="short_description"
+                label="Diagnose"
                 disabled={isPending}
+                // textArea
               />
             </div>
 

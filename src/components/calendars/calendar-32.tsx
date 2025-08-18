@@ -36,7 +36,7 @@ export default function Calendar32({ control, disabled }: Calendar32Props) {
   return (
     <FormField
       control={control}
-      name="dob"
+      name="date_of_birth"
       render={({ field }) => {
         const date = field.value ? new Date(field.value) : undefined;
 
@@ -51,7 +51,7 @@ export default function Calendar32({ control, disabled }: Calendar32Props) {
                 <FormControl>
                   <Button
                     variant="outline"
-                    id="dob"
+                    id="date_of_birth"
                     className="w-48 justify-between font-normal"
                     disabled={disabled}
                   >

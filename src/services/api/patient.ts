@@ -1,62 +1,51 @@
 // src/services/api/patient.ts
-import { request } from './http';
+import { request } from "./http";
 
 export interface PatientPayload {
-  firstName: string;
-  lastName: string;
-  [key: string]: any;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  short_description: string;
+  date_of_birth: string;
 }
 
-export async function createPatient(centerId: string | number, data: PatientPayload) {
+export async function createPatient(data: PatientPayload) {
   return request({
-    url: `/${centerId}/patients/`,
-    method: 'POST',
+    url: `/center/patients/`,
+    method: "POST",
     data,
   });
 }
 
-export async function getAllPatients(centerId: string | number) {
+export async function getAllPatients() {
   return request({
-    url: `/${centerId}/patients/all`,
-    method: 'GET',
+    url: `/center/patients/all`,
+    method: "GET",
   });
 }
 
-export async function getPatientById(centerId: string | number, userId: string | number) {
+export async function getPatientById(userId: string) {
   return request({
-    url: `/${centerId}/patients/${userId}`,
-    method: 'GET',
+    url: `/center/patients/${userId}`,
+    method: "GET",
   });
 }
 
-export async function updatePatient(centerId: string | number, patientId: string | number, data: Partial<PatientPayload>) {
+export async function updatePatient(
+  patientId: string,
+  data: Partial<PatientPayload>
+) {
   return request({
-    url: `/${centerId}/patients/${patientId}`,
-    method: 'PATCH',
+    url: `/center/patients/${patientId}`,
+    method: "PATCH",
     data,
   });
 }
 
-export async function deletePatient(centerId: string | number, patientId: string | number) {
+export async function deletePatient(patientId: string) {
   return request({
-    url: `/${centerId}/patients/${patientId}`,
-    method: 'DELETE',
-  });
-}
-
-// Notes
-export async function createPatientNote(centerId: string | number, patientId: string | number, data: any) {
-  return request({
-    url: `/${centerId}/patients/${patientId}/notes/`,
-    method: 'PUT',
-    data,
-  });
-}
-
-export async function updatePatientNote(centerId: string | number, patientId: string | number, noteId: string | number, data: any) {
-  return request({
-    url: `/${centerId}/patients/${patientId}/notes/${noteId}`,
-    method: 'PATCH',
-    data,
+    url: `/center/patients/${patientId}`,
+    method: "DELETE",
   });
 }
