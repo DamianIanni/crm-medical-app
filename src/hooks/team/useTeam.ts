@@ -9,6 +9,7 @@
 
 import { useMutation, UseQueryResult, useQuery } from "@tanstack/react-query";
 import { ToastFeedback } from "@/components/feedback/toastFeedback";
+import { useTranslations } from "next-intl";
 import { User } from "@/types/user";
 import {
   inviteUser,
@@ -37,6 +38,7 @@ const getDisplayName = () => {
  */
 
 export function useCreateMember() {
+  const t = useTranslations("Feedback.Team");
   const invalidate = useInvalidateQuery(["allUsers"]);
   return useMutation({
     mutationFn: (data: { email: string; role: "manager" | "employee" }) =>
@@ -45,15 +47,15 @@ export function useCreateMember() {
       invalidate();
       ToastFeedback({
         type: "success",
-        title: "Team member invited",
-        description: `Team member invited successfully.`,
+        title: t("inviteSuccess"),
+        description: t("inviteSuccess"),
       });
     },
     onError: () => {
       ToastFeedback({
         type: "error",
-        title: "Failed to invite team member",
-        description: "Please try again later.",
+        title: t("inviteError"),
+        description: t("inviteError"),
       });
     },
   });
@@ -66,6 +68,7 @@ export function useCreateMember() {
  * @returns {object} A mutation object from `@tanstack/react-query`.
  */
 export function useUpdateTeamMember() {
+  const t = useTranslations("Feedback.Team");
   const invalidate = useInvalidateQuery(["allUsers"]);
   const invalidateAll = useInvalidateQuery(["allUsers"]);
   return useMutation({
@@ -81,15 +84,15 @@ export function useUpdateTeamMember() {
       invalidateAll();
       ToastFeedback({
         type: "success",
-        title: "Team member updated",
-        description: `${getDisplayName()} updated successfully.`,
+        title: t("updateSuccess", { name: getDisplayName() }),
+        description: t("updateSuccess", { name: getDisplayName() }),
       });
     },
     onError: () => {
       ToastFeedback({
         type: "error",
-        title: "Failed to update team member",
-        description: "Please try again later.",
+        title: t("updateError"),
+        description: t("updateError"),
       });
     },
   });
@@ -102,26 +105,26 @@ export function useUpdateTeamMember() {
  * @returns {object} A mutation object from `@tanstack/react-query`.
  */
 export function useDeleteTeamMember() {
-  const invalidateAll = useInvalidateQuery(["allUsers"]);
+  const t = useTranslations("Feedback.Team");
+  const invalidate = useInvalidateQuery(["allUsers"]);
   const { setIsDeleting } = useDeleteState();
-
   return useMutation({
     mutationFn: (userId: string) => deleteUser(userId),
     onSuccess: () => {
       setIsDeleting(false);
-      invalidateAll();
+      invalidate();
       ToastFeedback({
         type: "info",
-        title: "Deleted",
-        description: `Team member deleted successfully.`,
+        title: t("deleteSuccess"),
+        description: t("deleteSuccess"),
       });
     },
     onError: () => {
       setIsDeleting(false);
       ToastFeedback({
         type: "error",
-        title: "Failed to delete team member",
-        description: "Please try again later.",
+        title: t("deleteError"),
+        description: t("deleteError"),
       });
     },
   });

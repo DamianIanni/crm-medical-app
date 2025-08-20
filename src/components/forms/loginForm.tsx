@@ -9,17 +9,18 @@
 
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TextField } from "./fields/textField";
 import { PasswordField } from "./fields/passwordField";
+import { useTranslations } from "next-intl";
 
 import { useAuth } from "../providers/AuthProvider";
 
-import { loginSchema, LoginSchemaType } from "@/lib/schemas/authSchema";
+import { getLoginSchema, LoginFormValues } from "@/lib/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -38,9 +39,12 @@ export function LoginForm({
   // Get authentication functions and state from auth context
   const { login, isLoginPending, isErrorLogin } = useAuth();
   const router = useRouter();
+  const t = useTranslations("LoginForm");
+  const v = useTranslations("ValidationErrors");
 
   // Initialize form with validation schema and default values
-  const form = useForm<LoginSchemaType>({
+  const loginSchema = useMemo(() => getLoginSchema(v), [v]);
+  const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -50,9 +54,9 @@ export function LoginForm({
 
   // Error message configuration for invalid credentials
   const invalidCredentials = {
-    title: "Unable to login",
-    description: "Please check your credentials and try again.",
-    data: ["Check your email", "Check your password"],
+    title: t("invalidCredentialsTitle"),
+    description: t("invalidCredentialsDescription"),
+    data: t.raw("invalidCredentialsData") as string[],
   };
 
   /**
@@ -69,7 +73,7 @@ export function LoginForm({
    *
    * @param values - Form values containing email and password
    */
-  async function onSubmit(values: LoginSchemaType) {
+  async function onSubmit(values: LoginFormValues) {
     const res = await login(values);
     if (res) {
       navigateToSelectCenters();
@@ -82,7 +86,7 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome back</CardTitle>
+          <CardTitle className="text-xl">{t("title")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">
@@ -99,7 +103,7 @@ export function LoginForm({
                     fill="currentColor"
                   />
                 </svg>
-                Login with Apple
+                {t("loginWithApple")}
               </Button>
               <Button
                 variant="outline"
@@ -112,12 +116,12 @@ export function LoginForm({
                     fill="currentColor"
                   />
                 </svg>
-                Login with Google
+                {t("loginWithGoogle")}
               </Button>
 
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
-                  Or continue with
+                  {t("orContinueWith")}
                 </span>
               </div>
             </div>
@@ -132,13 +136,13 @@ export function LoginForm({
                   control={form.control}
                   // type="email"
                   name="email"
-                  label="Email"
+                  label={t("emailLabel")}
                   disabled={isLoginPending}
                 />
                 <PasswordField
                   control={form.control}
                   name="password"
-                  label="Password"
+                  label={t("passwordLabel")}
                   disabled={isLoginPending}
                 />
                 {/* Submit button with loading state */}
@@ -146,12 +150,12 @@ export function LoginForm({
                   <ButtonLoading text={"Loading"} />
                 ) : (
                   <Button type="submit" className="w-full">
-                    Login
+                    {t("loginButton")}
                   </Button>
                 )}
                 {/* Register link */}
                 <div className="text-center text-sm">
-                  Don&apos;t have an account?{" "}
+                  {t("signupPrompt")}{" "}
                   <Link
                     href="/register"
                     className={cn(
@@ -160,7 +164,7 @@ export function LoginForm({
                         "pointer-events-none text-muted-foreground opacity-50"
                     )}
                   >
-                    Sign up
+                    {t("signupLink")}
                   </Link>
                 </div>
               </form>

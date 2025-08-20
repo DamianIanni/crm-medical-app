@@ -102,89 +102,94 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Trash2 } from "lucide-react";
-import React, { useState } from "react";
+import { useTranslations } from "next-intl";
+import React from "react";
 
-// Hacemos que onConfirm pueda ser una promesa para manejar el estado de carga
-type ActionDialogProps = {
+interface ActionDialogProps {
   title: string;
   description?: string;
-  onConfirm: () => Promise<void> | void; // Puede ser síncrona o asíncrona
+  /**
+   * The function to call when the confirm button is clicked
+   * @internal This is a client-side only callback
+   */
+  onConfirm: () => void | Promise<void>;
+  triggerLabel?: string;
   confirmLabel?: string;
   cancelLabel?: string;
-  children?: React.ReactNode; // El activador siempre será el children
-  confirmButtonVariant?: React.ComponentProps<typeof Button>["variant"];
-};
+  children?: React.ReactNode;
+  triggerProps?: React.ComponentProps<typeof Button>;
+  variant?: "default" | "delete" | "info" | "warning" | "success" | "error";
+  isPending?: boolean;
+}
 
-export function ActionDialog(props: ActionDialogProps) {
-  const {
-    title,
-    description,
-    onConfirm,
-    confirmLabel = "Confirm",
-    cancelLabel = "Cancel",
-    children,
-    confirmButtonVariant = "destructive",
-  } = props;
+export function ActionDialog({
+  title,
+  description,
+  onConfirm,
+  confirmLabel,
+  cancelLabel,
+  children,
+  triggerProps,
+  variant = "default",
+  isPending = false,
+}: ActionDialogProps) {
+  const t = useTranslations("ActionDialog");
+  const [isOpen, setIsOpen] = React.useState(false);
 
-  // 1. Estado para controlar si el diálogo está abierto
-  const [isOpen, setIsOpen] = useState(false);
-  // 2. Estado para manejar la carga de la acción asíncrona
-  const [isPending, setIsPending] = useState(false);
+  const buttonVariant =
+    variant === "delete" || variant === "error" ? "destructive" : "default";
 
-  const handleConfirm = async () => {
-    setIsPending(true);
-    try {
-      await onConfirm(); // 3. Esperamos a que la promesa de onConfirm se resuelva
-      setIsOpen(false); // 4. Si tiene éxito, cerramos el diálogo
-    } catch (error) {
-      // Si onConfirm lanza un error, el diálogo permanece abierto
-      // para que el usuario pueda ver el estado de error (manejado por el Toast)
-      console.error("ActionDialog confirmation failed:", error);
-    } finally {
-      setIsPending(false); // 5. Dejamos de cargar, ya sea con éxito o error
-    }
+  const getDefaultLabel = () => {
+    if (variant === "delete") return t("default.delete");
+    return t("default.confirm");
   };
 
   return (
-    // Controlamos el estado de apertura manualmente
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        {/* El activador es simplemente el 'children' que se le pasa */}
-        {children ? (
-          children
-        ) : (
+        {children || (
           <Button
-            variant="ghost"
-            className="hover:bg-destructive hover:text-white cursor-pointer flex items-center justify-start"
+            size="default"
+            variant={triggerProps?.variant || "ghost"}
+            className="hover:bg-red-500 hover:text-white cursor-pointer flex items-center justify-start"
+            {...triggerProps}
           >
-            <Trash2 className="size-4" />
+            <Trash2 className="h-4 w-4" />
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] font-bold">
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          {description && <DialogDescription>{description}</DialogDescription>}
+          <DialogTitle className="text-sm font-semibold text-gray-500">
+            {title || t(`default.${variant}Title`, { defaultValue: t("default.confirmTitle") })}
+          </DialogTitle>
+          {description && (
+            <DialogDescription className="text-sm font-semibold">
+              {description}
+            </DialogDescription>
+          )}
         </DialogHeader>
 
         <DialogFooter>
-          {/* El botón de cancelar SÍ usa DialogClose para un cierre simple */}
           <Button
             type="button"
             variant="outline"
+            className="cursor-pointer"
             onClick={() => setIsOpen(false)}
             disabled={isPending}
           >
-            {cancelLabel}
+            {cancelLabel || t("default.cancel")}
           </Button>
           <Button
             type="button"
-            variant={confirmButtonVariant}
-            onClick={handleConfirm}
+            variant={buttonVariant}
+            className="cursor-pointer"
+            onClick={onConfirm}
             disabled={isPending}
-            // Este botón NO está envuelto en DialogClose
           >
-            {isPending ? "Confirming..." : confirmLabel}
+            {isPending
+              ? t(`default.${variant === "delete" ? "deleting" : "confirming"}`)
+              : confirmLabel || getDefaultLabel()}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,9 +1,15 @@
-import { z } from "zod";
+import * as z from "zod";
 
-export const centerSchema = z.object({
-  name: z.string().min(1, "Center name is required"),
-  phone: z.string().min(1, "Phone number is required"),
-  address: z.string().min(1, "Address is required"),
-});
+const phoneRegex =
+  /^(\+?(45|44))?\s?\(?0?\d{2,4}\)?[\s.-]?\d{3,4}[\s.-]?\d{3,4}$/;
 
-export type CenterSchemaType = z.infer<typeof centerSchema>;
+export const getCenterSchema = (t: (key: string) => string) =>
+  z.object({
+    name: z.string().min(1, t("centerNameRequired")),
+    phone: z.string().min(1, t("centerPhoneRequired")).regex(phoneRegex, {
+      message: t("centerPhoneInvalid"),
+    }),
+    address: z.string().min(1, t("centerAddressRequired")),
+  });
+
+export type CenterFormValues = z.infer<ReturnType<typeof getCenterSchema>>;

@@ -15,6 +15,8 @@ import { ReactQueryClientProvider } from "@/components/providers/ReactQueryClien
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { ContextProvider } from "@/components/providers/ContextProvider";
+import { getLocale, getMessages } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,26 +34,35 @@ export const metadata: Metadata = {
     "A comprehensive healthcare management platform for patient care and team collaboration",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const darkMode = true;
+  const locale = await getLocale();
+  console.log("LOCALE", locale);
+  const messages = await getMessages();
 
   return (
-    <html lang="en" suppressHydrationWarning className={darkMode ? "dark" : ""}>
+    <html
+      lang={locale}
+      suppressHydrationWarning
+      className={darkMode ? "dark" : ""}
+    >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ReactQueryClientProvider>
-          <AuthProvider>
-            <ContextProvider>
-              <ThemeProvider>{children}</ThemeProvider>
-              <Toaster position="bottom-center" richColors expand={true} />
-            </ContextProvider>
-          </AuthProvider>
-        </ReactQueryClientProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <ReactQueryClientProvider>
+            <AuthProvider>
+              <ContextProvider>
+                <ThemeProvider>{children}</ThemeProvider>
+                <Toaster position="bottom-center" richColors expand={true} />
+              </ContextProvider>
+            </AuthProvider>
+          </ReactQueryClientProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

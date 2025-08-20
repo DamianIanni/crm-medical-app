@@ -1,0 +1,393 @@
+{
+  "PatientForm": {
+    "editTitle": "Editar paciente",
+    "createTitle": "Añadir nuevo paciente",
+    "editDescription": "Actualiza la información del paciente a continuación.",
+    "createDescription": "Completa el formulario para registrar un nuevo paciente.",
+    "firstNameLabel": "Nombre",
+    "lastNameLabel": "Apellido",
+    "emailLabel": "Correo electrónico",
+    "phoneLabel": "Número de teléfono",
+    "diagnoseLabel": "Diagnóstico",
+    "saveButton": "Guardar cambios",
+    "createButton": "Crear"
+  },
+  "MemberForm": {
+    "editTitle": "Editar miembro del equipo",
+    "createTitle": "Añadir nuevo miembro",
+    "editDescription": "Actualiza la información del miembro a continuación.",
+    "createDescription": "Completa el formulario para invitar a un nuevo miembro.",
+    "emailLabel": "Correo electrónico",
+    "roleLabel": "Rol",
+    "roleManager": "Gerente",
+    "roleEmployee": "Empleado",
+    "saveButton": "Guardar cambios",
+    "inviteButton": "Invitar"
+  },
+  "CenterForm": {
+    "nameLabel": "Nombre del Centro",
+    "namePlaceholder": "Introduce el nombre del centro",
+    "phoneLabel": "Número de Teléfono",
+    "phonePlaceholder": "(555) 123-4567",
+    "addressLabel": "Dirección",
+    "addressPlaceholder": "Calle Principal 123, Ciudad, Estado 12345",
+    "saveButton": "Guardar Cambios",
+    "createButton": "Crear Centro",
+    "savingText": "Guardando..."
+  },
+  "LoginForm": {
+    "title": "Bienvenido de nuevo",
+    "loginWithApple": "Iniciar sesión con Apple",
+    "loginWithGoogle": "Iniciar sesión con Google",
+    "orContinueWith": "O continúa con",
+    "emailLabel": "Correo electrónico",
+    "passwordLabel": "Contraseña",
+    "loginButton": "Iniciar sesión",
+    "signupPrompt": "¿No tienes una cuenta?",
+    "signupLink": "Regístrate",
+    "invalidCredentialsTitle": "No se pudo iniciar sesión",
+    "invalidCredentialsDescription": "Por favor verifica tus credenciales e inténtalo de nuevo.",
+    "invalidCredentialsData": [
+      "Verifica tu correo electrónico",
+      "Verifica tu contraseña"
+    ]
+  },
+  "RegisterForm": {
+    "title": "Crea tu cuenta",
+    "firstNameLabel": "Nombre",
+    "firstNamePlaceholder": "Ingresa tu nombre",
+    "lastNameLabel": "Apellido",
+    "lastNamePlaceholder": "Ingresa tu apellido",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "juan@ejemplo.com",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Crea una contraseña",
+    "confirmPasswordLabel": "Confirmar Contraseña",
+    "confirmPasswordPlaceholder": "Confirma tu contraseña",
+    "createButton": "Crear cuenta",
+    "creatingLoading": "Creando cuenta...",
+    "registrationErrorTitle": "Error de registro",
+    "registrationErrorDescription": "Por favor verifica tu información e inténtalo de nuevo.",
+    "registrationErrorData": [
+      "Verifica el formato de tu correo electrónico",
+      "La contraseña debe tener al menos 6 caracteres",
+      "Las contraseñas deben coincidir"
+    ]
+  },
+  "AccountActions": {
+    "account": "Cuenta",
+    "billing": "Facturación",
+    "notifications": "Notificaciones",
+    "language": "Idioma",
+    "english": "Inglés",
+    "spanish": "Español",
+    "theme": "Tema",
+    "logOut": "Cerrar sesión"
+  },
+  "NavProjects": {
+    "projectsLabel": "Proyectos",
+    "viewProject": "Ver Proyecto",
+    "shareProject": "Compartir Proyecto",
+    "deleteProject": "Eliminar Proyecto",
+    "more": "Más"
+  },
+  "Badges": {
+    "roles": {
+      "admin": "Administrador",
+      "manager": "Gerente",
+      "employee": "Empleado"
+    },
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "pending": "Pendiente",
+      "blocked": "Bloqueado"
+    }
+  },
+  "Calendar": {
+    "dateOfBirth": "Fecha de nacimiento",
+    "selectDate": "Seleccionar fecha",
+    "today": "Hoy",
+    "save": "Guardar",
+    "cancel": "Cancelar"
+  },
+  "NavMain": {
+    "actionsLabel": "Acciones"
+  },
+  "CenterCard": {
+    "invitationAccepted": {
+      "title": "Invitación Aceptada",
+      "description": "Te has unido al centro exitosamente."
+    },
+    "invitationRejected": {
+      "title": "Invitación Rechazada",
+      "description": "Has declinado la invitación."
+    },
+    "invitationPending": {
+      "title": "Invitación",
+      "description": "Por favor, acepta o rechaza la invitación primero."
+    },
+    "error": {
+      "title": "Error",
+      "description": "Ocurrió un error. Por favor, inténtalo de nuevo."
+    },
+    "buttons": {
+      "accept": "Aceptar",
+      "accepting": "Aceptando...",
+      "reject": "Rechazar",
+      "rejecting": "Rechazando..."
+    }
+  },
+  "Feedback": {
+    "Center": {
+      "createSuccess": "Centro creado exitosamente",
+      "createError": "Error al crear el centro. Por favor, inténtalo de nuevo.",
+      "updateSuccess": "Centro actualizado exitosamente",
+      "updateError": "Error al actualizar el centro. Por favor, inténtalo de nuevo.",
+      "deleteSuccess": "Centro eliminado exitosamente",
+      "deleteError": "Error al eliminar el centro. Por favor, inténtalo de nuevo.",
+      "selectError": "Error al seleccionar el centro. Por favor, inténtalo de nuevo."
+    },
+    "Patient": {
+      "createSuccess": "Paciente {name} agregado exitosamente",
+      "createError": "Error al crear el paciente. Por favor, inténtalo de nuevo.",
+      "updateSuccess": "Paciente {name} actualizado exitosamente",
+      "updateError": "Error al actualizar el paciente. Por favor, inténtalo de nuevo.",
+      "deleteSuccess": "Paciente eliminado exitosamente",
+      "deleteError": "Error al eliminar el paciente. Por favor, inténtalo de nuevo.",
+      "noteCreateSuccess": "Nota agregada exitosamente",
+      "noteCreateError": "Error al agregar la nota. Por favor, inténtalo de nuevo.",
+      "noteDeleteSuccess": "Nota eliminada exitosamente",
+      "noteDeleteError": "Error al eliminar la nota. Por favor, inténtalo de nuevo."
+    },
+    "Team": {
+      "inviteSuccess": "Miembro del equipo invitado exitosamente",
+      "inviteError": "Error al invitar al miembro del equipo. Por favor, inténtalo de nuevo.",
+      "updateSuccess": "Miembro {name} actualizado exitosamente",
+      "updateError": "Error al actualizar el miembro del equipo. Por favor, inténtalo de nuevo.",
+      "deleteSuccess": "Miembro del equipo eliminado exitosamente",
+      "deleteError": "Error al eliminar al miembro del equipo. Por favor, inténtalo de nuevo."
+    }
+  },
+  "TeamSwitcher": {
+    "selectCenter": "Seleccionar centro",
+    "centers": "Centros",
+    "viewCenters": "Ver Centros",
+    "addCenter": "Añadir Centro",
+    "infoCenter": "Información del Centro",
+    "leaveCenter": "Abandonar Centro",
+    "leaveCenterTitle": "¿Abandonar Centro?",
+    "leaveCenterDescription": "¿Estás seguro de que quieres abandonar este centro? Esta acción no se puede deshacer.",
+    "toast": {
+      "leftCenter": "Centro Abandonado",
+      "leftCenterDescription": "Has abandonado el centro correctamente.",
+      "error": "Error",
+      "leaveCenterError": "Error al abandonar el centro. Por favor, inténtalo de nuevo."
+    }
+  },
+  "Table": {
+    "noInformation": "Sin información disponible",
+    "search": "Buscar...",
+    "noResults": "No se encontraron resultados.",
+    "items": "{count, plural, one {elemento} other {elementos}}",
+    "pageNumber": "Página {current} de {total}",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "rowsPerPage": "Filas por página",
+    "of": "de",
+    "loading": "Cargando...",
+    "actions": "Acciones",
+    "Users": {
+      "fullName": "Nombre completo",
+      "noName": "Sin nombre",
+      "surname": "Apellido",
+      "noSurname": "Sin apellido",
+      "email": "Correo electrónico",
+      "noInfo": "Sin información disponible",
+      "noDescription": "Sin descripción",
+      "role": "Rol",
+      "status": "Estado",
+      "organization": "Organización",
+      "noOrganization": "Sin organización"
+    },
+    "Patients": {
+      "fullName": "Nombre completo",
+      "noName": "Sin nombre",
+      "noDescription": "Sin descripción",
+      "noInfo": "Sin información disponible",
+      "email": "Correo electrónico",
+      "phone": "Teléfono",
+      "diagnosis": "Diagnóstico",
+      "noDiagnosis": "Sin diagnóstico"
+    }
+  },
+  "AppSidebar": {
+    "team": {
+      "title": "Equipo",
+      "members": "Miembros",
+      "addMember": "Añadir nuevo miembro"
+    },
+    "patients": {
+      "title": "Pacientes",
+      "all": "Pacientes",
+      "addNew": "Añadir nuevo paciente"
+    }
+  },
+  "EntityInfo": {
+    "noData": "No hay datos de {type} disponibles.",
+    "notes": "Notas",
+    "addNote": "Agregar Nota",
+    "saveNote": "Guardar Nota",
+    "deleteNote": "Eliminar Nota",
+    "confirmDelete": "¿Estás seguro de que deseas eliminar esta nota? Esta acción no se puede deshacer.",
+    "notePlaceholder": "Escribe tu nota aquí...",
+    "fields": {
+      "email": "Correo Electrónico",
+      "role": "Rol",
+      "status": "Estado",
+      "center": "Centro",
+      "phone": "Teléfono",
+      "dateOfBirth": "Fecha de Nacimiento",
+      "diagnose": "Diagnóstico",
+      "id": "ID"
+    },
+    "statuses": {
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "pending": "Pendiente"
+    },
+    "types": {
+      "user": "usuario",
+      "patient": "paciente"
+    },
+    "cancel": "Cancelar",
+    "noNotes": "No hay notas disponibles",
+    "note": "Nota"
+  },
+  "CenterInfo": {
+    "title": "Centro Médico",
+    "subtitle": "Ver información del centro",
+    "phone": "Teléfono",
+    "address": "Dirección",
+    "totalPatients": "Total de Pacientes",
+    "totalUsers": "Total de Usuarios"
+  },
+  "EntityTypes": {
+    "patient": "Paciente",
+    "center": "Centro",
+    "teamMember": "Miembro del equipo"
+  },
+  "ValidationErrors": {
+    "emailRequired": "El correo electrónico es obligatorio",
+    "emailInvalid": "Ingresa un correo electrónico válido",
+    "passwordRequired": "La contraseña es obligatoria",
+    "passwordMin8": "La contraseña debe tener al menos 8 caracteres",
+    "passwordMin6": "La contraseña debe tener al menos 6 caracteres",
+    "confirmPasswordRequired": "Por favor confirma tu contraseña",
+    "passwordsDontMatch": "Las contraseñas no coinciden",
+    "centerNameRequired": "El nombre del centro es obligatorio",
+    "centerPhoneRequired": "El número de teléfono del centro es obligatorio",
+    "centerPhoneInvalid": "Ingresa un número de teléfono válido para Dinamarca (+45) o Reino Unido (+44 o que empiece con 0)",
+    "centerAddressRequired": "La dirección del centro es obligatoria",
+    "memberEmailRequired": "El correo electrónico del miembro es obligatorio",
+    "memberEmailInvalid": "Ingresa un correo electrónico válido para el miembro",
+    "memberFirstNameRequired": "El nombre del miembro es obligatorio",
+    "memberLastNameRequired": "El apellido del miembro es obligatorio",
+    "memberRoleRequired": "El rol del miembro es obligatorio",
+    "patientFirstNameRequired": "El nombre del paciente es obligatorio",
+    "patientFirstNameMin2": "El nombre del paciente debe tener al menos 2 caracteres",
+    "patientLastNameRequired": "El apellido del paciente es obligatorio",
+    "patientLastNameMin2": "El apellido del paciente debe tener al menos 2 caracteres",
+    "patientEmailRequired": "El correo electrónico del paciente es obligatorio",
+    "patientEmailInvalid": "Ingresa un correo electrónico válido para el paciente",
+    "patientPhoneRequired": "El número de teléfono del paciente es obligatorio",
+    "patientPhoneInvalid": "Ingresa un número de teléfono válido para el paciente",
+    "patientDobPast": "La fecha de nacimiento del paciente debe ser en el pasado",
+    "noteContentRequired": "El contenido de la nota es obligatorio",
+    "userFirstNameRequired": "El nombre de usuario es obligatorio",
+    "userLastNameRequired": "El apellido de usuario es obligatorio"
+  },
+  "AlertMessage": {
+    "errors": {
+      "title": "Error",
+      "description": "Ocurrieron los siguientes errores:",
+      "defaultTitle": "Algo salió mal",
+      "defaultDescription": "Por favor, verifica los siguientes problemas e inténtalo de nuevo"
+    },
+    "warnings": {
+      "title": "Advertencia",
+      "description": "Por favor, revisa las siguientes advertencias:",
+      "defaultTitle": "Atención requerida",
+      "defaultDescription": "Por favor, revisa la siguiente información"
+    },
+    "success": {
+      "title": "Éxito",
+      "description": "Operación completada con éxito",
+      "defaultTitle": "Éxito",
+      "defaultDescription": "Tu acción se completó exitosamente"
+    },
+    "info": {
+      "title": "Información",
+      "description": "Por favor, ten en cuenta la siguiente información",
+      "defaultTitle": "Información",
+      "defaultDescription": "Hay información adicional disponible"
+    }
+  },
+  "EditCenterPage": {
+    "backButton": "Atrás",
+    "title": "Editar Centro Médico",
+    "subtitle": "Actualiza la información del centro",
+    "cardTitle": "Editar Información del Centro",
+    "error": {
+      "title": "Error al cargar el centro",
+      "description": "CÓDIGO: 3001 - Reporta esto al equipo de Aisel.",
+      "tryAgain": "Intentar de nuevo"
+    },
+    "loading": "Cargando detalles del centro..."
+  },
+  "NewCenterPage": {
+    "backButton": "Atrás",
+    "title": "Añadir Nuevo Centro Médico",
+    "subtitle": "Crea un nuevo centro médico para tu organización",
+    "cardTitle": "Añadir Información del Centro"
+  },
+  "CentersPage": {
+    "title": "Centros Médicos",
+    "subtitle": "Administra tus centros médicos y visualiza sus detalles",
+    "refresh": "Actualizar",
+    "refreshing": "Actualizando...",
+    "addCenter": "Añadir Centro",
+    "searchPlaceholder": "Buscar centros...",
+    "myCenters": "Mis Centros",
+    "noCentersYet": "Aún no has creado ningún centro. Crea tu primer centro para comenzar.",
+    "noAdminCenters": "No se encontraron centros que coincidan con tu búsqueda.",
+    "invitedCenters": "Centros Invitados",
+    "noInvitedCenters": "No hay centros invitados que coincidan con tu búsqueda.",
+    "noInvitedCentersYet": "Aún no has sido invitado a ningún centro.",
+    "noCenters": "No se encontraron centros. Intenta ajustar tu búsqueda o crea un nuevo centro.",
+    "error": {
+      "title": "Algo salió mal",
+      "description": "No pudimos cargar tus centros. Por favor, inténtalo de nuevo.",
+      "retry": "Reintentar"
+    }
+  },
+  "ActionDialog": {
+    "default": {
+      "confirm": "Confirmar",
+      "confirming": "Confirmando...",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "deleting": "Eliminando...",
+      "defaultTitle": "¿Estás seguro?",
+      "defaultDescription": "Esta acción no se puede deshacer.",
+      "deleteTitle": "Eliminar {title}",
+      "deleteDescription": "¿Estás seguro de que quieres eliminar {name}? Esta acción no se puede deshacer.",
+      "confirmTitle": "Confirmar acción",
+      "confirmDescription": "Por favor, confirma que deseas proceder con esta acción."
+    },
+    "errors": {
+      "title": "Error",
+      "description": "Ocurrió un error al procesar tu solicitud. Por favor, inténtalo de nuevo."
+    }
+  }
+}

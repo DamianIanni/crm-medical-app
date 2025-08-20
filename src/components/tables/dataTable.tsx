@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 const ROW_HEIGHT_PX = 52;
@@ -72,6 +73,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>): React.ReactElement {
+  const t = useTranslations("Table");
   // State to manage the sorting configuration of the table.
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const { pageSize, containerRef } = useDynamicPageSize();
@@ -110,7 +112,7 @@ export function DataTable<TData, TValue>({
       <div className="px-2 py-6 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         {/* Input field for global filtering. Currently filters by 'email' column. */}
         <Input
-          placeholder="Filter..."
+          placeholder={t("search")}
           value={String(table.getState().columnFilters[0]?.value ?? "")}
           onChange={(e) =>
             table.setColumnFilters([{ id: "email", value: e.target.value }])
@@ -119,7 +121,8 @@ export function DataTable<TData, TValue>({
         />
         {/* Displays the count of filtered items. */}
         <div className="text-sm text-muted-foreground px-4">
-          {table.getFilteredRowModel().rows.length} items
+          {table.getFilteredRowModel().rows.length}{" "}
+          {t("items", { count: table.getFilteredRowModel().rows.length })}
         </div>
       </div>
 
@@ -174,7 +177,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center text-muted-foreground"
                 >
-                  No results.
+                  {t("noResults")}
                 </TableCell>
               </TableRow>
             )}
@@ -186,8 +189,10 @@ export function DataTable<TData, TValue>({
       <div className="mt-auto flex flex-col gap-2 md:flex-row md:items-center md:justify-between px-2 py-4">
         {/* Displays current page number and total page count. */}
         <div className="text-sm text-muted-foreground">
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
+          {t("pageNumber", {
+            current: table.getState().pagination.pageIndex + 1,
+            total: table.getPageCount(),
+          })}
         </div>
         <div className="flex gap-2">
           {/* Button to navigate to the previous page. */}
@@ -198,7 +203,7 @@ export function DataTable<TData, TValue>({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            {t("previous")}
           </Button>
           {/* Button to navigate to the next page. */}
           <Button
@@ -208,7 +213,7 @@ export function DataTable<TData, TValue>({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            {t("next")}
           </Button>
         </div>
       </div>

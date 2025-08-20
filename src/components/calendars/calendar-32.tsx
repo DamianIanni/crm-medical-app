@@ -3,9 +3,11 @@
 import * as React from "react";
 import { CalendarPlusIcon } from "lucide-react";
 import { format } from "date-fns";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
 import {
   Drawer,
   DrawerContent,
@@ -32,6 +34,7 @@ type Calendar32Props = {
 
 export default function Calendar32({ control, disabled }: Calendar32Props) {
   const [open, setOpen] = React.useState(false);
+  const t = useTranslations('Calendar');
 
   return (
     <FormField
@@ -42,7 +45,7 @@ export default function Calendar32({ control, disabled }: Calendar32Props) {
 
         return (
           <FormItem className="flex flex-col gap-2">
-            <FormLabel>Date of birth</FormLabel>
+            <FormLabel>{t('dateOfBirth')}</FormLabel>
             <Drawer
               open={open}
               onOpenChange={(val) => !disabled && setOpen(val)}

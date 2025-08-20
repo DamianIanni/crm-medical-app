@@ -3,8 +3,9 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
-import { memberSchema, MemberFormValues } from "@/lib/schemas/memberSchema";
+import { getMemberSchema, MemberFormValues } from "@/lib/schemas/memberSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { SelectField } from "./fields/selectField";
@@ -15,10 +16,7 @@ import { DataUserFilter } from "@/lib/schemas/memberSchema";
 import { TextField } from "./fields/textField";
 import { ROUTES } from "@/constants/routes";
 
-const selectOptionList = [
-  { label: "Manager", value: "manager" },
-  { label: "Employee", value: "employee" },
-];
+// Options are built using translations inside the component
 
 type MemberFormProps = {
   mode?: "create" | "edit";
@@ -31,6 +29,18 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
   const createMember = useCreateMember();
   const updateMember = useUpdateTeamMember();
   const isPending = createMember.isPending || updateMember.isPending;
+  const t = useTranslations("MemberForm");
+  const v = useTranslations("ValidationErrors");
+
+  const memberSchema = React.useMemo(() => getMemberSchema(v), [v]);
+
+  const selectOptionList = React.useMemo(
+    () => [
+      { label: t("roleManager"), value: "manager" as const },
+      { label: t("roleEmployee"), value: "employee" as const },
+    ],
+    [t]
+  );
   const form = useForm<MemberFormValues>({
     resolver: zodResolver(memberSchema),
     defaultValues: {
@@ -45,7 +55,7 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
     try {
       await updateMember.mutateAsync({
         userId: data!.user_id!,
-        updated: { role: values.role },
+        updated: { role: values.role as "manager" | "employee" },
       });
     } catch (error) {
       console.log(error);
@@ -56,7 +66,7 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
     try {
       await createMember.mutateAsync({
         email: values.email,
-        role: values.role,
+        role: values.role as "manager" | "employee",
       });
     } catch (error) {
       console.log(error);
@@ -80,12 +90,10 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
       {...props}
     >
       <h2 className="text-2xl font-semibold tracking-tight mb-2">
-        {mode === "edit" ? "Edit team member" : "Add new team member"}
+        {mode === "edit" ? t("editTitle") : t("createTitle")}
       </h2>
       <p className="text-muted-foreground mb-6 text-sm">
-        {mode === "edit"
-          ? "Update memeber's information below."
-          : "Fill out the form below to invite a new member."}
+        {mode === "edit" ? t("editDescription") : t("createDescription")}
       </p>
       <Form {...form}>
         <form
@@ -97,7 +105,7 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
               <TextField
                 control={form.control}
                 name="email"
-                label="Email"
+                label={t("emailLabel")}
                 type="email"
                 disabled={isPending}
               />
@@ -107,7 +115,7 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
               <SelectField
                 control={form.control}
                 name="role"
-                label="Role"
+                label={t("roleLabel")}
                 options={selectOptionList}
                 disabled={isPending}
               />
@@ -116,7 +124,7 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
 
           <div className="flex justify-end">
             <Button type="submit" disabled={isPending || sameRole}>
-              {mode === "edit" ? "Save changes" : "Invite"}
+              {mode === "edit" ? t("saveButton") : t("inviteButton")}
             </Button>
           </div>
         </form>

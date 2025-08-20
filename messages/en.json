@@ -1,0 +1,384 @@
+{
+  "PatientForm": {
+    "editTitle": "Edit patient",
+    "createTitle": "Add new patient",
+    "editDescription": "Update the patient's information below.",
+    "createDescription": "Fill out the form below to register a new patient.",
+    "firstNameLabel": "First name",
+    "lastNameLabel": "Last name",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone number",
+    "diagnoseLabel": "Diagnose",
+    "saveButton": "Save changes",
+    "createButton": "Create"
+  },
+  "MemberForm": {
+    "editTitle": "Edit team member",
+    "createTitle": "Add new team member",
+    "editDescription": "Update memeber's information below.",
+    "createDescription": "Fill out the form below to invite a new member.",
+    "emailLabel": "Email",
+    "roleLabel": "Role",
+    "roleManager": "Manager",
+    "roleEmployee": "Employee",
+    "saveButton": "Save changes",
+    "inviteButton": "Invite"
+  },
+  "CenterForm": {
+    "nameLabel": "Center Name",
+    "namePlaceholder": "Enter center name",
+    "phoneLabel": "Phone Number",
+    "phonePlaceholder": "(555) 123-4567",
+    "addressLabel": "Address",
+    "addressPlaceholder": "123 Main Street, City, State 12345",
+    "saveButton": "Save Changes",
+    "createButton": "Create Center",
+    "savingText": "Saving..."
+  },
+  "LoginForm": {
+    "title": "Welcome back",
+    "loginWithApple": "Login with Apple",
+    "loginWithGoogle": "Login with Google",
+    "orContinueWith": "Or continue with",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "loginButton": "Login",
+    "signupPrompt": "Don't have an account?",
+    "signupLink": "Sign up",
+    "invalidCredentialsTitle": "Unable to login",
+    "invalidCredentialsDescription": "Please check your credentials and try again.",
+    "invalidCredentialsData": ["Check your email", "Check your password"]
+  },
+  "RegisterForm": {
+    "title": "Create your account",
+    "firstNameLabel": "First Name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastNameLabel": "Last Name",
+    "lastNamePlaceholder": "Enter your last name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "john@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Create a password",
+    "confirmPasswordLabel": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "createButton": "Create account",
+    "creatingLoading": "Creating account...",
+    "registrationErrorTitle": "Registration failed",
+    "registrationErrorDescription": "Please check your information and try again.",
+    "registrationErrorData": [
+      "Check your email format",
+      "Password must be at least 6 characters",
+      "Passwords must match"
+    ]
+  },
+  "AccountActions": {
+    "account": "Account",
+    "billing": "Billing",
+    "notifications": "Notifications",
+    "language": "Language",
+    "english": "English",
+    "spanish": "Spanish",
+    "theme": "Theme",
+    "logOut": "Log out"
+  },
+  "NavProjects": {
+    "projectsLabel": "Projects",
+    "viewProject": "View Project",
+    "shareProject": "Share Project",
+    "deleteProject": "Delete Project",
+    "more": "More"
+  },
+  "Badges": {
+    "roles": {
+      "admin": "Admin",
+      "manager": "Manager",
+      "employee": "Employee"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "blocked": "Blocked"
+    }
+  },
+  "Calendar": {
+    "dateOfBirth": "Date of birth",
+    "selectDate": "Select date",
+    "today": "Today",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "NavMain": {
+    "actionsLabel": "Actions"
+  },
+  "CenterCard": {
+    "invitationAccepted": {
+      "title": "Invitation Accepted",
+      "description": "You've successfully joined the center."
+    },
+    "invitationRejected": {
+      "title": "Invitation Rejected",
+      "description": "You've declined the invitation."
+    },
+    "invitationPending": {
+      "title": "Invitation",
+      "description": "Please accept/reject the invitation first."
+    },
+    "error": {
+      "title": "Error",
+      "description": "An error occurred. Please try again."
+    },
+    "buttons": {
+      "accept": "Accept",
+      "accepting": "Accepting...",
+      "reject": "Reject",
+      "rejecting": "Rejecting..."
+    }
+  },
+  "TeamSwitcher": {
+    "selectCenter": "Select center",
+    "centers": "Centers",
+    "viewCenters": "View Centers",
+    "addCenter": "Add Center",
+    "infoCenter": "Center Info",
+    "leaveCenter": "Leave Center",
+    "leaveCenterTitle": "Leave Center?",
+    "leaveCenterDescription": "Are you sure you want to leave this center? This action cannot be undone.",
+    "toast": {
+      "leftCenter": "Left Center",
+      "leftCenterDescription": "You've successfully left the center.",
+      "error": "Error",
+      "leaveCenterError": "Failed to leave center. Please try again."
+    }
+  },
+  "Feedback": {
+    "Center": {
+      "createSuccess": "Center created successfully",
+      "createError": "Failed to create center. Please try again.",
+      "updateSuccess": "Center updated successfully",
+      "updateError": "Failed to update center. Please try again.",
+      "deleteSuccess": "Center deleted successfully",
+      "deleteError": "Failed to delete center. Please try again.",
+      "selectError": "Failed to select center. Please try again."
+    },
+    "Patient": {
+      "createSuccess": "Patient {name} added successfully",
+      "createError": "Failed to create patient. Please try again.",
+      "updateSuccess": "Patient {name} updated successfully",
+      "updateError": "Failed to update patient. Please try again.",
+      "deleteSuccess": "Patient deleted successfully",
+      "deleteError": "Failed to delete patient. Please try again.",
+      "noteCreateSuccess": "Note added successfully",
+      "noteCreateError": "Failed to add note. Please try again.",
+      "noteDeleteSuccess": "Note deleted successfully",
+      "noteDeleteError": "Failed to delete note. Please try again."
+    },
+    "Team": {
+      "inviteSuccess": "Team member invited successfully",
+      "inviteError": "Failed to invite team member. Please try again.",
+      "updateSuccess": "Team member {name} updated successfully",
+      "updateError": "Failed to update team member. Please try again.",
+      "deleteSuccess": "Team member removed successfully",
+      "deleteError": "Failed to remove team member. Please try again."
+    }
+  },
+  "Table": {
+    "noInformation": "No information available",
+    "search": "Search...",
+    "noResults": "No results found.",
+    "items": "{count, plural, one {item} other {items}}",
+    "pageNumber": "Page {current} of {total}",
+    "previous": "Previous",
+    "next": "Next",
+    "rowsPerPage": "Rows per page",
+    "of": "of",
+    "loading": "Loading...",
+    "actions": "Actions",
+    "Users": {
+      "fullName": "Full name",
+      "noName": "No name",
+      "surname": "Surname",
+      "noSurname": "No surname",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "noInfo": "No information available",
+      "organization": "Organization",
+      "noOrganization": "No organization"
+    },
+    "Patients": {
+      "fullName": "Full name",
+      "noName": "No name",
+      "noDescription": "No description",
+      "noInfo": "No information available",
+      "email": "Email",
+      "phone": "Phone",
+      "diagnosis": "Diagnosis",
+      "noDiagnosis": "No diagnosis"
+    }
+  },
+  "AppSidebar": {
+    "team": {
+      "title": "Team",
+      "members": "Members",
+      "addMember": "Add new member"
+    },
+    "patients": {
+      "title": "Patients",
+      "all": "Patients",
+      "addNew": "Add new patient"
+    }
+  },
+  "EntityInfo": {
+    "noData": "No {type} data available.",
+    "notes": "Notes",
+    "addNote": "Add Note",
+    "saveNote": "Save Note",
+    "deleteNote": "Delete Note",
+    "confirmDelete": "Are you sure you want to delete this note? This action cannot be undone.",
+    "notePlaceholder": "Type your note here...",
+    "fields": {
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "center": "Center",
+      "phone": "Phone",
+      "dateOfBirth": "Date of Birth",
+      "diagnose": "Diagnosis",
+      "id": "ID"
+    },
+    "statuses": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending"
+    },
+    "types": {
+      "user": "user",
+      "patient": "patient"
+    },
+    "cancel": "Cancelar",
+    "noNotes": "No hay notas disponibles",
+    "note": "Nota"
+  },
+  "CenterInfo": {
+    "title": "Medical Center",
+    "subtitle": "See the center information",
+    "phone": "Phone",
+    "address": "Address",
+    "totalPatients": "Total Patients",
+    "totalUsers": "Total Users"
+  },
+  "EntityTypes": {
+    "patient": "Patient",
+    "center": "Center",
+    "teamMember": "Team member"
+  },
+  "ValidationErrors": {
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email",
+    "passwordRequired": "Password is required",
+    "passwordMin8": "Password must be at least 8 characters",
+    "passwordMin6": "Password must be at least 6 characters",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordsDontMatch": "Passwords don't match",
+    "centerNameRequired": "Center name is required",
+    "centerPhoneRequired": "Center phone number is required",
+    "centerPhoneInvalid": "Please enter a valid phone number for Denmark (+45) or UK (+44 or starting with 0)",
+    "centerAddressRequired": "Center address is required",
+    "memberEmailRequired": "Member email is required",
+    "memberEmailInvalid": "Please enter a valid email for the member",
+    "patientFirstNameRequired": "Patient first name is required",
+    "patientFirstNameMin2": "Patient first name must be at least 2 characters",
+    "patientLastNameRequired": "Patient last name is required",
+    "patientLastNameMin2": "Patient last name must be at least 2 characters",
+    "patientEmailRequired": "Patient email is required",
+    "patientEmailInvalid": "Please enter a valid email for the patient",
+    "patientPhoneRequired": "Patient phone number is required",
+    "patientPhoneInvalid": "Please enter a valid phone number for the patient",
+    "patientDobPast": "Patient date of birth must be in the past",
+    "noteContentRequired": "Note content is required"
+  },
+  "AlertMessage": {
+    "errors": {
+      "title": "Error",
+      "description": "The following errors occurred:",
+      "defaultTitle": "Something went wrong",
+      "defaultDescription": "Please check the following issues and try again"
+    },
+    "warnings": {
+      "title": "Warning",
+      "description": "Please review the following warnings:",
+      "defaultTitle": "Attention required",
+      "defaultDescription": "Please review the following information"
+    },
+    "success": {
+      "title": "Success",
+      "description": "Operation completed successfully",
+      "defaultTitle": "Success",
+      "defaultDescription": "Your action was completed successfully"
+    },
+    "info": {
+      "title": "Information",
+      "description": "Please note the following information",
+      "defaultTitle": "Information",
+      "defaultDescription": "Additional information is available"
+    }
+  },
+  "EditCenterPage": {
+    "backButton": "Back",
+    "title": "Edit Medical Center",
+    "subtitle": "Update the center information",
+    "cardTitle": "Edit Center Information",
+    "error": {
+      "title": "Error loading center",
+      "description": "CODE: 3001 - Report this to Aisel team.",
+      "tryAgain": "Try Again"
+    },
+    "loading": "Loading center details..."
+  },
+  "NewCenterPage": {
+    "backButton": "Back",
+    "title": "Add New Medical Center",
+    "subtitle": "Create a new medical center for your organization",
+    "cardTitle": "Add Center Information"
+  },
+  "CentersPage": {
+    "title": "Medical Centers",
+    "subtitle": "Manage your medical centers and view their details",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing...",
+    "addCenter": "Add Center",
+    "searchPlaceholder": "Search centers...",
+    "myCenters": "My Centers",
+    "noCentersYet": "You haven't created any centers yet. Create your first center to get started.",
+    "noAdminCenters": "No centers found matching your search.",
+    "invitedCenters": "Invited Centers",
+    "noInvitedCenters": "No invited centers match your search.",
+    "noInvitedCentersYet": "You haven't been invited to any centers yet.",
+    "noCenters": "No centers found. Try adjusting your search or create a new center.",
+    "error": {
+      "title": "Something went wrong",
+      "description": "We couldn't load your centers. Please try again.",
+      "retry": "Retry"
+    }
+  },
+  "ActionDialog": {
+    "default": {
+      "confirm": "Confirm",
+      "confirming": "Confirming...",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting...",
+      "deleteTitle": "Delete {title}",
+      "deleteDescription": "Are you sure you want to delete {name}? This action cannot be undone.",
+      "defaultTitle": "Are you sure?",
+      "defaultDescription": "This action cannot be undone.",
+      "confirmTitle": "Confirm Action",
+      "confirmDescription": "Please confirm that you want to proceed with this action."
+    },
+    "errors": {
+      "title": "Error",
+      "description": "An error occurred while processing your request. Please try again."
+    }
+  }
+}

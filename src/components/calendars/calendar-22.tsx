@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -22,6 +23,7 @@ import {
 
 import { Control } from "react-hook-form";
 import { PatientFormValues } from "@/lib/schemas/patientSchema";
+import { cn } from "@/lib/utils";
 
 type Calendar22Props = {
   control: Control<PatientFormValues>;
@@ -31,6 +33,7 @@ type Calendar22Props = {
 export default function Calendar22(props: Calendar22Props) {
   const { control, disabled } = props;
   const [open, setOpen] = useState<boolean>(false);
+  const t = useTranslations('Calendar');
   return (
     <FormField
       control={control}
@@ -40,7 +43,7 @@ export default function Calendar22(props: Calendar22Props) {
 
         return (
           <FormItem className="flex flex-col gap-2">
-            <FormLabel>Date of birth</FormLabel>
+            <FormLabel>{t('dateOfBirth')}</FormLabel>
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <FormControl>
@@ -48,29 +51,46 @@ export default function Calendar22(props: Calendar22Props) {
                     disabled={disabled}
                     variant="outline"
                     id="date_of_birth"
-                    className="w-full justify-between font-normal"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !field.value && "text-muted-foreground"
+                    )}
                   >
-                    {date ? format(date, "PPP") : <span>Select a date</span>}
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {field.value ? (
+                      format(new Date(field.value), "PPP")
+                    ) : (
+                      <span>{t('selectDate')}</span>
+                    )}
                     <ChevronDownIcon className="ml-auto h-4 w-4 opacity-50" />
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent
-                className="w-auto overflow-hidden p-0"
-                align="start"
-              >
+              <PopoverContent className="w-auto p-0" align="start">
+                <div className="flex items-center justify-between p-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      const today = new Date();
+                      field.onChange(today.toISOString());
+                      setOpen(false);
+                    }}
+                  >
+                    {t('today')}
+                  </Button>
+                </div>
                 <Calendar
                   mode="single"
                   selected={date}
-                  captionLayout="dropdown"
-                  disabled={disabled}
-                  onSelect={(selectedDate) => {
-                    if (selectedDate) {
-                      field.onChange(selectedDate.toISOString());
-                      setOpen(false);
-                    }
+                  onSelect={(date) => {
+                    field.onChange(date?.toISOString());
+                    setOpen(false);
                   }}
-                  autoFocus
+                  disabled={(date) =>
+                    date > new Date() || date < new Date("1900-01-01")
+                  }
+                  initialFocus
                 />
               </PopoverContent>
             </Popover>

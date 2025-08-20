@@ -9,7 +9,6 @@ import { LoginForm } from "./loginForm";
 import { PatientForm } from "./patientForm";
 import { MemberForm } from "./memberForm";
 import { CenterForm } from "./centerForm";
-import { User } from "@/types/user";
 import { Patient } from "@/types/patient";
 import { Center } from "@/types/center";
 import { DataUserFilter } from "@/lib/schemas/memberSchema";

@@ -1,23 +1,32 @@
-import { z } from "zod";
+import * as z from "zod";
 
-export const loginSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Enter a valid email"),
-  password: z
-    .string()
-    .min(1, "Password is required")
-    .min(8, "Password must be at least 8 characters"),
-});
+export const getLoginSchema = (t: (key: string) => string) =>
+  z.object({
+    email: z.string().min(1, t("emailRequired")).email(t("emailInvalid")),
+    password: z.string().min(1, t("passwordRequired")),
+  });
 
-export const registerSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(1, "Please confirm your password"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+export const getRegisterSchema = (t: (key: string) => string) =>
+  z
+    .object({
+      email: z.string().min(1, t("emailRequired")).email(t("emailInvalid")),
+      password: z.string().min(6, t("passwordMin6")),
+      confirmPassword: z.string(),
+      first_name: z.string().min(1, t("userFirstNameRequired")),
+      last_name: z.string().min(1, t("userLastNameRequired")),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t("passwordsDontMatch"),
+      path: ["confirmPassword"],
+    });
 
-export type LoginSchemaType = z.infer<typeof loginSchema>;
-export type RegisterSchemaType = z.infer<typeof registerSchema>;
+// Infer types from the schema factories
+type LoginSchema = ReturnType<typeof getLoginSchema>;
+type RegisterSchema = ReturnType<typeof getRegisterSchema>;
+
+export type LoginFormValues = z.infer<LoginSchema>;
+export type RegisterFormValues = z.infer<RegisterSchema>;
+
+// Export schema types for form components
+export type LoginSchemaType = LoginSchema;
+export type RegisterSchemaType = RegisterSchema;

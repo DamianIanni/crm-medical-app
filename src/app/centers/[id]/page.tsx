@@ -17,7 +17,7 @@ export default function CenterInfoPage() {
   } = useGetCenterById();
 
   return (
-    <DashboardPageWrapper>
+    <DashboardPageWrapper className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {(isPending || isFetching) && <EntityInfoSkeleton />}
 
       {isError && (

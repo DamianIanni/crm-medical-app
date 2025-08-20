@@ -9,6 +9,7 @@
 
 import { useMutation, useQuery, UseQueryResult } from "@tanstack/react-query";
 import { ToastFeedback } from "@/components/feedback/toastFeedback";
+import { useTranslations } from "next-intl";
 import { Patient } from "@/types/patient";
 import {
   createPatient,
@@ -28,6 +29,7 @@ export type NewNotePayload = {
 };
 
 export function useCreatePatient() {
+  const t = useTranslations("Feedback.Patient");
   const invalidate = useInvalidateQuery(["allPatient"]);
   return useMutation({
     mutationFn: (data: PatientPayload) => createPatient(data),
@@ -35,21 +37,22 @@ export function useCreatePatient() {
       invalidate();
       ToastFeedback({
         type: "success",
-        title: "Patient created",
-        description: `Patient ${data.first_name} added successfully.`,
+        title: t("createSuccess", { name: data.first_name }),
+        description: t("createSuccess", { name: data.first_name }),
       });
     },
     onError: () => {
       ToastFeedback({
         type: "error",
-        title: "Failed to create patient",
-        description: "Please try again later.",
+        title: t("createError"),
+        description: t("createError"),
       });
     },
   });
 }
 
 export function useUpdatePatient() {
+  const t = useTranslations("Feedback.Patient");
   const invalidate = useInvalidateQuery(["patient"]);
   const invalidateAll = useInvalidateQuery(["allPatient"]);
   return useMutation({
@@ -65,21 +68,22 @@ export function useUpdatePatient() {
       invalidateAll();
       ToastFeedback({
         type: "success",
-        title: "Patient updated",
-        description: `Patient ${data.first_name} updated successfully.`,
+        title: t("updateSuccess", { name: data.first_name }),
+        description: t("updateSuccess", { name: data.first_name }),
       });
     },
     onError: () => {
       ToastFeedback({
         type: "error",
-        title: "Failed to update patient",
-        description: "Please try again later.",
+        title: t("updateError"),
+        description: t("updateError"),
       });
     },
   });
 }
 
 export function useDeletePatient() {
+  const t = useTranslations("Feedback.Patient");
   const invalidate = useInvalidateQuery(["allPatient"]);
   const { setIsDeleting } = useDeleteState();
   return useMutation({
@@ -89,16 +93,16 @@ export function useDeletePatient() {
       invalidate();
       ToastFeedback({
         type: "info",
-        title: "Patient Deleted",
-        description: `Patient deleted successfully.`,
+        title: t("deleteSuccess"),
+        description: t("deleteSuccess"),
       });
     },
     onError: () => {
       setIsDeleting(false);
       ToastFeedback({
         type: "error",
-        title: "Failed to delete patient",
-        description: "Please try again later.",
+        title: t("deleteError"),
+        description: t("deleteError"),
       });
     },
   });
@@ -130,44 +134,47 @@ export function useGetPatients(
 }
 
 export function useCreateNote(patientId: string) {
-  const invalidate = useInvalidateQuery(["allPatient", patientId]);
-  return useMutation<void, Error, NewNotePayload>({
-    mutationFn: (data: NewNotePayload) => createPatientNote(patientId, data),
+  const t = useTranslations("Feedback.Patient");
+  const invalidate = useInvalidateQuery(["patient"]);
+  return useMutation({
+    mutationFn: (data: { note: string }) =>
+      createPatientNote(patientId, data.note),
     onSuccess: () => {
       invalidate();
       ToastFeedback({
         type: "success",
-        title: "Note created",
-        description: `Note added successfully.`,
+        title: t("noteCreateSuccess"),
+        description: t("noteCreateSuccess"),
       });
     },
     onError: () => {
       ToastFeedback({
         type: "error",
-        title: "Failed to create note",
-        description: "Please try again later.",
+        title: t("noteCreateError"),
+        description: t("noteCreateError"),
       });
     },
   });
 }
 
 export function useDeleteNote(patientId: string) {
-  const invalidate = useInvalidateQuery(["allPatient", patientId]);
-  return useMutation<string, unknown, string>({
+  const t = useTranslations("Feedback.Patient");
+  const invalidate = useInvalidateQuery(["patient"]);
+  return useMutation({
     mutationFn: (noteId: string) => deletePatientNote(patientId, noteId),
     onSuccess: () => {
       invalidate();
       ToastFeedback({
-        type: "success",
-        title: "Note deleted",
-        description: `Note deleted successfully.`,
+        type: "info",
+        title: t("noteDeleteSuccess"),
+        description: t("noteDeleteSuccess"),
       });
     },
     onError: () => {
       ToastFeedback({
         type: "error",
-        title: "Failed to delete note",
-        description: "Please try again later.",
+        title: t("noteDeleteError"),
+        description: t("noteDeleteError"),
       });
     },
   });

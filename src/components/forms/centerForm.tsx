@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
-import { centerSchema } from "@/lib/schemas/centerSchema";
+import { getCenterSchema, CenterFormValues } from "@/lib/schemas/centerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -26,10 +27,13 @@ export function CenterForm(props: CenterFormProps): React.ReactElement {
   const router = useRouter();
   const createCenter = useCreateCenter();
   const updateCenter = useUpdateCenter();
+  const t = useTranslations("CenterForm");
+  const v = useTranslations("ValidationErrors");
 
   const center = data;
 
-  const form = useForm({
+  const centerSchema = useMemo(() => getCenterSchema(v), [v]);
+  const form = useForm<CenterFormValues>({
     resolver: zodResolver(centerSchema),
     defaultValues: {
       name: center?.name || "",
@@ -72,23 +76,23 @@ export function CenterForm(props: CenterFormProps): React.ReactElement {
                 <TextField
                   control={form.control}
                   name="name"
-                  label="Center Name"
-                  placeholder="Enter center name"
+                  label={t("nameLabel")}
+                  placeholder={t("namePlaceholder")}
                   disabled={createCenter.isPending || updateCenter.isPending}
                 />
                 <TextField
                   control={form.control}
                   name="phone"
-                  label="Phone Number"
-                  placeholder="(555) 123-4567"
+                  label={t("phoneLabel")}
+                  placeholder={t("phonePlaceholder")}
                   disabled={createCenter.isPending || updateCenter.isPending}
                 />
                 <TextField
                   control={form.control}
                   name="address"
-                  label="Address"
+                  label={t("addressLabel")}
                   disabled={createCenter.isPending || updateCenter.isPending}
-                  placeholder="123 Main Street, City, State 12345"
+                  placeholder={t("addressPlaceholder")}
                 />
               </div>
             </div>
@@ -103,11 +107,11 @@ export function CenterForm(props: CenterFormProps): React.ReactElement {
               disabled={createCenter.isPending || updateCenter.isPending}
             >
               {createCenter.isPending || updateCenter.isPending ? (
-                <span className="mr-2">Saving...</span>
+                <span className="mr-2">{t("savingText")}</span>
               ) : mode === "edit" ? (
-                "Save Changes"
+                t("saveButton")
               ) : (
-                "Create Center"
+                t("createButton")
               )}
             </Button>
           </div>

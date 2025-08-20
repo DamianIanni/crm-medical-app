@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { DataUserFilter } from "@/lib/schemas/memberSchema";
 import { setEntitySessionStorage } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 /**
  * @typedef {("patients" | "team" | "centers")} Route - Defines the possible routes for actions.
  */
@@ -52,6 +53,7 @@ export default function Actions({
 
   const { user } = useAuth();
   const router = useRouter();
+  const t = useTranslations("ActionDialog.default");
 
   /* --------------------------------------------------
    * Route helpers (Single-responsibility)
@@ -65,22 +67,35 @@ export default function Actions({
     hideDetails?: boolean;
   };
 
+  const getDisplayName = (): string => {
+    if ("first_name" in data && "last_name" in data) {
+      return `${data.first_name} ${data.last_name}`.trim() || "Item";
+    }
+    if ("name" in data && data.name) {
+      return data.name;
+    }
+    return "Item";
+  };
+
+  // Get translations for entity types
+  const entityT = useTranslations("EntityTypes");
+
   const helpers: Record<Route, RouteHelper> = {
     patients: {
-      title: "Patient",
+      title: entityT("patient"),
       detailUrl: ROUTES.patientDetail(entityId),
       editUrl: ROUTES.patientEdit(entityId),
-      displayName: `${data.first_name} ${data.last_name}` || "Patient",
+      displayName: getDisplayName(),
       onDelete: () => deletePatient.mutate(entityId),
     },
     centers: {
-      title: "Center",
+      title: entityT("center"),
       detailUrl: ROUTES.centerDetail(entityId),
       editUrl: (() => {
         sessionStorage.setItem("selectedCenterId", entityId);
         return ROUTES.centerEdit(entityId);
       })(),
-      displayName: (data as Center).name ?? "Center",
+      displayName: getDisplayName(),
       onDelete: () => {
         deleteCenter.mutate(entityId);
         sessionStorage.removeItem("selectedCenterName");
@@ -90,10 +105,10 @@ export default function Actions({
       hideDetails: true, // Centers table has no detail view
     },
     team: {
-      title: "Team member",
+      title: entityT("teamMember"),
       detailUrl: ROUTES.teamMemberDetail(entityId),
       editUrl: ROUTES.teamMemberEdit(entityId),
-      displayName: `${data.first_name} ${data.last_name}`,
+      displayName: getDisplayName(),
       onDelete: () => {
         deleteMember.mutate(entityId);
         router.replace("/dashboard/team");
@@ -142,11 +157,14 @@ export default function Actions({
       {canDelete && (
         <GeneralTooltip message="Delete">
           <ActionDialog
-            title={`Delete ${title}`}
-            description={`Are you sure you want to delete ${displayName}? This action cannot be undone.`}
-            confirmLabel="Delete"
-            cancelLabel="Cancel"
+            title={t("deleteTitle", { title: title })}
+            description={t("deleteDescription", {
+              name: displayName,
+            })}
+            confirmLabel={t("delete")}
+            cancelLabel={t("cancel")}
             onConfirm={onDelete}
+            variant="delete"
           />
         </GeneralTooltip>
       )}

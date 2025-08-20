@@ -1,5 +1,6 @@
 // src/components/tables/table-cell-fallback.tsx
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 type TableCellFallbackProps = {
   value: string | null | undefined;
@@ -9,10 +10,12 @@ type TableCellFallbackProps = {
 
 export function TableCellFallback({
   value,
-  fallback = "No information provided",
+  fallback,
   className,
 }: TableCellFallbackProps) {
-  const display = value?.trim() ? value : fallback;
+  const t = useTranslations("Table");
+  const defaultFallback = t("noInformation");
+  const display = value?.trim() ? value : fallback || defaultFallback;
 
   return (
     <div>

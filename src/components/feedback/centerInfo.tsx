@@ -4,6 +4,7 @@ import Actions from "@/components/tables/actions";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export type CenterStats = Center & {
   total_patients: number;
@@ -20,13 +21,13 @@ interface CenterInfoProps {
  * Displays center name, phone, address, total patients and total users.
  */
 export default function CenterInfo({ data }: CenterInfoProps) {
-  console.log("DATA", data);
+  const t = useTranslations("CenterInfo");
   const router = useRouter();
   const details: { label: string; value: string | number | undefined }[] = [
-    { label: "Phone", value: data.phone },
-    { label: "Address", value: data.address },
-    { label: "Total Patients", value: data.total_patients },
-    { label: "Total Users", value: data.total_users },
+    { label: t("phone"), value: data.phone },
+    { label: t("address"), value: data.address },
+    { label: t("totalPatients"), value: data.total_patients },
+    { label: t("totalUsers"), value: data.total_users },
   ];
 
   return (
@@ -38,10 +39,10 @@ export default function CenterInfo({ data }: CenterInfoProps) {
         </Button>
 
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-          Medical Center
+          {t("title")}
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          See the center information
+          {t("subtitle")}
         </p>
       </div>
       <Card

@@ -11,9 +11,9 @@
 
 import DashboardPageWrapper from "@/components/wrappers/dashboardPageWrapper";
 import { DataTable } from "@/components/tables/dataTable";
-import { managerTeamColumns } from "@/constants/tables/users/managerColumns";
-import { adminTeamColumns } from "@/constants/tables/users/adminColumns";
-import { employeeTeamColumns } from "@/constants/tables/users/employeeColumns";
+import { useManagerTeamColumns } from "@/constants/tables/users/managerColumns";
+import { useAdminTeamColumns } from "@/constants/tables/users/adminColumns";
+import { useEmployeeTeamColumns } from "@/constants/tables/users/employeeColumns";
 import { TableSkeleton } from "@/components/skeletons/tableSkeleton";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { AlertMessage } from "@/components/feedback/AlertMessage";
@@ -27,6 +27,9 @@ export default function TeamPage() {
   const { user } = useAuth();
   const { isDeleting } = useDeleteState();
   const user_id = user!.id;
+  const adminTeamColumns = useAdminTeamColumns();
+  const employeeTeamColumns = useEmployeeTeamColumns();
+  const managerTeamColumns = useManagerTeamColumns();
   const {
     data: users,
     isPending,

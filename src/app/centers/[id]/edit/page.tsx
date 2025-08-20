@@ -9,9 +9,12 @@ import { useGetCenterById } from "@/hooks/center/useCenter";
 import { CenterFormSkeleton } from "@/components/skeletons/centerFormSkeleton";
 import { AlertMessage } from "@/components/feedback/AlertMessage";
 import DashboardPageWrapper from "@/components/wrappers/dashboardPageWrapper";
+import { useTranslations } from "next-intl";
 
 export default function EditCenterPage() {
   const router = useRouter();
+  const t = useTranslations("EditCenterPage");
+
   const {
     data: center,
     isPending,
@@ -22,9 +25,23 @@ export default function EditCenterPage() {
 
   if (isPending || isFetching) {
     return (
-      <DashboardPageWrapper>
+      <DashboardPageWrapper className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-2xl mx-auto">
+            <div className="mb-6">
+              <Button
+                variant="ghost"
+                onClick={() => router.back()}
+                className="mb-4"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                {t("backButton")}
+              </Button>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                {t("title")}
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400">{t("loading")}</p>
+            </div>
             <CenterFormSkeleton />
           </div>
         </div>
@@ -34,16 +51,16 @@ export default function EditCenterPage() {
 
   if (isError) {
     return (
-      <DashboardPageWrapper>
+      <DashboardPageWrapper className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-2xl mx-auto">
             <div className="w-full flex flex-col items-center justify-center mx-auto mt-10">
               <AlertMessage
-                title="Error loading center"
-                description={`CODE: 3001 - Report this to Aisel team.`}
+                title={t("error.title")}
+                description={t("error.description")}
               />
               <div className="mt-4 flex justify-end">
-                <Button onClick={() => refetch()}>Try Again</Button>
+                <Button onClick={() => refetch()}>{t("error.tryAgain")}</Button>
               </div>
             </div>
           </div>
@@ -53,7 +70,7 @@ export default function EditCenterPage() {
   }
 
   return (
-    <DashboardPageWrapper>
+    <DashboardPageWrapper className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <div className="mb-6">
@@ -63,21 +80,19 @@ export default function EditCenterPage() {
               className="mb-4"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back
+              {t("backButton")}
             </Button>
 
             <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-              Edit Medical Center
+              {t("title")}
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
-              Update the center information
-            </p>
+            <p className="text-gray-600 dark:text-gray-400">{t("subtitle")}</p>
           </div>
 
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                Edit Center Information
+                {t("cardTitle")}
               </CardTitle>
             </CardHeader>
             <CardContent>

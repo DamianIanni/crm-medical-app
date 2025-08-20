@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { CenterCard } from "@/components/cards/centerCard";
 import { useGetAllCenters } from "@/hooks/center/useCenter";
@@ -13,6 +14,7 @@ import { AccountActions } from "@/components/nav/account-actions";
 import { useAuth } from "@/components/providers/AuthProvider";
 
 export default function CentersPage() {
+  const t = useTranslations("CentersPage");
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
   const { user } = useAuth();
@@ -24,9 +26,6 @@ export default function CentersPage() {
     isFetching,
   } = useGetAllCenters(user!.id);
   const isMobile = useMediaQuery("(max-width: 768px)");
-
-  // Esta haciendo la reuqest esperando el finalToken, por eso no esta autorizado
-  // Crear condicion que en caso de que no tenga el finalToken, llame a la otra ruta
 
   const filteredCenters: Center[] = centers?.filter(
     (center) =>
@@ -45,39 +44,56 @@ export default function CentersPage() {
         <div className="mb-8 flex justify-between items-start">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-              Medical Centers
+              {t("title")}
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
-              Select a medical center to continue working
-            </p>
+            <p className="text-gray-600 dark:text-gray-400">{t("subtitle")}</p>
           </div>
-          <div className="mt-1">
+          <div className="flex items-center gap-2">
             <AccountActions />
           </div>
         </div>
 
         <div className="mb-6 flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
-            <input
-              type="text"
-              placeholder="Search centers..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg "
-            />
+            <div className="relative">
+              <input
+                type="text"
+                placeholder={t("searchPlaceholder")}
+                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <svg
+                className="absolute left-3 top-2.5 h-5 w-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
           </div>
-          <Button onClick={handleAddCenter}>New Center</Button>
+          <Button onClick={handleAddCenter}>{t("addCenter")}</Button>
         </div>
 
         {(isPending || isFetching) && <CentersSkeleton isMobile={isMobile} />}
         {isError && (
           <div className="w-full max-w-2xl flex flex-col items-center justify-center mx-auto mt-10">
-            <AlertMessage
-              title="Error loading list of centers"
-              description={`CODE: 3001 - Report this to Aisel team.`}
-            />
-            <div className="mt-4 flex justify-end">
-              <Button onClick={() => refetch()}>Try Again</Button>
+            <div className="space-y-4">
+              <AlertMessage
+                title={t("error.title")}
+                description={t("error.description")}
+                variant="error"
+              />
+              <Button variant="outline" onClick={() => refetch()}>
+                {t("error.retry")}
+              </Button>
             </div>
           </div>
         )}
@@ -88,7 +104,7 @@ export default function CentersPage() {
               !searchQuery) && (
               <div>
                 <h2 className="text-xl font-semibold mb-4 text-foreground">
-                  My Centers
+                  {t("myCenters")}
                 </h2>
                 {filteredCenters?.filter((center) => center.role === "admin")
                   .length > 0 ? (
@@ -106,9 +122,7 @@ export default function CentersPage() {
                 ) : (
                   <div className="text-center py-6 bg-muted/50 rounded-lg">
                     <p className="text-muted-foreground">
-                      {searchQuery
-                        ? "No admin centers match your search."
-                        : "You don't have any centers yet."}
+                      {searchQuery ? t("noAdminCenters") : t("noCentersYet")}
                     </p>
                   </div>
                 )}
@@ -120,7 +134,7 @@ export default function CentersPage() {
               !searchQuery) && (
               <div>
                 <h2 className="text-xl font-semibold mb-4 text-foreground">
-                  Invited Centers
+                  {t("invitedCenters")}
                 </h2>
                 {filteredCenters?.filter((center) => center.role !== "admin")
                   .length > 0 ? (
@@ -139,8 +153,8 @@ export default function CentersPage() {
                   <div className="text-center py-6 bg-muted/50 rounded-lg">
                     <p className="text-muted-foreground">
                       {searchQuery
-                        ? "No invited centers match your search."
-                        : "You haven't been invited to any centers yet."}
+                        ? t("noInvitedCenters")
+                        : t("noInvitedCentersYet")}
                     </p>
                   </div>
                 )}
@@ -150,8 +164,8 @@ export default function CentersPage() {
             {/* No results message - Only show if there are no centers at all */}
             {filteredCenters?.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">
-                  No centers found matching your search.
+                <p className="text-gray-500 dark:text-gray-400">
+                  {t("noCenters")}
                 </p>
               </div>
             )}

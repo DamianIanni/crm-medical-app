@@ -15,6 +15,7 @@ import { ToastFeedback } from "../feedback/toastFeedback";
 import { Button } from "../ui/button";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { RoleBadge } from "../badges/role-badge";
+import { useTranslations } from "next-intl";
 
 interface CenterCardProps {
   center: Center;
@@ -22,6 +23,7 @@ interface CenterCardProps {
 }
 
 export function CenterCard({ center }: CenterCardProps) {
+  const t = useTranslations("CenterCard");
   const selectCenter = useSelectCenter();
   const {
     acceptInvitation,
@@ -32,8 +34,6 @@ export function CenterCard({ center }: CenterCardProps) {
 
   React.useEffect(() => {
     if (isAcceptInvitationPending || isRejectInvitationPending) {
-      console.log("INVITATION");
-
       return;
     }
   }, [isAcceptInvitationPending, isRejectInvitationPending]);
@@ -44,15 +44,15 @@ export function CenterCard({ center }: CenterCardProps) {
       await acceptInvitation(center.center_id);
       ToastFeedback({
         type: "success",
-        title: "Invitation Accepted",
-        description: "You've successfully joined the center.",
+        title: t("invitationAccepted.title"),
+        description: t("invitationAccepted.description"),
       });
     } catch (err) {
       console.error("Error accepting invitation:", err);
       ToastFeedback({
         type: "error",
-        title: "Error",
-        description: "Failed to accept invitation. Please try again.",
+        title: t("error.title"),
+        description: t("error.description"),
       });
     }
   };
@@ -63,15 +63,15 @@ export function CenterCard({ center }: CenterCardProps) {
       await rejectInvitation(center.center_id);
       ToastFeedback({
         type: "info",
-        title: "Invitation Rejected",
-        description: "You've declined the invitation.",
+        title: t("invitationRejected.title"),
+        description: t("invitationRejected.description"),
       });
     } catch (err) {
       console.error("Error rejecting invitation:", err);
       ToastFeedback({
         type: "error",
-        title: "Error",
-        description: "Failed to reject invitation. Please try again.",
+        title: t("error.title"),
+        description: t("error.description"),
       });
     }
   };
@@ -88,8 +88,8 @@ export function CenterCard({ center }: CenterCardProps) {
     if (center.status === "pending") {
       ToastFeedback({
         type: "info",
-        title: "Invitation",
-        description: "Please accept/reject the invitation first.",
+        title: t("invitationPending.title"),
+        description: t("invitationPending.description"),
       });
       return;
     }
@@ -141,14 +141,18 @@ export function CenterCard({ center }: CenterCardProps) {
               className="flex-1 gap-2"
               disabled={isRejectInvitationPending}
             >
-              {isRejectInvitationPending ? "Rejecting..." : "Reject"}
+              {isRejectInvitationPending
+                ? t("buttons.rejecting")
+                : t("buttons.reject")}
             </Button>
             <Button
               onClick={handleAcceptInvitation}
               className="flex-1 gap-2"
               disabled={isAcceptInvitationPending}
             >
-              {isAcceptInvitationPending ? "Accepting..." : "Accept"}
+              {isAcceptInvitationPending
+                ? t("buttons.accepting")
+                : t("buttons.accept")}
             </Button>
           </div>
         )}

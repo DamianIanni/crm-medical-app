@@ -8,7 +8,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { patientSchema, PatientFormValues } from "@/lib/schemas/patientSchema";
+import {
+  getPatientSchema,
+  PatientFormValues,
+} from "@/lib/schemas/patientSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useCreatePatient, useUpdatePatient } from "@/hooks/patient/usePatient";
@@ -16,10 +19,12 @@ import Calendar22 from "../calendars/calendar-22";
 import Calendar32 from "../calendars/calendar-32";
 import { Patient } from "@/types/patient";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Form } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { TextField } from "./fields/textField";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useMemo } from "react";
 
 type PatientFormProps = {
   mode?: "create" | "edit";
@@ -33,7 +38,10 @@ export function PatientForm(props: PatientFormProps): React.ReactElement {
   const isPending = createPatient.isPending || updatePatient.isPending; // Boolean indicating if the form is currently being submitted.
   const router = useRouter();
   const isMobile = useIsMobile();
+  const v = useTranslations("ValidationErrors");
+  const t = useTranslations("PatientForm");
 
+  const patientSchema = useMemo(() => getPatientSchema(v), [v]);
   const form = useForm<PatientFormValues>({
     resolver: zodResolver(patientSchema), // Integrates Zod for schema validation.
     defaultValues: {
@@ -66,12 +74,10 @@ export function PatientForm(props: PatientFormProps): React.ReactElement {
       {...props}
     >
       <h2 className="text-2xl font-semibold tracking-tight mb-2">
-        {mode === "edit" ? "Edit patient" : "Add new patient"}
+        {mode === "edit" ? t("editTitle") : t("createTitle")}
       </h2>
       <p className="text-muted-foreground text-sm mb-6">
-        {mode === "edit"
-          ? "Update the patient's information below."
-          : "Fill out the form below to register a new patient."}
+        {mode === "edit" ? t("editDescription") : t("createDescription")}
       </p>
       {/* Form component wrapping the native form for context provision */}
       <Form {...form}>
@@ -86,7 +92,7 @@ export function PatientForm(props: PatientFormProps): React.ReactElement {
                 <TextField
                   control={form.control}
                   name="first_name"
-                  label="First name"
+                  label={t("firstNameLabel")}
                   disabled={isPending}
                 />
               </div>
@@ -95,7 +101,7 @@ export function PatientForm(props: PatientFormProps): React.ReactElement {
                 <TextField
                   control={form.control}
                   name="last_name"
-                  label="Last name"
+                  label={t("lastNameLabel")}
                   disabled={isPending}
                 />
               </div>
@@ -107,7 +113,7 @@ export function PatientForm(props: PatientFormProps): React.ReactElement {
                 <TextField
                   control={form.control}
                   name="email"
-                  label="Email"
+                  label={t("emailLabel")}
                   // type="email" // This can be uncommented to enforce email input type
                   disabled={isPending}
                 />
@@ -117,7 +123,7 @@ export function PatientForm(props: PatientFormProps): React.ReactElement {
                 <TextField
                   control={form.control}
                   name="phone"
-                  label="Phone number"
+                  label={t("phoneLabel")}
                   disabled={isPending}
                 />
               </div>
@@ -128,7 +134,7 @@ export function PatientForm(props: PatientFormProps): React.ReactElement {
               <TextField
                 control={form.control}
                 name="short_description"
-                label="Diagnose"
+                label={t("diagnoseLabel")}
                 disabled={isPending}
                 // textArea
               />
@@ -151,7 +157,7 @@ export function PatientForm(props: PatientFormProps): React.ReactElement {
               type="submit"
               disabled={isPending}
             >
-              {mode === "edit" ? "Save changes" : "Create"}
+              {mode === "edit" ? t("saveButton") : t("createButton")}
             </Button>
           </div>
         </form>

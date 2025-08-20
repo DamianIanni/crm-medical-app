@@ -11,6 +11,7 @@ import { Center } from "@/types/center";
 import { UserRole } from "@/types/user";
 import { ToastFeedback } from "@/components/feedback/toastFeedback";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 // Helper hook for invalidating queries
 function useInvalidateQuery(keys: string[]) {
@@ -64,6 +65,7 @@ export function useGetCenterById(): UseQueryResult<Center, Error> {
  * @returns {object} A mutation object from `@tanstack/react-query`
  */
 export function useCreateCenter() {
+  const t = useTranslations("Feedback.Center");
   const invalidate = useInvalidateQuery(["allCenters"]);
   return useMutation({
     mutationFn: (center: Omit<Center, "id">) => centerService.create(center),
@@ -71,15 +73,15 @@ export function useCreateCenter() {
       invalidate();
       ToastFeedback({
         type: "success",
-        title: "Center Created",
-        description: "Center created successfully.",
+        title: t("createSuccess"),
+        description: t("createSuccess"),
       });
     },
     onError: () => {
       ToastFeedback({
         type: "error",
-        title: "Failed to create center",
-        description: "Please try again later.",
+        title: t("createError"),
+        description: t("createError"),
       });
     },
   });
@@ -111,23 +113,26 @@ export function useSelectCenter() {
  * @returns {object} A mutation object from `@tanstack/react-query`
  */
 export function useUpdateCenter() {
-  const invalidate = useInvalidateQuery(["allCenters"]);
+  const t = useTranslations("Feedback.Center");
+  const invalidate = useInvalidateQuery(["center"]);
+  const invalidateAll = useInvalidateQuery(["allCenters"]);
   return useMutation({
     mutationFn: ({ id, center }: { id: string; center: Partial<Center> }) =>
       centerService.update(id, center),
     onSuccess: () => {
       invalidate();
+      invalidateAll();
       ToastFeedback({
         type: "success",
-        title: "Center Updated",
-        description: "Center updated successfully.",
+        title: t("updateSuccess"),
+        description: t("updateSuccess"),
       });
     },
     onError: () => {
       ToastFeedback({
         type: "error",
-        title: "Failed to update center",
-        description: "Please try again later.",
+        title: t("updateError"),
+        description: t("updateError"),
       });
     },
   });
@@ -138,6 +143,7 @@ export function useUpdateCenter() {
  * @returns {object} A mutation object from `@tanstack/react-query`
  */
 export function useDeleteCenter() {
+  const t = useTranslations("Feedback.Center");
   const invalidate = useInvalidateQuery(["allCenters"]);
   const { setIsDeleting } = useDeleteState();
   return useMutation({
@@ -147,22 +153,20 @@ export function useDeleteCenter() {
       invalidate();
       ToastFeedback({
         type: "info",
-        title: "Center Deleted",
-        description: "Center deleted successfully.",
+        title: t("deleteSuccess"),
+        description: t("deleteSuccess"),
       });
     },
     onError: () => {
       setIsDeleting(false);
       ToastFeedback({
         type: "error",
-        title: "Failed to delete center",
-        description: "Please try again later.",
+        title: t("deleteError"),
+        description: t("deleteError"),
       });
     },
   });
 }
-
-// export const useGetSingleCenter = (id: string) => {
 //   return useQuery({
 //     queryKey: ["center", id],
 //     queryFn: () => centerService.getById(id),

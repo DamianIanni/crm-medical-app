@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   Accordion,
   AccordionContent,
@@ -17,7 +18,7 @@ import { Plus } from "lucide-react";
 import { useCreateNote, useDeleteNote } from "@/hooks/patient/usePatient";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { noteSchema, type NoteFormValues } from "@/lib/schemas/noteSchema";
+import { getNoteSchema, type NoteFormValues } from "@/lib/schemas/noteSchema";
 
 interface Note {
   id: string;
@@ -63,6 +64,10 @@ export default function EntityInfo({
   const isPatient = type === "patient";
   const patientId = isPatient ? id || (data?.id as string) || "" : "";
 
+  const t = useTranslations("EntityInfo");
+  const v = useTranslations("ValidationErrors");
+
+  const noteSchema = useMemo(() => getNoteSchema(v), [v]);
   // Call hooks unconditionally but pass empty string when not a patient
   const { mutate: createNote, isPending: isCreatingNote } =
     useCreateNote(patientId);
@@ -121,32 +126,40 @@ export default function EntityInfo({
   if (!data) {
     return (
       <div className="flex items-center justify-center h-full">
-        No {type} data available.
+        {t("noData", { type: t(`types.${type}`) })}
       </div>
     );
   }
 
   // Common details for both user and patient
-  const commonDetails = [{ label: "Email", value: data.email }];
+  const commonDetails = [{ label: t("fields.email"), value: data.email }];
 
   // User specific details
   const userDetails = !isPatient
     ? [
-        { label: "Role", value: (data as UserData).role },
-        { label: "Status", value: (data as UserData).status },
-        { label: "Center", value: (data as UserData).center_name },
+        { label: t("fields.role"), value: (data as UserData).role },
+        {
+          label: t("fields.status"),
+          value: (data as UserData).status
+            ? t(`statuses.${(data as UserData).status?.toLowerCase()}`)
+            : "",
+        },
+        { label: t("fields.center"), value: (data as UserData).center_name },
       ]
     : [];
 
   // Patient specific details
   const patientDetails = isPatient
     ? [
-        { label: "Phone", value: (data as PatientData).phone },
+        { label: t("fields.phone"), value: (data as PatientData).phone },
         {
-          label: "Date of Birth",
+          label: t("fields.dateOfBirth"),
           value: (data as PatientData).date_of_birth?.split("T")[0],
         },
-        { label: "Diagnose", value: (data as PatientData).short_description },
+        {
+          label: t("fields.diagnose"),
+          value: (data as PatientData).short_description,
+        },
       ]
     : [];
 
@@ -170,9 +183,25 @@ export default function EntityInfo({
                 <Actions
                   route="patients"
                   data={{
-                    ...(data as PatientData),
-                    id: data.id || "",
-                    user_id: data.id || "",
+                    id: String(data.id || ""),
+                    user_id: String(data.id || ""),
+                    first_name: String(data.first_name || ""),
+                    last_name: String(data.last_name || ""),
+                    email: String(data.email || ""),
+                    phone: String((data as PatientData).phone || ""),
+                    date_of_birth: String(
+                      (data as PatientData).date_of_birth || ""
+                    ),
+                    short_description: String(
+                      (data as PatientData).short_description || ""
+                    ),
+                    notes: Array.isArray((data as PatientData).notes)
+                      ? (data as PatientData).notes
+                      : [],
+                    center_id: "",
+                    center_name: "",
+                    role: "patient" as const,
+                    status: "active",
                   }}
                   inInfo
                 />
@@ -180,9 +209,19 @@ export default function EntityInfo({
                 <Actions
                   route="team"
                   data={{
-                    ...(data as UserData),
-                    id: data.id || "",
-                    user_id: "user_id" in data ? data.user_id : data.id || "",
+                    id: String(data.id || ""),
+                    user_id:
+                      "user_id" in data
+                        ? String(data.user_id)
+                        : String(data.id || ""),
+                    first_name: String(data.first_name || ""),
+                    last_name: String(data.last_name || ""),
+                    email: String(data.email || ""),
+                    role: (data as UserData).role || ("employee" as const),
+                    status: (data as UserData).status || "active",
+                    center_id: String((data as UserData).center_id || ""),
+                    center_name: String((data as UserData).center_name || ""),
+                    phone: String((data as UserData).phone || ""),
                   }}
                   inInfo
                 />
@@ -192,11 +231,11 @@ export default function EntityInfo({
         </div>
         <div className="flex flex-col">
           <span className="text-sm font-semibold text-muted-foreground">
-            ID: {"user_id" in data ? data.user_id : data.id}
+            {t("fields.id")}: {"user_id" in data ? data.user_id : data.id}
           </span>
           {!isPatient && (data as UserData).center_name && (
             <span className="text-sm text-muted-foreground">
-              Center: {(data as UserData).center_name}
+              {t("fields.center")}: {(data as UserData).center_name}
             </span>
           )}
         </div>
@@ -230,7 +269,7 @@ export default function EntityInfo({
                 {...form.register("note")}
                 rows={3}
                 disabled={isCreatingNote || isDeletingNote}
-                placeholder="New note"
+                placeholder={t("notePlaceholder")}
                 className="flex w-full min-h-12 rounded-md border border-input bg-background px-3 py-2 pr-12 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               />
               <Button
@@ -251,22 +290,24 @@ export default function EntityInfo({
         <Accordion type="single" collapsible className="mt-6">
           <AccordionItem value="sessions">
             <AccordionTrigger>
-              Notes ({data.notes?.length || 0})
+              {t("notes")} ({data.notes?.length || 0})
             </AccordionTrigger>
             <AccordionContent className="space-y-4">
               {data.notes.map((note, index) => (
                 <div key={note.id} className="p-3 pr-0 bg-muted/30 rounded-lg">
                   <div className="flex justify-between items-center">
                     <span className="text-md font-medium text-muted-foreground">
-                      {new Date(note.date).toLocaleDateString()} - Note{" "}
+                      {new Date(note.date).toLocaleDateString()} - {t("note")}{" "}
                       {data.notes!.length - index}
                     </span>
                     <ActionDialog
-                      title={`Delete - Note ${data.notes!.length - index}`}
-                      description="Are you sure you want to delete this note?"
+                      title={`${t("deleteNote")} - ${t("note")} ${
+                        data.notes!.length - index
+                      }`}
+                      description={t("confirmDelete")}
                       onConfirm={() => handleDeleteNoteClick(note.id)}
-                      confirmLabel="Delete"
-                      cancelLabel="Cancel"
+                      confirmLabel={t("deleteNote")}
+                      cancelLabel={t("cancel")}
                     />
                   </div>
                   <p className="text-md max-w-4xl">{note.note}</p>

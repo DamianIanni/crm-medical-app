@@ -1,28 +1,33 @@
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
+
+type Role = 'admin' | 'manager' | 'employee';
 
 interface RoleBadgeProps {
-  role: 'admin' | 'manager' | 'employee' | string;
+  role: Role | string;
   className?: string;
 }
 
 export function RoleBadge({ role, className }: RoleBadgeProps) {
+  const t = useTranslations('Badges.roles');
+  
   const roleConfig = {
     admin: {
-      label: 'Admin',
+      label: t('admin'),
       className: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
     },
     manager: {
-      label: 'Manager',
+      label: t('manager'),
       className: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
     },
     employee: {
-      label: 'Employee',
+      label: t('employee'),
       className: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
     },
   };
 
-  const config = roleConfig[role as keyof typeof roleConfig] || {
-    label: role.charAt(0).toUpperCase() + role.slice(1),
+  const config = roleConfig[role as Role] || {
+    label: role,
     className: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400',
   };
 

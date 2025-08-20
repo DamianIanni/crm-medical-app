@@ -2,9 +2,9 @@
 
 import DashboardPageWrapper from "@/components/wrappers/dashboardPageWrapper";
 import { DataTable } from "@/components/tables/dataTable";
-import { managerPatientsColumns } from "@/constants/tables/patients/managerColumns";
-import { adminPatientsColumns } from "@/constants/tables/patients/adminColumns";
-import { employeePatientsColumns } from "@/constants/tables/patients/employeeColumns";
+import { useManagerPatientsColumns } from "@/constants/tables/patients/managerColumns";
+import { useAdminPatientsColumns } from "@/constants/tables/patients/adminColumns";
+import { useEmployeePatientsColumns } from "@/constants/tables/patients/employeeColumns";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useGetPatients } from "@/hooks/patient/usePatient";
 import { AlertMessage } from "@/components/feedback/AlertMessage";
@@ -15,6 +15,9 @@ import { useDeleteState } from "@/components/providers/ContextProvider";
 export default function PatientsPage() {
   const { user } = useAuth();
   const { isDeleting } = useDeleteState();
+  const adminPatientsColumns = useAdminPatientsColumns();
+  const employeePatientsColumns = useEmployeePatientsColumns();
+  const managerPatientsColumns = useManagerPatientsColumns();
 
   // Retrieve selected center ID from sessionStorage
   const center_id = sessionStorage.getItem("selectedCenterId");

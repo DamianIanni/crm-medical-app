@@ -1,6 +1,8 @@
 "use client";
 
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 import {
   LogOut,
   Settings,
@@ -8,8 +10,11 @@ import {
   Bell,
   SunIcon,
   MoonIcon,
+  Globe,
+  Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,9 +26,26 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/components/providers/AuthProvider";
+import Cookies from "js-cookie";
+import { cn } from "@/lib/utils";
 
-export function AccountActions() {
+interface AccountActionsProps {
+  fullWidth?: boolean;
+}
+
+export function AccountActions({ fullWidth = false }: AccountActionsProps) {
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
+  // const pathname = usePathname();
+  const locale = useLocale();
+  const t = useTranslations("AccountActions");
+
+  function changeLanguage(lang: string) {
+    if (lang === locale) return;
+    Cookies.set("NEXT_LOCALE", lang, { expires: 365 });
+    router.refresh();
+  }
+
   const { user, logout } = useAuth();
 
   const getInitials = (name: string, lastname: string) => {
@@ -45,7 +67,10 @@ export function AccountActions() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative h-8 w-8 rounded-full hover:bg-accent/50"
+          className={cn(
+            "relative h-12  hover:bg-accent/50 ",
+            fullWidth ? "w-full justify-start px-3 gap-3" : "w-8"
+          )}
         >
           <Avatar className="h-8 w-8">
             <AvatarImage />
@@ -53,6 +78,14 @@ export function AccountActions() {
               {getInitials(user.first_name, user.last_name)}
             </AvatarFallback>
           </Avatar>
+          {fullWidth && (
+            <span className="text-sm flex flex-col items-start font-medium truncate">
+              {user.first_name} {user.last_name}
+              <span className="text-xs font-normal text-muted-foreground">
+                {user.email}
+              </span>
+            </span>
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -84,21 +117,43 @@ export function AccountActions() {
             onSelect={(e) => e.preventDefault()}
           >
             <Settings className="mr-2 h-4 w-4" />
-            <span className="font-bold">Account</span>
+            <span className="font-bold">{t("account")}</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             className="hover:cursor-pointer"
             onSelect={(e) => e.preventDefault()}
           >
             <CreditCard className="mr-2 h-4 w-4" />
-            <span className="font-bold">Billing</span>
+            <span className="font-bold">{t("billing")}</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             className="hover:cursor-pointer"
             onSelect={(e) => e.preventDefault()}
           >
             <Bell className="mr-2 h-4 w-4" />
-            <span className="font-bold">Notifications</span>
+            <span className="font-bold">{t("notifications")}</span>
+          </DropdownMenuItem>
+          {/* Language selection */}
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
+            onSelect={(e) => e.preventDefault()}
+          >
+            <Globe className="mr-2 h-4 w-4" />
+            <span className="font-bold">{t("language")}</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="pl-8 hover:cursor-pointer"
+            onClick={() => changeLanguage("en")}
+          >
+            {locale === "en" && <Check className="mr-2 h-4 w-4" />}{" "}
+            {t("english")}
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="pl-8 hover:cursor-pointer"
+            onClick={() => changeLanguage("es")}
+          >
+            {locale === "es" && <Check className="mr-2 h-4 w-4" />}{" "}
+            {t("spanish")}
           </DropdownMenuItem>
           <DropdownMenuItem
             className="hover:cursor-pointer"
@@ -110,7 +165,7 @@ export function AccountActions() {
             ) : (
               <MoonIcon className="mr-2 h-4 w-4" />
             )}
-            <span className="font-bold">Theme</span>
+            <span className="font-bold">{t("theme")}</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
@@ -119,7 +174,7 @@ export function AccountActions() {
           onClick={handleLogout}
         >
           <LogOut className="mr-2 h-4 w-4" />
-          <span className="font-bold">Log out</span>
+          <span className="font-bold">{t("logOut")}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import { Bot, BookUser } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { NavMain } from "@/components/nav/nav-main";
-import { NavUser } from "@/components/nav/nav-user";
+import { AccountActions } from "@/components/nav/account-actions";
 import { TeamSwitcher } from "@/components/nav/team-switcher";
 import {
   Sidebar,
@@ -17,6 +18,7 @@ import { useAuth } from "../providers/AuthProvider";
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuth();
+  const t = useTranslations("AppSidebar");
 
   if (!user) return null;
 
@@ -24,17 +26,17 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     ...(user.role !== "employee"
       ? [
           {
-            title: "Team",
+            title: t("team.title"),
             isActive: true,
             url: "#",
             icon: Bot,
             items: [
               {
-                title: "Members",
+                title: t("team.members"),
                 url: "/dashboard/team",
               },
               {
-                title: "Add new member",
+                title: t("team.addMember"),
                 url: "/dashboard/team/new",
               },
             ],
@@ -42,17 +44,17 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         ]
       : []),
     {
-      title: "Patients",
+      title: t("patients.title"),
       url: "/dashboard/patients",
       icon: BookUser,
       isActive: true,
       items: [
         {
-          title: "Patients",
+          title: t("patients.all"),
           url: "/dashboard/patients",
         },
         {
-          title: "Add new patient",
+          title: t("patients.addNew"),
           url: "/dashboard/patients/new",
         },
       ],
@@ -68,14 +70,8 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={navItems} />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser
-          user={{
-            name: user.first_name,
-            lastname: user.last_name,
-            email: user.email,
-          }}
-        />
+      <SidebarFooter className="px-3 pb-3">
+        <AccountActions fullWidth />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

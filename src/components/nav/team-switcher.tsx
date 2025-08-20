@@ -10,6 +10,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Button } from "../ui/button";
 import {
   SidebarMenu,
@@ -25,6 +26,7 @@ import { ToastFeedback } from "../feedback/toastFeedback";
 import { ActionDialog } from "../feedback/actionDialog";
 
 export function TeamSwitcher() {
+  const t = useTranslations("TeamSwitcher");
   const { isMobile } = useSidebar();
   const { user } = useAuth();
   const {
@@ -136,16 +138,16 @@ export function TeamSwitcher() {
 
       ToastFeedback({
         type: "info",
-        title: "Left Center",
-        description: "You've successfully left the center.",
+        title: t("toast.leftCenter"),
+        description: t("toast.leftCenterDescription"),
       });
     }
 
     if (isErrorRejectInvitation) {
       ToastFeedback({
         type: "error",
-        title: "Error",
-        description: "Failed to leave center. Please try again.",
+        title: t("toast.error"),
+        description: t("toast.leaveCenterError"),
       });
     }
   };
@@ -160,7 +162,7 @@ export function TeamSwitcher() {
               "w-full justify-center md:justify-between cursor-pointer min-w-0",
               isOpen && "bg-sidebar-accent text-sidebar-accent-foreground"
             )}
-            title={selectedCenterName || "Select center"}
+            title={selectedCenterName || t("selectCenter")}
             onClick={toggleDropdown}
           >
             {showIconOnly ? (
@@ -174,7 +176,7 @@ export function TeamSwitcher() {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight min-w-0">
                   <span className="truncate font-medium">
-                    {selectedCenterName || "Select center"}
+                    {selectedCenterName || t("selectCenter")}
                   </span>
                 </div>
                 <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
@@ -192,7 +194,7 @@ export function TeamSwitcher() {
               )}
             >
               <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
-                Centers
+                {t("centers")}
               </div>
               <div
                 className="flex items-center gap-2 p-2 text-sm rounded-sm cursor-pointer hover:bg-accent hover:text-accent-foreground"
@@ -201,7 +203,7 @@ export function TeamSwitcher() {
                 <div className="flex size-6 items-center justify-center rounded-md">
                   <Building2 className="size-3.5 shrink-0" />
                 </div>
-                <span className="font-bold">Centers</span>
+                <span className="font-bold">{t("viewCenters")}</span>
               </div>
               <div
                 className="flex items-center gap-2 p-2 text-sm rounded-sm cursor-pointer hover:bg-accent hover:text-accent-foreground"
@@ -210,7 +212,7 @@ export function TeamSwitcher() {
                 <div className="flex size-6 items-center justify-center rounded-2xl border ">
                   <Plus className="size-4" />
                 </div>
-                <span className="font-bold">Add center</span>
+                <span className="font-bold">{t("addCenter")}</span>
               </div>
               <div className="h-px bg-border my-1" />
               {user?.role === "admin" ? (
@@ -221,22 +223,21 @@ export function TeamSwitcher() {
                   <div className="flex size-6 items-center justify-center rounded-md">
                     <Info className="size-4" />
                   </div>
-                  <span className="font-bold">Info Center</span>
+                  <span className="font-bold">{t("infoCenter")}</span>
                 </div>
               ) : (
                 <ActionDialog
-                  title="Leave Center?"
-                  description="Are you sure you want to leave this center? This action cannot be undone."
+                  title={t("leaveCenterTitle")}
+                  description={t("leaveCenterDescription")}
                   onConfirm={handleLeaveCenter}
-                  confirmLabel="Leave Center"
+                  confirmLabel={t("leaveCenter")}
                 >
-                  {/* Le pasamos un botón normal como activador (children) */}
                   <Button
                     variant="ghost"
                     className="w-full justify-start p-2 text-sm font-bold text-destructive hover:bg-red-500 hover:text-white"
                   >
                     <Trash2 className="size-4" />
-                    Leave Center
+                    {t("leaveCenter")}
                   </Button>
                 </ActionDialog>
               )}

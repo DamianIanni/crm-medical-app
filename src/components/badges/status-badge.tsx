@@ -1,32 +1,37 @@
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
+
+type Status = 'active' | 'inactive' | 'pending' | 'blocked';
 
 interface StatusBadgeProps {
-  status: 'active' | 'pending' | 'inactive' | 'invited' | string;
+  status: Status | string;
   className?: string;
 }
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {
+  const t = useTranslations('Badges.status');
+  
   const statusConfig = {
     active: {
-      label: 'Active',
+      label: t('active'),
       className: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
     },
+    inactive: {
+      label: t('inactive'),
+      className: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400',
+    },
     pending: {
-      label: 'Pending',
+      label: t('pending'),
       className: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
     },
-    invited: {
-      label: 'Invited',
-      className: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-    },
-    inactive: {
-      label: 'Inactive',
-      className: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400',
+    blocked: {
+      label: t('blocked'),
+      className: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
     },
   };
 
-  const config = statusConfig[status as keyof typeof statusConfig] || {
-    label: status.charAt(0).toUpperCase() + status.slice(1),
+  const config = statusConfig[status as Status] || {
+    label: status,
     className: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400',
   };
 
