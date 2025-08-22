@@ -137,8 +137,7 @@ export function useCreateNote(patientId: string) {
   const t = useTranslations("Feedback.Patient");
   const invalidate = useInvalidateQuery(["patient"]);
   return useMutation({
-    mutationFn: (data: { note: string }) =>
-      createPatientNote(patientId, data.note),
+    mutationFn: (data: { note: string }) => createPatientNote(patientId, data),
     onSuccess: () => {
       invalidate();
       ToastFeedback({

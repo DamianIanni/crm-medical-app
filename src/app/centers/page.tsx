@@ -59,12 +59,12 @@ export default function CentersPage() {
               <input
                 type="text"
                 placeholder={t("searchPlaceholder")}
-                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="h-10 w-full pl-10 pr-4 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <svg
-                className="absolute left-3 top-2.5 h-5 w-5 text-gray-400"
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -79,7 +79,7 @@ export default function CentersPage() {
               </svg>
             </div>
           </div>
-          <Button onClick={handleAddCenter}>{t("addCenter")}</Button>
+          <Button className="h-10" onClick={handleAddCenter}>{t("addCenter")}</Button>
         </div>
 
         {(isPending || isFetching) && <CentersSkeleton isMobile={isMobile} />}

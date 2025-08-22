@@ -165,6 +165,11 @@ export default function Actions({
             cancelLabel={t("cancel")}
             onConfirm={onDelete}
             variant="delete"
+            triggerProps={{
+              variant: "outline",
+              size: "sm",
+              className: "text-destructive hover:text-destructive",
+            }}
           />
         </GeneralTooltip>
       )}

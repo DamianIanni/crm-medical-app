@@ -39,6 +39,9 @@ type AuthContextType = {
   isErrorRejectInvitation: boolean;
   isSuccessAcceptInvitation: boolean;
   isSuccessRejectInvitation: boolean;
+  isUserPending: boolean;
+  isUserFetching: boolean;
+  isErrorUser: boolean;
 };
 
 // Create authentication context with undefined default value
@@ -50,7 +53,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
 
   // Query to get current user information
-  const { data: user, isLoading } = useQuery({
+  const {
+    data: user,
+    isLoading,
+    isError: isErrorUser,
+    isPending: isUserPending,
+    isFetching: isUserFetching,
+  } = useQuery({
     queryKey: ["me"],
     queryFn: getCurrentUser,
     retry: false,
@@ -66,7 +75,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isPending: isLoginPending,
   } = useMutation({
     mutationFn: (credentials: LoginBody) => login(credentials),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["me"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["me"] });
+      console.log("Login successful");
+    },
   });
 
   const loginHandler = async (credentials: LoginBody): Promise<boolean> => {
@@ -160,6 +172,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         //User
         user: user as User | null,
+        isUserPending,
+        isUserFetching,
+        isErrorUser,
         //login
         login: loginHandler,
         register: registerUser,

@@ -47,7 +47,11 @@
     "signupLink": "Sign up",
     "invalidCredentialsTitle": "Unable to login",
     "invalidCredentialsDescription": "Please check your credentials and try again.",
-    "invalidCredentialsData": ["Check your email", "Check your password"]
+    "invalidCredentialsData": [
+      "Check your email",
+      "Check your password"
+    ],
+    "forgotPasswordLink": "Forgot password?"
   },
   "RegisterForm": {
     "title": "Create your account",
@@ -70,6 +74,17 @@
       "Password must be at least 6 characters",
       "Passwords must match"
     ]
+  },
+  "Account": {
+    "ProfileForm": {
+      "title": "Profile",
+      "description": "This is how others will see you on the site.",
+      "firstNameLabel": "First Name",
+      "lastNameLabel": "Last Name",
+      "saveButton": "Update profile"
+    },
+    "updateSuccess": "Profile updated successfully.",
+    "updateError": "Failed to update profile."
   },
   "AccountActions": {
     "account": "Account",
@@ -273,6 +288,36 @@
     "center": "Center",
     "teamMember": "Team member"
   },
+  "AccountPage": {
+    "title": "Account Settings",
+    "description": "Manage your account information and settings.",
+    "profileSection": "Profile Information",
+    "backButton": "Back to Dashboard",
+    "errorTitle": "Error loading account",
+    "errorDescription": "There was a problem loading your account information. Please try again later.",
+    "errorButton": "Retry"
+  },
+  "ProfileForm": {
+    "title": "Profile",
+    "description": "Update your personal information.",
+    "firstNameLabel": "First name",
+    "lastNameLabel": "Last name",
+    "emailLabel": "Email",
+    "saveButton": "Save changes",
+    "saving": "Saving...",
+    "cancelButton": "Cancel",
+    "deleteAccount": {
+      "title": "Delete Account",
+      "description": "Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.",
+      "button": "Delete Account"
+    }
+  },
+  "toast": {
+    "updateSuccess": "Profile updated successfully",
+    "updateError": "Failed to update profile",
+    "deleteSuccess": "Account deleted successfully",
+    "deleteError": "Failed to delete account"
+  },
   "ValidationErrors": {
     "emailRequired": "Email is required",
     "emailInvalid": "Please enter a valid email",
@@ -287,6 +332,9 @@
     "centerAddressRequired": "Center address is required",
     "memberEmailRequired": "Member email is required",
     "memberEmailInvalid": "Please enter a valid email for the member",
+    "memberFirstNameRequired": "Member first name is required",
+    "memberLastNameRequired": "Member last name is required",
+    "memberRoleRequired": "Member role is required",
     "patientFirstNameRequired": "Patient first name is required",
     "patientFirstNameMin2": "Patient first name must be at least 2 characters",
     "patientLastNameRequired": "Patient last name is required",
@@ -296,10 +344,14 @@
     "patientPhoneRequired": "Patient phone number is required",
     "patientPhoneInvalid": "Please enter a valid phone number for the patient",
     "patientDobPast": "Patient date of birth must be in the past",
-    "noteContentRequired": "Note content is required"
+    "userFirstNameRequired": "User first name is required",
+    "userLastNameRequired": "User last name is required",
+    "noteContentRequired": "Note content is required",
+    "firstNameRequired": "First name is required",
+    "lastNameRequired": "Last name is required"
   },
   "AlertMessage": {
-    "errors": {
+    "error": {
       "title": "Error",
       "description": "The following errors occurred:",
       "defaultTitle": "Something went wrong",
@@ -380,5 +432,30 @@
       "title": "Error",
       "description": "An error occurred while processing your request. Please try again."
     }
+  },
+  "ForgotPasswordPage": {
+    "title": "Forgot your password?",
+    "emailLabel": "Email",
+    "submitButton": "Send reset link",
+    "sending": "Sending...",
+    "successTitle": "Reset link sent to {email}",
+    "successDescription": "We've emailed you a link to reset your password.",
+    "backToLogin": "Back to login",
+    "resendEmail": "Resend email",
+    "noEmailReceived": "Didn't receive an email?",
+    "errorTitle": "Failed to send email",
+    "errorDescription": "Please try again later."
+  },
+  "ResetPasswordPage": {
+    "title": "Reset your password",
+    "passwordLabel": "New Password",
+    "confirmPasswordLabel": "Confirm New Password",
+    "submitButton": "Reset Password",
+    "resetting": "Resetting...",
+    "successTitle": "Password reset successful",
+    "successDescription": "Your password has been reset successfully. You can now log in with your new password.",
+    "goToLogin": "Go to Login",
+    "errorTitle": "Failed to reset password",
+    "errorDescription": "The password reset link may have expired or is invalid. Please request a new one."
   }
 }

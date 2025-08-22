@@ -50,7 +50,8 @@
     "invalidCredentialsData": [
       "Verifica tu correo electrónico",
       "Verifica tu contraseña"
-    ]
+    ],
+    "forgotPasswordLink": "¿Olvidaste tu contraseña?"
   },
   "RegisterForm": {
     "title": "Crea tu cuenta",
@@ -73,6 +74,17 @@
       "La contraseña debe tener al menos 6 caracteres",
       "Las contraseñas deben coincidir"
     ]
+  },
+  "Account": {
+    "ProfileForm": {
+      "title": "Perfil",
+      "description": "Así es como te verán los demás en el sitio.",
+      "firstNameLabel": "Nombre",
+      "lastNameLabel": "Apellido",
+      "saveButton": "Actualizar perfil"
+    },
+    "updateSuccess": "Perfil actualizado con éxito.",
+    "updateError": "Error al actualizar el perfil."
   },
   "AccountActions": {
     "account": "Cuenta",
@@ -277,6 +289,30 @@
     "center": "Centro",
     "teamMember": "Miembro del equipo"
   },
+  "AccountPage": {
+    "title": "Configuración de la cuenta",
+    "description": "Administra la información y configuración de tu cuenta.",
+    "profileSection": "Información del perfil",
+    "backButton": "Volver al panel",
+    "errorTitle": "Error al cargar la cuenta",
+    "errorDescription": "Hubo un problema al cargar la información de tu cuenta. Por favor, inténtalo de nuevo más tarde.",
+    "errorButton": "Reintentar"
+  },
+  "ProfileForm": {
+    "title": "Perfil",
+    "description": "Actualiza tu información personal.",
+    "firstNameLabel": "Nombre",
+    "lastNameLabel": "Apellido",
+    "emailLabel": "Correo electrónico",
+    "saveButton": "Guardar cambios",
+    "saving": "Guardando...",
+    "cancelButton": "Cancelar",
+    "deleteAccount": {
+      "title": "Eliminar Cuenta",
+      "description": "¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer y todos tus datos se eliminarán permanentemente.",
+      "button": "Eliminar Cuenta"
+    }
+  },
   "ValidationErrors": {
     "emailRequired": "El correo electrónico es obligatorio",
     "emailInvalid": "Ingresa un correo electrónico válido",
@@ -305,10 +341,18 @@
     "patientDobPast": "La fecha de nacimiento del paciente debe ser en el pasado",
     "noteContentRequired": "El contenido de la nota es obligatorio",
     "userFirstNameRequired": "El nombre de usuario es obligatorio",
-    "userLastNameRequired": "El apellido de usuario es obligatorio"
+    "userLastNameRequired": "El apellido de usuario es obligatorio",
+    "firstNameRequired": "El nombre es obligatorio",
+    "lastNameRequired": "El apellido es obligatorio"
+  },
+  "toast": {
+    "updateSuccess": "Perfil actualizado correctamente",
+    "updateError": "Error al actualizar el perfil",
+    "deleteSuccess": "Cuenta eliminada correctamente",
+    "deleteError": "Error al eliminar la cuenta"
   },
   "AlertMessage": {
-    "errors": {
+    "error": {
       "title": "Error",
       "description": "Ocurrieron los siguientes errores:",
       "defaultTitle": "Algo salió mal",
@@ -389,5 +433,30 @@
       "title": "Error",
       "description": "Ocurrió un error al procesar tu solicitud. Por favor, inténtalo de nuevo."
     }
+  },
+  "ForgotPasswordPage": {
+    "title": "¿Olvidaste tu contraseña?",
+    "emailLabel": "Correo electrónico",
+    "submitButton": "Enviar enlace de restablecimiento",
+    "sending": "Enviando...",
+    "successTitle": "Enlace enviado a {email}",
+    "successDescription": "Te hemos enviado un correo con el enlace para restablecer tu contraseña.",
+    "backToLogin": "Volver al inicio de sesión",
+    "resendEmail": "Reenviar correo",
+    "noEmailReceived": "¿No recibiste el correo?",
+    "errorTitle": "No se pudo enviar el correo",
+    "errorDescription": "Por favor, inténtalo de nuevo más tarde."
+  },
+  "ResetPasswordPage": {
+    "title": "Restablecer contraseña",
+    "passwordLabel": "Nueva contraseña",
+    "confirmPasswordLabel": "Confirmar nueva contraseña",
+    "submitButton": "Restablecer contraseña",
+    "resetting": "Restableciendo...",
+    "successTitle": "Contraseña restablecida",
+    "successDescription": "Tu contraseña ha sido restablecida correctamente. Ahora puedes iniciar sesión con tu nueva contraseña.",
+    "goToLogin": "Ir a Iniciar sesión",
+    "errorTitle": "Error al restablecer la contraseña",
+    "errorDescription": "El enlace de restablecimiento puede haber expirado o no es válido. Por favor, solicita uno nuevo."
   }
 }

@@ -77,6 +77,7 @@ export default function EntityInfo({
   // Wrapper functions that check if we have a patient ID before proceeding
   const handleCreateNote = (values: NoteFormValues) => {
     if (!patientId || !data || !isPatientData(data)) return;
+    console.log(values);
 
     createNote(values, {
       onSuccess: () => {

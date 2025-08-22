@@ -6,9 +6,12 @@ type Role = (typeof roles)[number];
 
 export const getMemberSchema = (t: (key: string) => string) =>
   z.object({
-    email: z.string().min(1, t("memberEmailRequired")).email(t("memberEmailInvalid")),
-    first_name: z.string().min(1, t("memberFirstNameRequired")),
-    last_name: z.string().min(1, t("memberLastNameRequired")),
+    email: z
+      .string()
+      .min(1, t("memberEmailRequired"))
+      .email(t("memberEmailInvalid")),
+    // first_name: z.string().min(1, t("memberFirstNameRequired")),
+    // last_name: z.string().min(1, t("memberLastNameRequired")),
     role: z.enum(roles, { required_error: t("memberRoleRequired") }),
   });
 

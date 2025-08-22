@@ -6,7 +6,7 @@ import { UserRole } from "@/types/user";
 export const centerService = {
   getAll: async (): Promise<Center[]> => {
     return request<Center[]>({
-      url: "center/center-actions/all-centers",
+      url: "center-selection/all-centers",
       method: "GET",
     });
   },

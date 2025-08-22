@@ -70,10 +70,10 @@ export default function middleware(req: NextRequest) {
 
   // 2. Define las rutas públicas y la ruta de selección de contexto
   const publicRoutes = ["/login", "/register", "/forgot-password"];
-  const contextSelectionRoute = "/centers";
+  const semiProtectedRoutes = ["/centers", "/account"];
 
   // --- LÓGICA PARA RUTAS PÚBLICAS ---
-  if (publicRoutes.includes(pathname)) {
+  if (publicRoutes.some((p) => pathname.startsWith(p))) {
     // Si el usuario ya tiene una sesión completa, no debe estar aquí.
     if (sessionToken) {
       const url = req.nextUrl.clone();
@@ -82,24 +82,24 @@ export default function middleware(req: NextRequest) {
     }
     // Si solo tiene un token temporal, está a mitad del login.
     if (tempToken) {
-      const url = req.nextUrl.clone();
-      url.pathname = contextSelectionRoute; // Lo mandamos a seleccionar contexto
-      return NextResponse.redirect(url);
+      // const url = req.nextUrl.clone();
+      // url.pathname = contextSelectionRoute; // Lo mandamos a seleccionar contexto
+      // return NextResponse.redirect(url);
+      return NextResponse.redirect(new URL("/centers", req.url));
     }
     // Si no tiene ningún token, puede quedarse en la ruta pública.
     return NextResponse.next();
   }
 
   // --- LÓGICA PARA LA RUTA DE SELECCIÓN DE CONTEXTO (CORREGIDA) ---
-  if (pathname.startsWith(contextSelectionRoute)) {
-    // La única condición para NO estar aquí es no tener NINGÚN token.
+  if (semiProtectedRoutes.some((p) => pathname.startsWith(p))) {
+    // La única condición para NO estar aquí es no tener NINGÚN token
     if (!tempToken && !sessionToken) {
-      return NextResponse.redirect(new URL("/login", req.url));
+      const loginUrl = new URL("/login", req.url);
+      loginUrl.searchParams.set("from", pathname);
+      return NextResponse.redirect(loginUrl);
     }
-
-    // El 'if (sessionToken) { ... }' que estaba aquí se ha ELIMINADO.
-    // Si el usuario tiene un tempToken O un sessionToken, se le permite
-    // acceder a esta página para que pueda elegir/cambiar su contexto.
+    // Si tiene cualquier token, se le permite el acceso
     return NextResponse.next();
   }
 

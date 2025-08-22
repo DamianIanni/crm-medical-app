@@ -56,3 +56,18 @@ export async function rejectInvitation(center_id: string) {
     method: "POST",
   });
 }
+
+export async function sendResetPasswordEmail(email: string) {
+  return request({
+    url: `/auth/forgot-password`,
+    method: "POST",
+    data: { email },
+  });
+}
+export async function resetPassword(token: string, password: string) {
+  return request({
+    url: `/auth/reset-password/${token}`,
+    method: "POST",
+    data: { password },
+  });
+}

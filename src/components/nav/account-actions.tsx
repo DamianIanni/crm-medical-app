@@ -6,8 +6,8 @@ import { useLocale } from "next-intl";
 import {
   LogOut,
   Settings,
-  CreditCard,
-  Bell,
+  // CreditCard,
+  // Bell,
   SunIcon,
   MoonIcon,
   Globe,
@@ -114,12 +114,15 @@ export function AccountActions({ fullWidth = false }: AccountActionsProps) {
         <DropdownMenuGroup>
           <DropdownMenuItem
             className="hover:cursor-pointer"
-            onSelect={(e) => e.preventDefault()}
+            onSelect={(e) => {
+              router.push("/account");
+              e.preventDefault();
+            }}
           >
             <Settings className="mr-2 h-4 w-4" />
             <span className="font-bold">{t("account")}</span>
           </DropdownMenuItem>
-          <DropdownMenuItem
+          {/* <DropdownMenuItem
             className="hover:cursor-pointer"
             onSelect={(e) => e.preventDefault()}
           >
@@ -132,7 +135,7 @@ export function AccountActions({ fullWidth = false }: AccountActionsProps) {
           >
             <Bell className="mr-2 h-4 w-4" />
             <span className="font-bold">{t("notifications")}</span>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           {/* Language selection */}
           <DropdownMenuItem
             className="hover:cursor-pointer"

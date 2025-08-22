@@ -37,7 +37,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   // Get authentication functions and state from auth context
-  const { login, isLoginPending, isErrorLogin } = useAuth();
+  const { login, isLoginPending, isErrorLogin, isSuccessLogin } = useAuth();
   const router = useRouter();
   const t = useTranslations("LoginForm");
   const v = useTranslations("ValidationErrors");
@@ -60,25 +60,25 @@ export function LoginForm({
   };
 
   /**
-   * Navigates user to the intended page after successful login
-   */
-  function navigateToSelectCenters() {
-    // const searchParams = new URLSearchParams(window.location.search);
-    // const from = searchParams.get("from") || "/centers";
-    router.replace("/centers");
-  }
-
-  /**
    * Handles form submission for email/password login
    *
    * @param values - Form values containing email and password
    */
   async function onSubmit(values: LoginFormValues) {
-    const res = await login(values);
-    if (res) {
-      navigateToSelectCenters();
+    // 'login' es la función que definiste en el AuthProvider
+    // que devuelve 'true' si tiene éxito y 'false' si falla
+    const loginSuccess = await login(values);
+
+    console.log("Login success:", loginSuccess);
+    // ¡AQUÍ ESTÁ LA LÓGICA CLAVE!
+    // Si la función 'login' se resolvió a 'true', entonces navega.
+    if (loginSuccess) {
+      console.log("Login successful");
+      router.replace("/centers");
     } else {
-      console.log("Login failed");
+      // El estado 'isErrorLogin' ya se encargará de mostrar el AlertMessage,
+      // pero aquí puedes hacer un log si quieres.
+      console.log("Login failed, not redirecting.");
     }
   }
 
@@ -153,6 +153,19 @@ export function LoginForm({
                     {t("loginButton")}
                   </Button>
                 )}
+                {/* Forgot password link */}
+                <div className="text-center text-sm">
+                  <Link
+                    href="/forgot-password"
+                    className={cn(
+                      "underline underline-offset-4 hover:text-primary",
+                      isLoginPending &&
+                        "pointer-events-none text-muted-foreground opacity-50"
+                    )}
+                  >
+                    {t("forgotPasswordLink")}
+                  </Link>
+                </div>
                 {/* Register link */}
                 <div className="text-center text-sm">
                   {t("signupPrompt")}{" "}
