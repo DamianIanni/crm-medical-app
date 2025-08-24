@@ -23,7 +23,7 @@ export const useManagerPatientsColumns = (): ColumnDef<Patient>[] => {
       header: t("email"),
     },
     {
-      accessorKey: "phoneNumber",
+      accessorKey: "phone",
       header: t("phone"),
     },
     {

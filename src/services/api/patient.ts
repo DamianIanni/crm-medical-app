@@ -18,10 +18,19 @@ export async function createPatient(data: PatientPayload) {
   });
 }
 
-export async function getAllPatients() {
+export async function getAllPatients(
+  page: number,
+  limit: number,
+  searchTerm: string
+) {
   return request({
     url: `/center/patients/all`,
     method: "GET",
+    params: {
+      page,
+      limit,
+      searchTerm,
+    },
   });
 }
 

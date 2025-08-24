@@ -47,6 +47,13 @@
     "signupLink": "Regístrate",
     "invalidCredentialsTitle": "No se pudo iniciar sesión",
     "invalidCredentialsDescription": "Por favor verifica tus credenciales e inténtalo de nuevo.",
+    "demoAccount": {
+      "title": "Cuenta de Demostración",
+      "description": "Utiliza estas credenciales para explorar la aplicación.",
+      "email": "Correo electrónico:",
+      "password": "Contraseña:",
+      "note": "Nota: La base de datos se reinicia automáticamente cada 15 minutos."
+    },
     "invalidCredentialsData": [
       "Verifica tu correo electrónico",
       "Verifica tu contraseña"

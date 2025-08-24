@@ -88,13 +88,14 @@ export function useCreateCenter() {
 }
 
 export function useSelectCenter() {
-  // const invalidate = useInvalidateQuery(["allCenters"]);
+  const invalidate = useInvalidateQuery(["allCenters"]);
   const router = useRouter();
   const invalidateUser = useInvalidateQuery(["me"]);
   return useMutation<void, Error, { center_id: string; role: UserRole }>({
     mutationFn: ({ center_id, role }) =>
       centerService.selectCenter(center_id, role),
     onSuccess: () => {
+      invalidate();
       invalidateUser();
       router.replace("/dashboard");
     },
