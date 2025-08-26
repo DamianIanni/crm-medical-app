@@ -1,5 +1,5 @@
 // src/services/api/auth.ts
-import { request } from "./http";
+import api from "./http";
 
 export interface RegisterBody {
   firstName: string;
@@ -13,61 +13,34 @@ export interface LoginBody {
   password: string;
 }
 
-export async function register(data: RegisterBody) {
-  return request({
-    url: "/auth/register",
-    method: "POST",
-    data,
-  });
-}
+export const register = (data: RegisterBody) => {
+  return api.post("/auth/register", data);
+};
 
-export async function login(data: LoginBody) {
-  return request({
-    url: "/auth/login",
-    method: "POST",
-    data,
-  });
-}
+export const login = (data: LoginBody) => {
+  return api.post("/auth/login", data);
+};
 
-export async function getCurrentUser() {
-  return request({
-    url: "/account/me",
-    method: "GET",
-  });
-}
+export const getCurrentUser = () => {
+  return api.get("/account/me");
+};
 
-export async function userLogout() {
-  return request({
-    url: "/auth/logout",
-    method: "POST",
-  });
-}
+export const userLogout = () => {
+  return api.post("/auth/logout");
+};
 
-export async function acceptInvitation(center_id: string) {
-  return request({
-    url: `/account/accept/${center_id}`,
-    method: "POST",
-  });
-}
+export const acceptInvitation = (center_id: string) => {
+  return api.post(`/account/accept/${center_id}`);
+};
 
-export async function rejectInvitation(center_id: string) {
-  return request({
-    url: `/account/reject/${center_id}`,
-    method: "POST",
-  });
-}
+export const rejectInvitation = (center_id: string) => {
+  return api.post(`/account/reject/${center_id}`);
+};
 
-export async function sendResetPasswordEmail(email: string) {
-  return request({
-    url: `/auth/forgot-password`,
-    method: "POST",
-    data: { email },
-  });
-}
-export async function resetPassword(token: string, password: string) {
-  return request({
-    url: `/auth/reset-password/${token}`,
-    method: "POST",
-    data: { password },
-  });
-}
+export const sendResetPasswordEmail = (email: string) => {
+  return api.post(`/auth/forgot-password`, { email });
+};
+
+export const resetPassword = (token: string, password: string) => {
+  return api.post(`/auth/reset-password/${token}`, { password });
+};

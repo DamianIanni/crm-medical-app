@@ -1,19 +1,12 @@
-import { request } from "./http";
+import api from "./http";
 
-export async function deleteAccount() {
-  return request({
-    url: `/account/me`,
-    method: "DELETE",
-  });
-}
+export const deleteAccount = () => {
+  return api.delete(`/account/me`);
+};
 
-export async function updateAccount(
+export const updateAccount = (
   userId: string,
   updated: { first_name?: string; last_name?: string }
-) {
-  return request({
-    url: `/account/me`,
-    method: "PATCH",
-    data: { ...updated, user_id: userId },
-  });
-}
+) => {
+  return api.patch(`/account/me`, { ...updated, user_id: userId });
+};

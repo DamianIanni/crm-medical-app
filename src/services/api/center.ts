@@ -1,52 +1,30 @@
 // src/services/api/center.ts
-import { request } from "./http";
+import api from "./http";
 import { Center } from "@/types/center";
 import { UserRole } from "@/types/user";
 
 export const centerService = {
-  getAll: async (): Promise<Center[]> => {
-    return request<Center[]>({
-      url: "center-selection/all-centers",
-      method: "GET",
-    });
+  getAll: () => {
+    return api.get<Center[]>("center-selection/all-centers");
   },
 
-  getById: async (): Promise<Center> => {
-    return request<Center>({
-      url: `center/center-actions/me`,
-      method: "GET",
-    });
+  getById: () => {
+    return api.get<Center>(`center/center-actions/me`);
   },
 
-  create: async (center: Omit<Center, "id">): Promise<Center> => {
-    return request<Center>({
-      url: "center/center-actions",
-      method: "POST",
-      data: center,
-    });
+  create: (center: Omit<Center, "id">) => {
+    return api.post<Center>("center/center-actions", center);
   },
 
-  update: async (id: string, center: Partial<Center>): Promise<Center> => {
-    return request<Center>({
-      url: `center/center-actions/${id}`,
-      method: "PATCH",
-      data: center,
-    });
+  update: (id: string, center: Partial<Center>) => {
+    return api.patch<Center>(`center/center-actions/${id}`, center);
   },
 
-  delete: async (id: string): Promise<void> => {
-    return request<void>({
-      url: `center/center-actions/${id}`,
-      method: "DELETE",
-    });
+  delete: (id: string) => {
+    return api.delete<void>(`center/center-actions/${id}`);
   },
 
-  selectCenter: async (center_id: string, role: UserRole): Promise<void> => {
-    const center = { center_id, role };
-    return request<void>({
-      url: `center-selection`,
-      method: "POST",
-      data: center,
-    });
+  selectCenter: (center_id: string, role: UserRole) => {
+    return api.post<void>(`center-selection`, { center_id, role });
   },
 };

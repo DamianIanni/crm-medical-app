@@ -1,34 +1,20 @@
 // src/services/api/notes.ts
-import { request } from "./http";
+import api from "./http";
 import { NewNotePayload } from "@/hooks/patient/usePatient";
 
-export async function createPatientNote(
-  patientId: string,
-  data: NewNotePayload
-) {
+export const createPatientNote = (patientId: string, data: NewNotePayload) => {
   console.log("NOTES", data);
-  return request({
-    url: `center/patients/${patientId}/notes`,
-    method: "POST",
-    data,
-  });
-}
+  return api.post(`center/patients/${patientId}/notes`, data);
+};
 
-export async function updatePatientNote(
+export const updatePatientNote = (
   patientId: string,
   noteId: string,
   data: NewNotePayload
-) {
-  return request({
-    url: `center/patients/${patientId}/notes/${noteId}`,
-    method: "PATCH",
-    data,
-  });
-}
+) => {
+  return api.patch(`center/patients/${patientId}/notes/${noteId}`, data);
+};
 
-export async function deletePatientNote(patientId: string, noteId: string) {
-  return request({
-    url: `center/patients/${patientId}/notes/${noteId}`,
-    method: "DELETE",
-  });
-}
+export const deletePatientNote = (patientId: string, noteId: string) => {
+  return api.delete(`center/patients/${patientId}/notes/${noteId}`);
+};

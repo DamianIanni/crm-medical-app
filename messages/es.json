@@ -465,5 +465,127 @@
     "goToLogin": "Ir a Iniciar sesión",
     "errorTitle": "Error al restablecer la contraseña",
     "errorDescription": "El enlace de restablecimiento puede haber expirado o no es válido. Por favor, solicita uno nuevo."
+  },
+  "Errors": {
+    "titles": {
+      "critical": "Error Crítico",
+      "high": "Error",
+      "medium": "Error",
+      "low": "Aviso"
+    },
+    "generic": {
+      "INTERNAL_SERVER_ERROR": "Ha ocurrido un error interno del servidor. Por favor, inténtelo de nuevo más tarde.",
+      "VALIDATION_FAILED": "Los datos enviados no son válidos. Por favor, revise la información.",
+      "RESOURCE_NOT_FOUND": "El recurso solicitado no se ha encontrado.",
+      "UNAUTHORIZED": "No tiene autorización para acceder a este recurso.",
+      "FORBIDDEN": "Acceso prohibido. No tiene permisos suficientes.",
+      "NETWORK_ERROR": "Error de conexión. Por favor, verifica tu conexión a internet.",
+      "TIMEOUT_ERROR": "La solicitud tardó demasiado tiempo. Por favor, inténtalo de nuevo.",
+      "UNKNOWN_ERROR": "Ha ocurrido un error inesperado. Por favor, inténtalo de nuevo."
+    },
+    "auth": {
+      "AUTH_INVALID_CREDENTIALS": "Email o contraseña incorrectos. Por favor, verifica tus credenciales.",
+      "AUTH_EMAIL_IN_USE": "Este email ya está registrado. ¿Intentaste iniciar sesión en su lugar?",
+      "AUTH_USER_NOT_FOUND": "No se encontró una cuenta con este email.",
+      "AUTH_PASSWORD_REQUIRED": "La contraseña es requerida.",
+      "AUTH_TOKEN_INVALID": "Token de autenticación inválido. Por favor, inicie sesión nuevamente.",
+      "AUTH_TOKEN_EXPIRED": "Su sesión ha expirado. Por favor, inicie sesión nuevamente.",
+      "AUTH_SESSION_INVALID": "Sesión inválida. Por favor, inicie sesión nuevamente.",
+      "AUTH_ACCESS_DENIED": "Acceso denegado. Se requiere autenticación."
+    },
+    "password": {
+      "PASSWORD_RESET_TOKEN_INVALID": "El token de restablecimiento de contraseña es inválido o ha expirado.",
+      "PASSWORD_RESET_TOKEN_EXPIRED": "El token de restablecimiento de contraseña ha expirado."
+    },
+    "center": {
+      "CENTER_NOT_FOUND": "Centro médico no encontrado.",
+      "CENTER_USER_NOT_MEMBER": "No eres miembro de este centro médico.",
+      "CENTER_INSUFFICIENT_PERMISSIONS": "No tienes permisos suficientes en este centro médico.",
+      "CENTER_USER_ALREADY_EXISTS": "El usuario ya existe en este centro médico.",
+      "CENTER_USER_NOT_EXISTS": "El usuario no existe en este centro médico.",
+      "CENTER_NO_ASSOCIATION": "Parece que no estás asociado a ningún centro médico. Contacta con tu administrador."
+    },
+    "patient": {
+      "PATIENT_NOT_FOUND": "Paciente no encontrado.",
+      "PATIENT_EMAIL_DUPLICATE": "Ya existe un paciente con este email en tu centro médico.",
+      "PATIENT_NOT_IN_CENTER": "El paciente no se encuentra en tu centro médico.",
+      "PATIENT_ACCESS_DENIED": "No tienes acceso a este paciente."
+    },
+    "user": {
+      "USER_NOT_FOUND": "Usuario no encontrado.",
+      "USER_ALREADY_EXISTS": "El usuario ya existe.",
+      "USER_INVALID_ROLE": "Rol de usuario inválido.",
+      "USER_INSUFFICIENT_PRIVILEGES": "Privilegios insuficientes."
+    },
+    "account": {
+      "ACCOUNT_NOT_FOUND": "Cuenta no encontrada.",
+      "ACCOUNT_UPDATE_FAILED": "Error al actualizar la cuenta."
+    },
+    "notes": {
+      "NOTE_NOT_FOUND": "Nota no encontrada.",
+      "NOTE_ACCESS_DENIED": "No tienes acceso a esta nota."
+    },
+    "validation": {
+      "EMAIL_REQUIRED": "El email es requerido.",
+      "EMAIL_INVALID": "El formato del email no es válido.",
+      "PASSWORD_TOO_SHORT": "La contraseña debe tener al menos 6 caracteres.",
+      "REQUIRED_FIELD_MISSING": "Hay campos requeridos que faltan por completar."
+    },
+    "permissions": {
+      "ROLE_INVALID": "Rol inválido.",
+      "ROLE_INSUFFICIENT": "Privilegios de rol insuficientes.",
+      "PERMISSION_DENIED": "Permiso denegado."
+    },
+    "fields": {
+      "email": {
+        "EMAIL_INVALID": "Formato de email inválido",
+        "EMAIL_REQUIRED": "El email es requerido",
+        "AUTH_EMAIL_IN_USE": "Este email ya está registrado",
+        "PATIENT_EMAIL_DUPLICATE": "Ya existe un paciente con este email"
+      },
+      "password": {
+        "PASSWORD_TOO_SHORT": "La contraseña debe tener al menos 6 caracteres",
+        "AUTH_INVALID_CREDENTIALS": "Contraseña incorrecta"
+      }
+    }
+  },
+  "Notifications": {
+    "auth": {
+      "loginSuccess": "Has iniciado sesión correctamente",
+      "loginSuccessTitle": "Bienvenido",
+      "logoutSuccess": "Has cerrado sesión correctamente",
+      "logoutSuccessTitle": "Sesión cerrada",
+      "sessionExpired": "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+      "passwordResetSent": "Te hemos enviado un email con instrucciones para restablecer tu contraseña.",
+      "passwordResetSuccess": "Tu contraseña ha sido restablecida correctamente."
+    },
+    "patients": {
+      "created": "Paciente creado correctamente",
+      "updated": "Información del paciente actualizada",
+      "deleted": "Paciente eliminado correctamente",
+      "noteAdded": "Nota agregada correctamente",
+      "noteUpdated": "Nota actualizada correctamente",
+      "noteDeleted": "Nota eliminada correctamente"
+    },
+    "users": {
+      "invited": "Invitación enviada correctamente",
+      "roleUpdated": "Rol de usuario actualizado",
+      "removed": "Usuario removido del centro"
+    },
+    "centers": {
+      "created": "Centro médico creado correctamente",
+      "updated": "Centro médico actualizado",
+      "selected": "Centro médico seleccionado"
+    },
+    "account": {
+      "updated": "Perfil actualizado correctamente",
+      "deleted": "Cuenta eliminada correctamente"
+    },
+    "general": {
+      "saved": "Guardado correctamente",
+      "loading": "Cargando...",
+      "offline": "Sin conexión a internet",
+      "online": "Conexión restablecida"
+    }
   }
 }

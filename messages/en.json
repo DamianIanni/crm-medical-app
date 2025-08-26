@@ -464,5 +464,127 @@
     "goToLogin": "Go to Login",
     "errorTitle": "Failed to reset password",
     "errorDescription": "The password reset link may have expired or is invalid. Please request a new one."
+  },
+  "Errors": {
+    "titles": {
+      "critical": "Critical Error",
+      "high": "Error",
+      "medium": "Error",
+      "low": "Notice"
+    },
+    "generic": {
+      "INTERNAL_SERVER_ERROR": "An internal server error has occurred. Please try again later.",
+      "VALIDATION_FAILED": "The submitted data is not valid. Please review the information.",
+      "RESOURCE_NOT_FOUND": "The requested resource was not found.",
+      "UNAUTHORIZED": "You are not authorized to access this resource.",
+      "FORBIDDEN": "Access forbidden. You do not have sufficient permissions.",
+      "NETWORK_ERROR": "Connection error. Please check your internet connection.",
+      "TIMEOUT_ERROR": "The request took too long. Please try again.",
+      "UNKNOWN_ERROR": "An unexpected error has occurred. Please try again."
+    },
+    "auth": {
+      "AUTH_INVALID_CREDENTIALS": "Invalid email or password. Please check your credentials.",
+      "AUTH_EMAIL_IN_USE": "This email is already registered. Did you try to login instead?",
+      "AUTH_USER_NOT_FOUND": "No account found with this email.",
+      "AUTH_PASSWORD_REQUIRED": "Password is required.",
+      "AUTH_TOKEN_INVALID": "Invalid authentication token. Please login again.",
+      "AUTH_TOKEN_EXPIRED": "Your session has expired. Please login again.",
+      "AUTH_SESSION_INVALID": "Invalid session. Please login again.",
+      "AUTH_ACCESS_DENIED": "Access denied. Authentication required."
+    },
+    "password": {
+      "PASSWORD_RESET_TOKEN_INVALID": "The password reset token is invalid or has expired.",
+      "PASSWORD_RESET_TOKEN_EXPIRED": "The password reset token has expired."
+    },
+    "center": {
+      "CENTER_NOT_FOUND": "Medical center not found.",
+      "CENTER_USER_NOT_MEMBER": "You are not a member of this medical center.",
+      "CENTER_INSUFFICIENT_PERMISSIONS": "You do not have sufficient permissions in this medical center.",
+      "CENTER_USER_ALREADY_EXISTS": "The user already exists in this medical center.",
+      "CENTER_USER_NOT_EXISTS": "The user does not exist in this medical center.",
+      "CENTER_NO_ASSOCIATION": "It seems you are not associated with any medical center. Contact your administrator."
+    },
+    "patient": {
+      "PATIENT_NOT_FOUND": "Patient not found.",
+      "PATIENT_EMAIL_DUPLICATE": "A patient with this email already exists in your medical center.",
+      "PATIENT_NOT_IN_CENTER": "The patient is not in your medical center.",
+      "PATIENT_ACCESS_DENIED": "You do not have access to this patient."
+    },
+    "user": {
+      "USER_NOT_FOUND": "User not found.",
+      "USER_ALREADY_EXISTS": "The user already exists.",
+      "USER_INVALID_ROLE": "Invalid user role.",
+      "USER_INSUFFICIENT_PRIVILEGES": "Insufficient privileges."
+    },
+    "account": {
+      "ACCOUNT_NOT_FOUND": "Account not found.",
+      "ACCOUNT_UPDATE_FAILED": "Failed to update account."
+    },
+    "notes": {
+      "NOTE_NOT_FOUND": "Note not found.",
+      "NOTE_ACCESS_DENIED": "You do not have access to this note."
+    },
+    "validation": {
+      "EMAIL_REQUIRED": "Email is required.",
+      "EMAIL_INVALID": "Invalid email format.",
+      "PASSWORD_TOO_SHORT": "Password must be at least 6 characters.",
+      "REQUIRED_FIELD_MISSING": "There are required fields missing."
+    },
+    "permissions": {
+      "ROLE_INVALID": "Invalid role.",
+      "ROLE_INSUFFICIENT": "Insufficient role privileges.",
+      "PERMISSION_DENIED": "Permission denied."
+    },
+    "fields": {
+      "email": {
+        "EMAIL_INVALID": "Invalid email format",
+        "EMAIL_REQUIRED": "Email is required",
+        "AUTH_EMAIL_IN_USE": "This email is already registered",
+        "PATIENT_EMAIL_DUPLICATE": "A patient with this email already exists"
+      },
+      "password": {
+        "PASSWORD_TOO_SHORT": "Password must be at least 6 characters",
+        "AUTH_INVALID_CREDENTIALS": "Incorrect password"
+      }
+    }
+  },
+  "Notifications": {
+    "auth": {
+      "loginSuccess": "You have successfully logged in",
+      "loginSuccessTitle": "Welcome",
+      "logoutSuccess": "You have successfully logged out",
+      "logoutSuccessTitle": "Session Closed",
+      "sessionExpired": "Your session has expired. Please log in again.",
+      "passwordResetSent": "We've sent you an email with instructions to reset your password.",
+      "passwordResetSuccess": "Your password has been reset successfully."
+    },
+    "patients": {
+      "created": "Patient created successfully",
+      "updated": "Patient information updated",
+      "deleted": "Patient deleted successfully",
+      "noteAdded": "Note added successfully",
+      "noteUpdated": "Note updated successfully",
+      "noteDeleted": "Note deleted successfully"
+    },
+    "users": {
+      "invited": "Invitation sent successfully",
+      "roleUpdated": "User role updated",
+      "removed": "User removed from center"
+    },
+    "centers": {
+      "created": "Medical center created successfully",
+      "updated": "Medical center updated",
+      "selected": "Medical center selected"
+    },
+    "account": {
+      "updated": "Profile updated successfully",
+      "deleted": "Account deleted successfully"
+    },
+    "general": {
+      "saved": "Saved successfully",
+      "loading": "Loading...",
+      "offline": "No internet connection",
+      "online": "Connection restored"
+    }
   }
 }

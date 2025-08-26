@@ -1,5 +1,5 @@
 // src/services/api/patient.ts
-import { request } from "./http";
+import api from "./http";
 
 export interface PatientPayload {
   first_name: string;
@@ -10,51 +10,30 @@ export interface PatientPayload {
   date_of_birth: string;
 }
 
-export async function createPatient(data: PatientPayload) {
-  return request({
-    url: `/center/patients/`,
-    method: "POST",
-    data,
-  });
-}
+// Las funciones ahora son simples líneas que devuelven la llamada de axios.
+// El interceptor se encargará de todo lo demás.
+export const createPatient = (data: PatientPayload) => {
+  return api.post('/center/patients/', data);
+};
 
-export async function getAllPatients(
-  page: number,
-  limit: number,
-  searchTerm: string
-) {
-  return request({
-    url: `/center/patients/all`,
-    method: "GET",
+export const getAllPatients = (page: number, limit: number, searchTerm: string) => {
+  return api.get('/center/patients/all', {
     params: {
       page,
       limit,
       searchTerm,
     },
   });
-}
+};
 
-export async function getPatientById(userId: string) {
-  return request({
-    url: `/center/patients/${userId}`,
-    method: "GET",
-  });
-}
+export const getPatientById = (userId: string) => {
+  return api.get(`/center/patients/${userId}`);
+};
 
-export async function updatePatient(
-  patientId: string,
-  data: Partial<PatientPayload>
-) {
-  return request({
-    url: `/center/patients/${patientId}`,
-    method: "PATCH",
-    data,
-  });
-}
+export const updatePatient = (patientId: string, data: Partial<PatientPayload>) => {
+  return api.patch(`/center/patients/${patientId}`, data);
+};
 
-export async function deletePatient(patientId: string) {
-  return request({
-    url: `/center/patients/${patientId}`,
-    method: "DELETE",
-  });
-}
+export const deletePatient = (patientId: string) => {
+  return api.delete(`/center/patients/${patientId}`);
+};
