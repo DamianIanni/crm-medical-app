@@ -13,7 +13,7 @@ export const centerService = {
   },
 
   create: (center: Omit<Center, "id">) => {
-    return api.post<Center>("center/center-actions", center);
+    return api.post<Center>("create-center", center);
   },
 
   update: (id: string, center: Partial<Center>) => {

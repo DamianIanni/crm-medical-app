@@ -14,6 +14,8 @@ import { ButtonLoading } from "@/components/ui/ButtonLoading";
 import { AlertMessage } from "@/components/feedback/AlertMessage";
 import { useResetPassword } from "@/hooks/user/useUser";
 import { useParams } from "next/navigation";
+import { PageAnimationWrapper } from "@/components/wrappers/pageAnimationWrapper";
+
 // Schema for password reset
 const resetSchema = (v: ReturnType<typeof useTranslations>) =>
   z
@@ -62,64 +64,71 @@ export default function ResetPasswordPage() {
 
   if (isResetPasswordSuccess) {
     return (
-      <div className="flex justify-center py-10">
-        <Card>
-          <CardHeader className="text-center">
-            <CardTitle>{t("successTitle")}</CardTitle>
-          </CardHeader>
-          <CardContent className="p-6 space-y-4">
-            <p className="text-center text-sm text-muted-foreground">
-              {t("successDescription")}
-            </p>
-            <Button className="w-full" onClick={() => router.push("/")}>
-              {t("goToLogin")}
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+      <PageAnimationWrapper>
+        <div className="flex justify-center py-10">
+          <Card>
+            <CardHeader className="text-center">
+              <CardTitle>{t("successTitle")}</CardTitle>
+            </CardHeader>
+            <CardContent className="p-6 space-y-4">
+              <p className="text-center text-sm text-muted-foreground">
+                {t("successDescription")}
+              </p>
+              <Button className="w-full" onClick={() => router.push("/")}>
+                {t("goToLogin")}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </PageAnimationWrapper>
     );
   }
 
   return (
-    <div className="flex justify-center py-10">
-      <Card className="w-full max-w-sm">
-        <CardHeader className="text-center">
-          <CardTitle className="text-xl">{t("title")}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
-              <PasswordField
-                control={form.control}
-                name="password"
-                label={t("passwordLabel")}
-                disabled={isResetPasswordPending}
+    <PageAnimationWrapper>
+      <div className="flex justify-center py-10">
+        <Card className="w-full max-w-sm">
+          <CardHeader className="text-center">
+            <CardTitle className="text-xl">{t("title")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="grid gap-6"
+              >
+                <PasswordField
+                  control={form.control}
+                  name="password"
+                  label={t("passwordLabel")}
+                  disabled={isResetPasswordPending}
+                />
+                <PasswordField
+                  control={form.control}
+                  name="confirmPassword"
+                  label={t("confirmPasswordLabel")}
+                  disabled={isResetPasswordPending}
+                />
+                {isResetPasswordPending ? (
+                  <ButtonLoading text={t("resetting") as string} />
+                ) : (
+                  <Button type="submit" className="w-full">
+                    {t("submitButton")}
+                  </Button>
+                )}
+              </form>
+            </Form>
+            {isResetPasswordError && (
+              <AlertMessage
+                title={t("errorTitle")}
+                description={t("errorDescription")}
+                messages={[]}
+                className="mt-4"
               />
-              <PasswordField
-                control={form.control}
-                name="confirmPassword"
-                label={t("confirmPasswordLabel")}
-                disabled={isResetPasswordPending}
-              />
-              {isResetPasswordPending ? (
-                <ButtonLoading text={t("resetting") as string} />
-              ) : (
-                <Button type="submit" className="w-full">
-                  {t("submitButton")}
-                </Button>
-              )}
-            </form>
-          </Form>
-          {isResetPasswordError && (
-            <AlertMessage
-              title={t("errorTitle")}
-              description={t("errorDescription")}
-              messages={[]}
-              className="mt-4"
-            />
-          )}
-        </CardContent>
-      </Card>
-    </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </PageAnimationWrapper>
   );
 }

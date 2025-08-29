@@ -9,6 +9,7 @@ import EntityInfo from "@/components/feedback/entityInfo";
 // import { AlertMessage } from "@/components/feedback/AlertMessage";
 // import { useDeleteState } from "@/components/providers/ContextProvider";
 import { getEntitySessionStorage } from "@/lib/utils";
+import { PageAnimationWrapper } from "@/components/wrappers/pageAnimationWrapper";
 
 export default function PatientInfoPage() {
   // const { isDeleting } = useDeleteState();
@@ -23,8 +24,9 @@ export default function PatientInfoPage() {
   // } = useGetSinglePatient(id);
 
   return (
-    <DashboardPageWrapper>
-      {/* {(isPending || isFetching || isDeleting) && <EntityInfoSkeleton />}
+    <PageAnimationWrapper>
+      <DashboardPageWrapper>
+        {/* {(isPending || isFetching || isDeleting) && <EntityInfoSkeleton />}
 
       {isError && (
         <div className="w-full max-w-2xl flex flex-col items-center justify-center mx-auto mt-10">
@@ -40,7 +42,8 @@ export default function PatientInfoPage() {
 
       {!isPending && !isDeleting && !isFetching && !isError && patient && (
       )} */}
-      <EntityInfo data={patient} type="patient" />
-    </DashboardPageWrapper>
+        <EntityInfo data={patient} type="patient" />
+      </DashboardPageWrapper>
+    </PageAnimationWrapper>
   );
 }

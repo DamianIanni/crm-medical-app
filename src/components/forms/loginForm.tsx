@@ -13,7 +13,7 @@ import React, { useMemo } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { TextField } from "./fields/textField";
 import { PasswordField } from "./fields/passwordField";
 import { useTranslations } from "next-intl";
@@ -98,19 +98,19 @@ export function LoginForm({
                 <Alert>
                   <Terminal className="h-4 w-4" />
                   <AlertTitle className="font-bold">
-                    {t('demoAccount.title')}
+                    {t("demoAccount.title")}
                   </AlertTitle>
                   <AlertDescription>
                     <div className="space-y-1 text-sm">
-                      <p>{t('demoAccount.description')}</p>
+                      <p>{t("demoAccount.description")}</p>
                       <p>
-                        <strong>{t('demoAccount.email')}</strong> demo@admin.com
+                        <strong>{t("demoAccount.email")}</strong> demo@admin.com
                       </p>
                       <p>
-                        <strong>{t('demoAccount.password')}</strong> password123
+                        <strong>{t("demoAccount.password")}</strong> password123
                       </p>
                       <p className="text-xs mt-2 text-muted-foreground">
-                        {t('demoAccount.note')}
+                        {t("demoAccount.note")}
                       </p>
                     </div>
                   </AlertDescription>

@@ -95,9 +95,11 @@ export function useSelectCenter() {
     mutationFn: ({ center_id, role }) =>
       centerService.selectCenter(center_id, role),
     onSuccess: () => {
-      invalidate();
-      invalidateUser();
       router.replace("/dashboard");
+      setTimeout(() => {
+        invalidateUser();
+        invalidate();
+      }, 500);
     },
     onError: () => {
       ToastFeedback({

@@ -3,6 +3,7 @@
 
 import { EntityForm } from "@/components/forms/entityForm";
 import DashboardPageWrapper from "@/components/wrappers/dashboardPageWrapper";
+import { PageAnimationWrapper } from "@/components/wrappers/pageAnimationWrapper";
 // import { useParams } from "next/navigation";
 // import { useGetSinglePatient } from "@/hooks/patient/usePatient";
 // import { PatientFormSkeleton } from "@/components/skeletons/patientFormSkeleton";
@@ -14,8 +15,9 @@ export default function EditPatientPage() {
   const patient = getEntitySessionStorage("dataEntitypatients");
 
   return (
-    <DashboardPageWrapper>
-      {/* {(isPending || isFetching || isDeleting) && <PatientFormSkeleton />}
+    <PageAnimationWrapper>
+      <DashboardPageWrapper>
+        {/* {(isPending || isFetching || isDeleting) && <PatientFormSkeleton />}
 
       {isError && (
         <div className="w-full max-w-2xl flex flex-col items-center justify-center mx-auto mt-10">
@@ -31,9 +33,10 @@ export default function EditPatientPage() {
         </div>
       )} */}
 
-      {/* {!isPending && !isFetching && !isDeleting && !isError && patient && (
+        {/* {!isPending && !isFetching && !isDeleting && !isError && patient && (
       )} */}
-      <EntityForm formType="patient" mode={"edit"} data={patient} />
-    </DashboardPageWrapper>
+        <EntityForm formType="patient" mode={"edit"} data={patient} />
+      </DashboardPageWrapper>
+    </PageAnimationWrapper>
   );
 }

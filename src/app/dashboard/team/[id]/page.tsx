@@ -6,12 +6,14 @@ import DashboardPageWrapper from "@/components/wrappers/dashboardPageWrapper";
 // import { AlertMessage } from "@/components/feedback/AlertMessage";
 // import { Button } from "@/components/ui/button";
 import { getEntitySessionStorage } from "@/lib/utils";
+import { PageAnimationWrapper } from "@/components/wrappers/pageAnimationWrapper";
 
 export default function UserInfoPage() {
   const user = getEntitySessionStorage("dataEntityteam");
   return (
-    <DashboardPageWrapper>
-      {/* {(isPending || isFetching) && <EntityInfoSkeleton />}
+    <PageAnimationWrapper>
+      <DashboardPageWrapper>
+        {/* {(isPending || isFetching) && <EntityInfoSkeleton />}
 
       {isError && (
         <div className="w-full max-w-2xl flex flex-col items-center justify-center mx-auto mt-10">
@@ -26,8 +28,9 @@ export default function UserInfoPage() {
       )}
 
       {!isPending && !isFetching && !isError && user && ( */}
-      <EntityInfo data={user} />
-      {/* )} */}
-    </DashboardPageWrapper>
+        <EntityInfo data={user} />
+        {/* )} */}
+      </DashboardPageWrapper>
+    </PageAnimationWrapper>
   );
 }

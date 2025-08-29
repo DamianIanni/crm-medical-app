@@ -1,15 +1,15 @@
-# Sistema de Manejo de Errores - Frontend
+# Error Handling System - Frontend
 
-Este documento describe el sistema completo de manejo de errores implementado en el frontend para integrar con los códigos de error del backend.
+This document describes the complete error handling system implemented in the frontend to integrate with backend error codes.
 
-## Arquitectura del Sistema
+## System Architecture
 
-### 1. Tipos y Constantes (`/src/types/errors.ts`)
+### 1. Types and Constants (`/src/types/errors.ts`)
 
-Contiene toda la definición de tipos y constantes relacionadas con errores:
+Contains all type definitions and constants related to errors:
 
 ```typescript
-// Interfaz de respuesta de error de la API
+// API error response interface
 export interface ApiErrorResponse {
   status: "error";
   error: {
@@ -19,128 +19,117 @@ export interface ApiErrorResponse {
   };
 }
 
-// Enum con todos los códigos de error
+// Enum with all error codes
 export enum ErrorCode {
-  AUTH_INVALID_CREDENTIALS = 'AUTH_INVALID_CREDENTIALS',
-  PATIENT_EMAIL_DUPLICATE = 'PATIENT_EMAIL_DUPLICATE',
-  // ... más códigos
+  AUTH_INVALID_CREDENTIALS = "AUTH_INVALID_CREDENTIALS",
+  PATIENT_EMAIL_DUPLICATE = "PATIENT_EMAIL_DUPLICATE",
+  // ... more codes
 }
 ```
 
-### 2. Utilidades de Manejo de Errores (`/src/utils/errorHandler.ts`)
+### 2. Error Handling Utilities (`/src/utils/errorHandler.ts`)
 
-Funciones principales para procesar y manejar errores:
+Main functions for processing and handling errors:
 
 ```typescript
-// Procesa cualquier error y devuelve un objeto estandarizado
-export function processError(error: any): ProcessedError
+// Processes any error and returns a standardized object
+export function processError(error: any): ProcessedError;
 
-// Maneja automáticamente el error (toast + logging)
-export function handleError(error: any): ProcessedError
+// Automatically handles the error (toast + logging)
+export function handleError(error: any): ProcessedError;
 
-// Verifica si un error debe mostrarse en formularios
-export function isFormError(error: ProcessedError): boolean
+// Checks if an error should be shown in forms
+export function isFormError(error: ProcessedError): boolean;
 ```
 
-### 3. Sistema de Notificaciones (`/src/utils/notifications.ts`)
+### 3. Notification System (`/src/utils/notifications.ts`)
 
-Sistema mejorado de notificaciones con integración de errores:
+Enhanced notification system with error integration:
 
 ```typescript
-// Servicio principal de notificaciones
+// Main notification service
 export class NotificationService {
-  static success(message: string, title?: string)
-  static error(message: string, title?: string)
-  static fromError(processedError: ProcessedError)
+  static success(message: string, title?: string);
+  static error(message: string, title?: string);
+  static fromError(processedError: ProcessedError);
 }
 
-// Helpers específicos por contexto
+// Context-specific helpers
 export const notifications = {
   auth: {
-    loginSuccess: () => showSuccess("Has iniciado sesión correctamente"),
-    sessionExpired: () => showWarning("Tu sesión ha expirado")
+    loginSuccess: () => showSuccess("You have successfully logged in"),
+    sessionExpired: () => showWarning("Your session has expired"),
   },
   patients: {
-    created: () => showSuccess("Paciente creado correctamente"),
+    created: () => showSuccess("Patient created successfully"),
     // ...
-  }
-}
+  },
+};
 ```
 
-### 4. Hooks para React (`/src/hooks/useErrorHandler.ts`)
+### 4. React Hooks (`/src/hooks/useErrorHandler.ts`)
 
-Hooks especializados para diferentes casos de uso:
+Specialized hooks for different use cases:
 
-#### `useErrorHandler()` - Hook general
+#### `useErrorHandler()` - General Hook
+
 ```typescript
-const {
-  error,
-  fieldErrors,
-  handleError,
-  withErrorHandling,
-  clearError
-} = useErrorHandler();
+const { error, fieldErrors, handleError, withErrorHandling, clearError } =
+  useErrorHandler();
 ```
 
-#### `useFormErrorHandler()` - Para formularios
+#### `useFormErrorHandler()` - For Forms
+
 ```typescript
-const {
-  getFieldProps,
-  handleFormSubmit,
-  hasFieldError,
-  getErrorForField
-} = useFormErrorHandler();
+const { getFieldProps, handleFormSubmit, hasFieldError, getErrorForField } =
+  useFormErrorHandler();
 ```
 
-#### `useQueryErrorHandler()` - Para React Query
+#### `useQueryErrorHandler()` - For React Query
+
 ```typescript
 const { onQueryError, onMutationError } = useQueryErrorHandler();
 ```
 
-### 5. Interceptor de Axios Actualizado (`/src/services/api/http.ts`)
+### 5. Updated Axios Interceptor (`/src/services/api/http.ts`)
 
-El interceptor ahora maneja códigos de error específicos y redirecciones automáticas:
+The interceptor now handles specific error codes and automatic redirects:
 
 ```typescript
 api.interceptors.response.use(
   (response) => {
-    // Desenvuelve automáticamente { data: {...} }
-    if (response.data && 'data' in response.data) {
+    // Automatically unwraps { data: {...} }
+    if (response.data && "data" in response.data) {
       return response.data.data;
     }
     return response.data;
   },
   (error) => {
-    // Maneja redirecciones automáticas para errores de autenticación
+    // Handles automatic redirects for authentication errors
     const LOGIN_REDIRECT_CODES = [
       ErrorCode.AUTH_SESSION_INVALID,
       ErrorCode.AUTH_TOKEN_EXPIRED,
       // ...
     ];
-    
+
     if (errorCode && LOGIN_REDIRECT_CODES.includes(errorCode)) {
       sessionStorage.clear();
-      window.location.href = '/login?session=expired';
+      window.location.href = "/login?session=expired";
     }
-    
+
     return Promise.reject(errorData || error);
   }
 );
 ```
 
-## Guías de Uso
+## Usage Guides
 
-### Para Formularios
+### For Forms
 
 ```typescript
 function LoginForm() {
-  const {
-    error,
-    fieldErrors,
-    getFieldProps,
-    handleFormSubmit,
-    hasFieldError,
-  } = useFormErrorHandler();
+  const { error, fieldErrors, getFieldProps, handleFormSubmit, hasFieldError } =
+    useFormErrorHandler();
 
   const onSubmit = async (values) => {
     try {
@@ -148,13 +137,13 @@ function LoginForm() {
         () => login(values),
         () => {
           notifications.auth.loginSuccess();
-          router.push('/dashboard');
+          router.push("/dashboard");
         }
       );
     } catch (processedError) {
-      // Error ya procesado y mostrado
+      // Error already processed and shown
       if (processedError.code === ErrorCode.AUTH_INVALID_CREDENTIALS) {
-        form.setFocus('email');
+        form.setFocus("email");
       }
     }
   };
@@ -162,39 +151,39 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input
-        {...register('email')}
-        error={hasFieldError('email')}
-        helperText={getFieldProps('email').helperText}
+        {...register("email")}
+        error={hasFieldError("email")}
+        helperText={getFieldProps("email").helperText}
       />
     </form>
   );
 }
 ```
 
-### Para React Query
+### For React Query
 
 ```typescript
 function PatientsList() {
   const { onQueryError, onMutationError } = useQueryErrorHandler();
 
   const { data: patients } = useQuery({
-    queryKey: ['patients'],
+    queryKey: ["patients"],
     queryFn: getAllPatients,
-    onError: onQueryError // Procesa pero no muestra toast
+    onError: onQueryError, // Processes but doesn't show toast
   });
 
   const deleteMutation = useMutation({
     mutationFn: deletePatient,
-    onError: onMutationError, // Muestra toast automáticamente
+    onError: onMutationError, // Shows toast automatically
     onSuccess: () => {
       notifications.patients.deleted();
       refetch();
-    }
+    },
   });
 }
 ```
 
-### Para Llamadas API Manuales
+### For Manual API Calls
 
 ```typescript
 function PatientProfile() {
@@ -210,16 +199,16 @@ function PatientProfile() {
         },
         onError: (error) => {
           if (error.code === ErrorCode.PATIENT_NOT_FOUND) {
-            router.push('/patients');
+            router.push("/patients");
           }
-        }
+        },
       }
     );
   };
 }
 ```
 
-### Para Manejo Directo
+### For Direct Error Handling
 
 ```typescript
 async function someFunction() {
@@ -229,7 +218,7 @@ async function someFunction() {
   } catch (error) {
     // Usa el manejador global directamente
     const processedError = handleError(error);
-    
+
     // Manejo específico si es necesario
     if (processedError.code === ErrorCode.SPECIFIC_ERROR) {
       // hacer algo específico
@@ -238,30 +227,34 @@ async function someFunction() {
 }
 ```
 
-## Códigos de Error Principales
+## Main Error Codes
 
-### Errores de Autenticación
-- `AUTH_INVALID_CREDENTIALS` - Credenciales incorrectas
-- `AUTH_SESSION_INVALID` - Sesión inválida (redirige al login)
-- `AUTH_TOKEN_EXPIRED` - Token expirado (redirige al login)
+### Authentication Errors
+
+- `AUTH_INVALID_CREDENTIALS` - Invalid credentials
+- `AUTH_SESSION_INVALID` - Invalid session (redirects to login)
+- `AUTH_TOKEN_EXPIRED` - Expired token (redirects to login)
 - `AUTH_EMAIL_IN_USE` - Email ya registrado
 
-### Errores de Pacientes
+### Patient Errors
+
 - `PATIENT_NOT_FOUND` - Paciente no encontrado
 - `PATIENT_EMAIL_DUPLICATE` - Email duplicado en el centro
 - `PATIENT_ACCESS_DENIED` - Sin acceso al paciente
 
-### Errores de Centro Médico
+### Center Errors
+
 - `CENTER_NOT_FOUND` - Centro no encontrado
 - `CENTER_NO_ASSOCIATION` - Usuario sin centro asociado
 - `CENTER_INSUFFICIENT_PERMISSIONS` - Permisos insuficientes
 
-### Errores de Validación
+### Validation Errors
+
 - `EMAIL_INVALID` - Formato de email inválido
 - `PASSWORD_TOO_SHORT` - Contraseña muy corta
 - `VALIDATION_FAILED` - Validación general fallida
 
-## Niveles de Severidad
+## Severity Levels
 
 Los errores se clasifican en 4 niveles:
 
@@ -270,47 +263,49 @@ Los errores se clasifican en 4 niveles:
 - **MEDIUM**: Errores que afectan la experiencia del usuario
 - **LOW**: Errores informativos o fácilmente recuperables
 
-## Flujo de Errores
+## Error Flow
 
-1. **Error ocurre** en llamada API
-2. **Interceptor de Axios** captura el error
-   - Si es error de autenticación crítico → Redirige al login
-   - Propaga el error con estructura completa
-3. **Sistema de manejo** procesa el error
-   - Determina tipo y severidad
-   - Decide si mostrar en toast o formulario
-4. **Componente** recibe error procesado
-   - Puede manejar casos específicos
-   - UI se actualiza automáticamente
+1. **Error occurs** in API call
+2. **Axios interceptor** captures the error
+   - If it's a critical authentication error → Redirects to login
+   - Propagates the error with complete structure
+3. **Error handling system** processes the error
+   - Determines type and severity
+   - Decides whether to show in toast or form
+4. **Component** receives processed error
+   - Can handle specific cases
+   - UI updates automatically
 
-## Mejores Prácticas
+## Best Practices
 
-### ✅ Hacer
-- Usar los hooks apropiados para cada caso
-- Manejar códigos de error específicos cuando sea necesario
-- Usar las notificaciones contextuales (`notifications.patients.created()`)
-- Limpiar errores cuando el usuario empiece a escribir
-- Testear diferentes escenarios de error
+### ✅ Do
 
-### ❌ Evitar
-- Manejar errores manualmente sin usar el sistema
-- Mostrar errores técnicos al usuario final
-- Ignorar errores silenciosamente
-- Duplicar lógica de manejo de errores
-- No limpiar errores en formularios
+- Use the appropriate hooks for each case
+- Handle specific error codes when needed
+- Use context-specific notifications (`notifications.patients.created()`)
+- Clear errors when the user starts typing
+- Test different error scenarios
+
+### ❌ Avoid
+
+- Manually handle errors without using the system
+- Show technical errors to the final user
+- Ignore errors silently
+- Duplicate error handling logic
+- Don't clear errors in forms
 
 ## Testing
 
 ```typescript
 // Ejemplo de test con el sistema de errores
-it('should handle login error correctly', async () => {
+it("should handle login error correctly", async () => {
   // Mock API to return specific error
   mockLogin.mockRejectedValueOnce({
-    status: 'error',
+    status: "error",
     error: {
-      code: 'AUTH_INVALID_CREDENTIALS',
-      message: 'Invalid credentials'
-    }
+      code: "AUTH_INVALID_CREDENTIALS",
+      message: "Invalid credentials",
+    },
   });
 
   // Render component and submit form
@@ -319,12 +314,12 @@ it('should handle login error correctly', async () => {
 });
 ```
 
-## Migración de Código Existente
+## Migrating Existing Code
 
-1. **Identificar** componentes que manejan errores manualmente
-2. **Reemplazar** con los hooks apropiados
-3. **Actualizar** pruebas para usar los nuevos códigos de error
-4. **Verificar** que los flujos de error funcionen correctamente
-5. **Limpiar** código de manejo de errores duplicado
+1. **Identify** components that manually handle errors
+2. **Replace** with the appropriate hooks
+3. **Update** tests to use new error codes
+4. **Verify** that error flows work correctly
+5. **Clean** up duplicate error handling code
 
-Este sistema proporciona una experiencia consistente de manejo de errores en toda la aplicación, mejora la UX y facilita el mantenimiento del código.
+This system provides a consistent error handling experience across the entire application, improves the UX, and facilitates code maintenance.

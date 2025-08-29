@@ -96,6 +96,7 @@ import { AlertMessage } from "@/components/feedback/AlertMessage";
 import { Button } from "@/components/ui/button";
 import { useGetUsers } from "@/hooks/team/useTeam";
 import { filterSelfUser } from "@/lib/utils";
+import { PageAnimationWrapper } from "@/components/wrappers/pageAnimationWrapper";
 // import { DataUserFilter } from "@/lib/schemas/memberSchema";
 
 export default function TeamPage() {
@@ -133,34 +134,40 @@ export default function TeamPage() {
   // 4. Renderizado condicional robusto.
   if (isPending || !user) {
     return (
-      <DashboardPageWrapper>
-        <TableSkeleton />
-      </DashboardPageWrapper>
+      <PageAnimationWrapper>
+        <DashboardPageWrapper>
+          <TableSkeleton />
+        </DashboardPageWrapper>
+      </PageAnimationWrapper>
     );
   }
 
   if (isError) {
     return (
-      <DashboardPageWrapper>
-        <div className="w-full max-w-2xl flex flex-col items-center justify-center mx-auto mt-10">
-          <AlertMessage
-            title="Error loading list of users"
-            description="An error occurred while fetching the team list."
-          />
-          <div className="mt-4">
-            <Button onClick={() => refetch()}>Try Again</Button>
+      <PageAnimationWrapper>
+        <DashboardPageWrapper>
+          <div className="w-full max-w-2xl flex flex-col items-center justify-center mx-auto mt-10">
+            <AlertMessage
+              title="Error loading list of users"
+              description="An error occurred while fetching the team list."
+            />
+            <div className="mt-4">
+              <Button onClick={() => refetch()}>Try Again</Button>
+            </div>
           </div>
-        </div>
-      </DashboardPageWrapper>
+        </DashboardPageWrapper>
+      </PageAnimationWrapper>
     );
   }
 
   return (
+    // <PageAnimationWrapper>
     <DashboardPageWrapper>
       {/* 5. Se renderiza DataTable en modo "cliente". */}
       {/* Solo le pasamos las props mínimas. DataTable se encargará */}
       {/* de su propia paginación y búsqueda internas. */}
       <DataTable columns={columns} data={filteredUsers} />
     </DashboardPageWrapper>
+    // </PageAnimationWrapper>
   );
 }

@@ -279,6 +279,7 @@ import { TableSkeleton } from "@/components/skeletons/tableSkeleton";
 import { AlertMessage } from "@/components/feedback/AlertMessage";
 import DashboardPageWrapper from "@/components/wrappers/dashboardPageWrapper";
 import { Button } from "@/components/ui/button";
+import { PageAnimationWrapper } from "@/components/wrappers/pageAnimationWrapper";
 
 export default function PatientsPage() {
   const { user } = useAuth();
@@ -371,29 +372,34 @@ export default function PatientsPage() {
   // 6. Renderizado condicional robusto
   if ((isPending && patientsData.length === 0) || !user) {
     return (
-      <DashboardPageWrapper>
-        <TableSkeleton />
-      </DashboardPageWrapper>
+      <PageAnimationWrapper>
+        <DashboardPageWrapper>
+          <TableSkeleton />
+        </DashboardPageWrapper>
+      </PageAnimationWrapper>
     );
   }
 
   if (isError) {
     return (
-      <DashboardPageWrapper>
-        <div className="w-full max-w-2xl flex flex-col items-center justify-center mx-auto mt-10">
-          <AlertMessage
-            title="Error loading list of patients"
-            description="An error occurred while fetching the patient list."
-          />
-          <div className="mt-4">
-            <Button onClick={() => refetch()}>Try Again</Button>
+      <PageAnimationWrapper>
+        <DashboardPageWrapper>
+          <div className="w-full max-w-2xl flex flex-col items-center justify-center mx-auto mt-10">
+            <AlertMessage
+              title="Error loading list of patients"
+              description="An error occurred while fetching the patient list."
+            />
+            <div className="mt-4">
+              <Button onClick={() => refetch()}>Try Again</Button>
+            </div>
           </div>
-        </div>
-      </DashboardPageWrapper>
+        </DashboardPageWrapper>
+      </PageAnimationWrapper>
     );
   }
 
   return (
+    // <PageAnimationWrapper>
     <DashboardPageWrapper>
       {/* 7. Pasa la instancia de la tabla y las props necesarias al DataTable */}
       <DataTable
@@ -405,5 +411,6 @@ export default function PatientsPage() {
         onPageSizeChange={handlePageSizeChange}
       />
     </DashboardPageWrapper>
+    // </PageAnimationWrapper>
   );
 }
