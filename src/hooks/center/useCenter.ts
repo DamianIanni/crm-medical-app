@@ -170,9 +170,3 @@ export function useDeleteCenter() {
     },
   });
 }
-//   return useQuery({
-//     queryKey: ["center", id],
-//     queryFn: () => centerService.getById(id),
-//     enabled: !!id,
-//   });
-// };

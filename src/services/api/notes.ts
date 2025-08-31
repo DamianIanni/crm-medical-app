@@ -3,7 +3,6 @@ import api from "./http";
 import { NewNotePayload } from "@/hooks/patient/usePatient";
 
 export const createPatientNote = (patientId: string, data: NewNotePayload) => {
-  console.log("NOTES", data);
   return api.post(`center/patients/${patientId}/notes`, data);
 };
 

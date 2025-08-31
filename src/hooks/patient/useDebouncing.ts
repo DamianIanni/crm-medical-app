@@ -1,29 +1,29 @@
 import { useState, useEffect } from "react";
 
 /**
- * Hook personalizado para "debouncear" (retrasar) un valor.
- * @param value El valor que se quiere retrasar (ej: un término de búsqueda).
- * @param delay El tiempo de retraso en milisegundos (ej: 500).
- * @returns El valor retrasado.
+ * Custom hook to debounce (delay) a value.
+ * @param value The value to be debounced (e.g., a search term).
+ * @param delay The delay time in milliseconds (e.g., 500).
+ * @returns The debounced value.
  */
 export function useDebounce<T>(value: T, delay: number): T {
-  // 1. Estado para guardar el valor con "debounce"
+  // 1. State to store the debounced value
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
-    // 2. Crea un temporizador que se ejecutará después del 'delay'
+    // 2. Creates a timer that will execute after the 'delay'
     const handler = setTimeout(() => {
       setDebouncedValue(value);
     }, delay);
 
-    // 3. Limpia el temporizador si el 'value' o el 'delay' cambian.
-    //    Esto es crucial: si el usuario sigue tecleando, el temporizador
-    //    anterior se cancela y se crea uno nuevo.
+    // 3. Cleans up the timer if 'value' or 'delay' changes.
+    //    This is crucial: if the user keeps typing, the previous
+    //    timer is canceled and a new one is created.
     return () => {
       clearTimeout(handler);
     };
   }, [value, delay]); // Solo se re-ejecuta si el valor o el delay cambian
 
-  // 4. Devuelve el último valor estable
+  // 4. Returns the last stable value
   return debouncedValue;
 }

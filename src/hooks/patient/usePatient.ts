@@ -126,18 +126,6 @@ export function useGetSinglePatient(
   });
 }
 
-// export function useGetPatients(
-//   centerId?: string
-// ): UseQueryResult<Patient[], Error> {
-//   return useQuery<Patient[], Error>({
-//     queryKey: ["allPatient", centerId],
-//     queryFn: () => getAllPatients(),
-//     enabled: !!centerId,
-//     staleTime: 60_000,
-//     refetchOnWindowFocus: false,
-//   });
-// }
-
 export function useCreateNote(patientId: string) {
   const t = useTranslations("Feedback.Patient");
   const invalidate = useInvalidateQuery(["patient"]);
@@ -205,26 +193,26 @@ type GetPatientsParams = {
 };
 
 /**
- * Hook para obtener una lista paginada y filtrada de pacientes.
- * @param params - Objeto con centerId, page, limit, y search.
- * @returns El resultado de la query de React Query.
+ * Hook to fetch a paginated and filtered list of patients.
+ * @param params - Object containing centerId, page, limit, and search.
+ * @returns The result of the React Query.
  */
 export function useGetPaginatedPatients(params: GetPatientsParams) {
   const { centerId, page, limit, search, enabled } = params;
 
   return useQuery<PaginatedPatientsResponse, Error>({
-    // 3. La queryKey incluye TODOS los parámetros. Si alguno cambia,
-    // React Query hará una nueva petición.
+    // 3. The queryKey includes ALL parameters. If any change,
+    // React Query will make a new request.
     queryKey: ["allPatient", { centerId, page, limit, search }],
 
-    // 4. La queryFn llama a tu servicio pasándole los parámetros.
+    // 4. The queryFn calls your service with the parameters.
     queryFn: () => getAllPatients(page, limit, search),
 
-    // 5. Solo ejecuta la query si el centerId está disponible.
+    // 5. Only executes the query if centerId is available.
     enabled: enabled,
 
-    // 6. (Opcional pero recomendado) Mantiene los datos anteriores visibles
-    //    mientras se carga la nueva página, para una mejor UX.
+    // 6. (Optional but recommended) Keeps previous data visible
+    //    while the new page loads, for better UX.
     placeholderData: keepPreviousData,
   });
 }

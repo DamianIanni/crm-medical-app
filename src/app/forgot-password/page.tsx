@@ -35,7 +35,6 @@ export default function ForgotPasswordPage() {
   } = useSendResetPasswordEmail();
   const t = useTranslations("ForgotPasswordPage");
   const v = useTranslations("ValidationErrors");
-  //   const { sendResetPasswordEmail } = useAuth(); // assume placeholder in auth context
 
   const schema = useMemo(() => forgotPasswordSchema(v), [v]);
   const form = useForm<ForgotPasswordFormValues>({

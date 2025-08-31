@@ -36,7 +36,6 @@ export default function ResetPasswordPage() {
   const router = useRouter();
   const params = useParams();
 
-  // 4. Accede al token. Es buena práctica asegurarse de que es un string.
   const token = Array.isArray(params.token) ? params.token[0] : params.token;
   const {
     mutate: resetPassword,
@@ -52,8 +51,6 @@ export default function ResetPasswordPage() {
   });
 
   async function onSubmit(values: ResetFormValues) {
-    console.log("Valores del formulario:", values);
-    console.log("Token:", token);
     if (!token) return;
     try {
       resetPassword({ token, password: values.password });

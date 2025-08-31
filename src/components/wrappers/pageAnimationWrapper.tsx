@@ -8,10 +8,10 @@ export const PageAnimationWrapper = ({
 }) => (
   <AnimatePresence mode="wait">
     <motion.div
-      initial={{ opacity: 0, y: 0 }} // Empieza invisible y 15px más abajo
-      animate={{ opacity: 1, y: 0 }} // Aparece y sube a su posición
-      exit={{ opacity: 0, y: 0 }} // Desaparece y baja
-      transition={{ duration: 0.25 }} // Duración de la animación
+      initial={{ opacity: 0, y: 0 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 0 }}
+      transition={{ duration: 0.25 }}
     >
       {children}
     </motion.div>

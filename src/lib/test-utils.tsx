@@ -18,7 +18,6 @@ export function renderWithClient(ui: React.ReactElement) {
   const testQueryClient = createTestQueryClient();
   return render(
     <QueryClientProvider client={testQueryClient}>
-      {/* <AuthProvider></AuthProvider> */}
       <ContextProvider>{ui}</ContextProvider>
     </QueryClientProvider>
   );

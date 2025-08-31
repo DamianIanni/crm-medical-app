@@ -80,8 +80,6 @@ export function TeamSwitcher() {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
 
-      // 👇🏼 2. Lógica de comprobación actualizada
-      // Cierra el menú solo si el clic NO fue dentro del menú Y NO fue en el botón del diálogo.
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(target) &&
@@ -131,11 +129,8 @@ export function TeamSwitcher() {
     const centerId = sessionStorage.getItem("selectedCenterId");
     if (!centerId) return;
     await rejectInvitation(centerId);
-    console.log(isSuccessRejectInvitation);
 
     if (isSuccessRejectInvitation) {
-      console.log("Left center successfully");
-
       ToastFeedback({
         type: "info",
         title: t("toast.leftCenter"),

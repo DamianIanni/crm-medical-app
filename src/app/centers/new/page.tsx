@@ -8,9 +8,6 @@ import { EntityForm } from "@/components/forms/entityForm";
 import { useTranslations } from "next-intl";
 import { PageAnimationWrapper } from "@/components/wrappers/pageAnimationWrapper";
 
-// TODO: Add role-based access control
-// This should check if user is admin before allowing access
-
 export default function AddCenterPage() {
   const router = useRouter();
   const t = useTranslations("NewCenterPage");

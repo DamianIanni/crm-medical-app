@@ -41,7 +41,6 @@ export default async function RootLayout({
 }>) {
   const darkMode = true;
   const locale = await getLocale();
-  console.log("LOCALE", locale);
   const messages = await getMessages();
 
   return (

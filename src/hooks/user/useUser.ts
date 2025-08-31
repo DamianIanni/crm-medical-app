@@ -60,13 +60,11 @@ export const useDeleteAccount = () => {
 };
 
 export const useSendResetPasswordEmail = () => {
-  // const queryClient = useQueryClient();
   const t = useTranslations("Account");
 
   return useMutation({
     mutationFn: (email: string) => sendResetPasswordEmail(email),
     onSuccess: () => {
-      // queryClient.invalidateQueries({ queryKey: ["user"] });
       ToastFeedback({
         type: "success",
         title: t("toast.deleteSuccess"),
@@ -84,14 +82,12 @@ export const useSendResetPasswordEmail = () => {
 };
 
 export const useResetPassword = () => {
-  // const queryClient = useQueryClient();
   const t = useTranslations("Account");
 
   return useMutation({
     mutationFn: ({ token, password }: { token: string; password: string }) =>
       resetPassword(token, password),
     onSuccess: () => {
-      // queryClient.invalidateQueries({ queryKey: ["user"] });
       ToastFeedback({
         type: "success",
         title: t("toast.deleteSuccess"),

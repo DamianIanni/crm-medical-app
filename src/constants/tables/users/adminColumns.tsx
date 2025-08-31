@@ -41,7 +41,6 @@ export const useAdminTeamColumns = (): ColumnDef<DataUserFilter>[] => {
         return <StatusBadge status={status} />;
       },
     },
-    // { accessorKey: "organization", header: t("organization") },
     {
       id: "actions",
       header: () => <div className="text-right min-w-[100px]"></div>,
