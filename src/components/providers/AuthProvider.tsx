@@ -170,7 +170,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         //User
-        user: user as User | null,
+        user: user as User,
         isUserPending,
         isUserFetching,
         isErrorUser,

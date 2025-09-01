@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 
 import { Form } from "@/components/ui/form";
 import { TextField } from "./fields/textField";
-import { Center } from "@/types/center";
+import { Center } from "@/types/center/index";
 
 import { useCreateCenter, useUpdateCenter } from "@/hooks/center/useCenter";
 

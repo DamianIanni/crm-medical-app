@@ -94,7 +94,7 @@ export function CenterCard({ center }: CenterCardProps) {
       return;
     }
 
-    setSelectedCenterName(center.center_name);
+    setSelectedCenterName(center.name);
     setSelectedCenterCookie(center.center_id);
     selectCenter.mutateAsync({
       center_id: center.center_id,
@@ -110,7 +110,7 @@ export function CenterCard({ center }: CenterCardProps) {
       <CardHeader className="pb-1 px-4">
         <div className="flex items-center gap-1 mb-0.5">
           <CardTitle className="text-xl font-bold text-gray-900 dark:text-gray-100 line-clamp-2 text-left">
-            {center.center_name}
+            {center.name}
           </CardTitle>
         </div>
       </CardHeader>
@@ -119,7 +119,7 @@ export function CenterCard({ center }: CenterCardProps) {
         <div className="flex items-start gap-1">
           <Phone className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
           <CardDescription className="text-sm text-gray-600 dark:text-gray-300 break-words text-left">
-            {center.center_phone}
+            {center.phone}
           </CardDescription>
         </div>
 
@@ -127,7 +127,7 @@ export function CenterCard({ center }: CenterCardProps) {
           <div className="flex items-start gap-1">
             <MapPin className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
             <CardDescription className="text-sm text-gray-600 dark:text-gray-300 break-words text-left">
-              {center.center_address}
+              {center.address}
             </CardDescription>
           </div>
           <RoleBadge role={center.role} />

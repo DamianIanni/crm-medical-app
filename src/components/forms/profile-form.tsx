@@ -16,10 +16,12 @@ import { TextField } from "./fields/textField";
 import { useUpdateAccount, useDeleteAccount } from "@/hooks/user/useUser";
 import { ActionDialog } from "@/components/feedback/actionDialog";
 
-export function ProfileForm(
-  user: ProfileFormValues & { id: string }
-): React.ReactElement {
-  const { first_name, last_name, email, id } = user.user;
+interface ProfileFormProps {
+  user: ProfileFormValues & { id: string };
+}
+
+export function ProfileForm({ user }: ProfileFormProps): React.ReactElement {
+  const { first_name, last_name, email, id } = user;
   const router = useRouter();
   const updateUser = useUpdateAccount();
   const { isPending: isDeletingAccount, mutate: deleteAccount } =
@@ -42,12 +44,7 @@ export function ProfileForm(
     first_name === form.watch("first_name") &&
     last_name === form.watch("last_name");
 
-  const isUnchanged = useMemo(() => {
-    return (
-      form.watch("first_name") === first_name &&
-      form.watch("last_name") === last_name
-    );
-  }, [form, first_name, last_name]);
+  // Using realIsUnchanged for form validation
 
   async function onSubmit(values: ProfileFormValues) {
     if (!first_name || !last_name) return;

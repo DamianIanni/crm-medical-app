@@ -1,15 +1,17 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import {
+import { 
   useReactTable,
   getCoreRowModel,
   getSortedRowModel,
   SortingState,
   PaginationState,
+  ColumnDef,
 } from "@tanstack/react-table";
 import { useDebounce } from "@/hooks/patient/useDebouncing";
 import { useGetPaginatedPatients } from "@/hooks/patient/usePatient";
+import { Patient } from "@/types/patient";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { DataTable } from "@/components/tables/dataTable";
 import { useAdminPatientsColumns } from "@/constants/tables/patients/adminColumns";
@@ -66,7 +68,7 @@ export default function PatientsPage() {
     enabled: !!centerId && pagination.pageSize > 0,
   });
 
-  const patientsData = response?.data ?? [];
+  const patientsData: Patient[] = response?.data ?? [];
   const pageCount = response?.pagination?.totalPages ?? 0;
 
   // 4. Memoized and safe column selection
@@ -74,7 +76,7 @@ export default function PatientsPage() {
   const managerCols = useManagerPatientsColumns();
   const employeeCols = useEmployeePatientsColumns();
 
-  const columns = useMemo(() => {
+  const columns = useMemo<ColumnDef<Patient>[]>(() => {
     switch (user?.role) {
       case "admin":
         return adminCols;
@@ -88,7 +90,7 @@ export default function PatientsPage() {
   }, [user?.role, adminCols, managerCols, employeeCols]);
 
   // 5. Table instance creation
-  const table = useReactTable({
+  const table = useReactTable<Patient>({
     data: patientsData,
     columns,
     pageCount,
@@ -136,7 +138,7 @@ export default function PatientsPage() {
       <DataTable
         table={table}
         columns={columns}
-        totalItems={response?.pagination?.totalItems}
+        totalItems={response?.pagination?.totalItems ?? 0}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         onPageSizeChange={handlePageSizeChange}

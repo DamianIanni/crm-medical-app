@@ -1,5 +1,6 @@
 // src/services/api/auth.ts
 import api from "./http";
+import { User } from "@/types/user";
 
 export interface RegisterBody {
   firstName: string;
@@ -21,8 +22,9 @@ export const login = (data: LoginBody) => {
   return api.post("/auth/login", data);
 };
 
-export const getCurrentUser = () => {
-  return api.get("/account/me");
+export const getCurrentUser = async () => {
+  const user = (await api.get("/account/me")) as User;
+  return user;
 };
 
 export const userLogout = () => {

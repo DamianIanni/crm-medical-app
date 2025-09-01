@@ -10,7 +10,7 @@ export default function UserInfoPage() {
   return (
     <PageAnimationWrapper>
       <DashboardPageWrapper>
-        <EntityInfo data={user} />
+        <EntityInfo data={user} type="user" />
       </DashboardPageWrapper>
     </PageAnimationWrapper>
   );

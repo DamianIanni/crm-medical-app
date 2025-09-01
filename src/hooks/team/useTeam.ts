@@ -10,12 +10,11 @@
 import { useMutation, UseQueryResult, useQuery } from "@tanstack/react-query";
 import { ToastFeedback } from "@/components/feedback/toastFeedback";
 import { useTranslations } from "next-intl";
-import { User } from "@/types/user";
 import {
   inviteUser,
   updateUser,
   deleteUser,
-  getUserById,
+  // getUserById,
   getAllUsers,
   UserPayload,
 } from "@/services/api/user";
@@ -130,16 +129,16 @@ export function useDeleteTeamMember() {
   });
 }
 
-export function useGetSingleUser(userId: string): UseQueryResult<User, Error> {
-  return useQuery<User, Error>({
-    queryKey: ["user", userId],
-    queryFn: () => getUserById(userId),
-    enabled: !!userId,
-    refetchOnMount: true,
-    staleTime: 30_000,
-    refetchOnWindowFocus: false,
-  });
-}
+// export function useGetSingleUser(userId: string): UseQueryResult<User, Error> {
+//   return useQuery<User, Error>({
+//     queryKey: ["user", userId],
+//     queryFn: () => getUserById(userId),
+//     enabled: !!userId,
+//     refetchOnMount: true,
+//     staleTime: 30_000,
+//     refetchOnWindowFocus: false,
+//   });
+// }
 
 export function useGetUsers(
   centerId: string

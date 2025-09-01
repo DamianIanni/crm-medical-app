@@ -169,7 +169,6 @@ export default function EntityInfo({
   ];
 
   // onEdit handler is passed directly to Actions component
-
   return (
     <div className="w-full h-full flex flex-col rounded-xl p-6  relative">
       <div className="mb-4">
@@ -184,7 +183,6 @@ export default function EntityInfo({
                   route="patients"
                   data={{
                     id: String(data.id || ""),
-                    user_id: String(data.id || ""),
                     first_name: String(data.first_name || ""),
                     last_name: String(data.last_name || ""),
                     email: String(data.email || ""),
@@ -195,13 +193,6 @@ export default function EntityInfo({
                     short_description: String(
                       (data as PatientData).short_description || ""
                     ),
-                    notes: Array.isArray((data as PatientData).notes)
-                      ? (data as PatientData).notes
-                      : [],
-                    center_id: "",
-                    center_name: "",
-                    role: "patient" as const,
-                    status: "active",
                   }}
                   inInfo
                 />
@@ -209,7 +200,6 @@ export default function EntityInfo({
                 <Actions
                   route="team"
                   data={{
-                    id: String(data.id || ""),
                     user_id:
                       "user_id" in data
                         ? String(data.user_id)
@@ -221,7 +211,6 @@ export default function EntityInfo({
                     status: (data as UserData).status || "active",
                     center_id: String((data as UserData).center_id || ""),
                     center_name: String((data as UserData).center_name || ""),
-                    phone: String((data as UserData).phone || ""),
                   }}
                   inInfo
                 />

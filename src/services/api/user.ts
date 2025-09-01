@@ -1,4 +1,5 @@
 // src/services/api/user.ts
+import { DataUserFilter } from "@/lib/schemas/memberSchema";
 import api from "./http";
 
 export interface UserPayload {
@@ -10,8 +11,9 @@ export const inviteUser = (data: UserPayload) => {
   return api.post(`/center/users/`, data);
 };
 
-export const getAllUsers = () => {
-  return api.get(`/center/users`);
+export const getAllUsers = async () => {
+  const users = (await api.get(`/center/users`)) as DataUserFilter[];
+  return users;
 };
 
 export const getUserById = (userId: string) => {

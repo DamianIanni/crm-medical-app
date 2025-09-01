@@ -4,10 +4,11 @@ import {
   useMutation,
   useQuery,
   useQueryClient,
-  UseQueryResult,
+  // UseQueryResult,
 } from "@tanstack/react-query";
 import { centerService } from "@/services/api/center";
-import { Center } from "@/types/center";
+// import { Center } from "@/types/center";
+import { Center } from "@/types/center/index";
 import { UserRole } from "@/types/user";
 import { ToastFeedback } from "@/components/feedback/toastFeedback";
 import { useRouter } from "next/navigation";
@@ -33,9 +34,7 @@ function useDeleteState() {
  * Hook to get all centers
  * @returns {UseQueryResult} A query result object from `@tanstack/react-query`
  */
-export function useGetAllCenters(
-  user_id: string
-): UseQueryResult<Center[], Error> {
+export function useGetAllCenters(user_id: string) {
   return useQuery<Center[], Error>({
     queryKey: ["allCenters", user_id],
     queryFn: () => centerService.getAll(),
@@ -48,7 +47,7 @@ export function useGetAllCenters(
  * Hook to get a single center by ID
  * @returns {UseQueryResult} A query result object from `@tanstack/react-query`
  */
-export function useGetCenterById(): UseQueryResult<Center, Error> {
+export function useGetCenterById() {
   const center_id = sessionStorage.getItem("selectedCenterId");
 
   return useQuery<Center, Error>({

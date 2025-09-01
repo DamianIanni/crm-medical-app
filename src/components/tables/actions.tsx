@@ -15,7 +15,7 @@ import { useDeletePatient } from "@/hooks/patient/usePatient";
 import { ActionDialog } from "@/components/feedback/actionDialog";
 import { useDeleteCenter } from "@/hooks/center/useCenter";
 import { Patient } from "@/types/patient";
-import { Center } from "@/types/center";
+import { Center } from "@/types/center/index";
 import { ROUTES } from "@/constants/routes";
 import { useAuth } from "../providers/AuthProvider";
 import { GeneralTooltip } from "../feedback/generalTooltip";
@@ -33,22 +33,38 @@ import { useTranslations } from "next-intl";
  */
 export type Route = "patients" | "team" | "centers";
 
-type ActionsProps = {
-  data: DataUserFilter | Patient | Center;
-  route: Route;
-  inInfo?: boolean;
+// Define a more specific type for the data prop based on the route
+type RouteData = {
+  patients: Patient;
+  team: DataUserFilter;
+  centers: Center;
 };
 
-export default function Actions({
+export default function Actions<T extends Route>({
   data,
   route,
   inInfo,
-}: ActionsProps): React.ReactElement {
-  // Support both camelCase and snake_case ids coming from different endpoints
-  const entityId: string = (data as any).user_id ?? (data as any).id;
+}: {
+  data: RouteData[T];
+  route: T;
+  inInfo?: boolean;
+}): React.ReactElement {
+  // Extract the appropriate ID based on route type
+  const entityId: string =
+    route === "team"
+      ? (data as DataUserFilter).user_id
+      : route === "centers"
+      ? "center_id" in data
+        ? data.center_id
+        : "id" in data
+        ? data.id
+        : ""
+      : route === "patients"
+      ? (data as Patient).id
+      : "";
 
   const deleteMember = useDeleteTeamMember();
-  const deletePatient = useDeletePatient(entityId);
+  const deletePatient = useDeletePatient();
   const deleteCenter = useDeleteCenter();
 
   const { user } = useAuth();
@@ -97,10 +113,12 @@ export default function Actions({
       })(),
       displayName: getDisplayName(),
       onDelete: () => {
-        deleteCenter.mutate(entityId);
-        sessionStorage.removeItem("selectedCenterName");
-        sessionStorage.removeItem("selectedCenterId");
-        router.replace("/centers");
+        if (entityId) {
+          deleteCenter.mutate(entityId);
+          sessionStorage.removeItem("selectedCenterName");
+          sessionStorage.removeItem("selectedCenterId");
+          router.replace("/centers");
+        }
       },
       hideDetails: true, // Centers table has no detail view
     },

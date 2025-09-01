@@ -1,30 +1,33 @@
 // src/services/api/center.ts
 import api from "./http";
+// import { Center } from "@/types/center";
 import { Center } from "@/types/center";
 import { UserRole } from "@/types/user";
 
 export const centerService = {
-  getAll: () => {
-    return api.get<Center[]>("center-selection/all-centers");
+  getAll: async () => {
+    const centers = (await api.get("center-selection/all-centers")) as Center[];
+    return centers;
   },
 
-  getById: () => {
-    return api.get<Center>(`center/center-actions/me`);
+  getById: async () => {
+    const center = (await api.get(`center/center-actions/me`)) as Center;
+    return center;
   },
 
-  create: (center: Omit<Center, "id">) => {
-    return api.post<Center>("create-center", center);
+  create: async (center: Omit<Center, "id">) => {
+    return await api.post("create-center", center);
   },
 
-  update: (id: string, center: Partial<Center>) => {
-    return api.patch<Center>(`center/center-actions/${id}`, center);
+  update: async (id: string, center: Partial<Center>) => {
+    return await api.patch(`center/center-actions/${id}`, center);
   },
 
-  delete: (id: string) => {
-    return api.delete<void>(`center/center-actions/${id}`);
+  delete: async (id: string) => {
+    return await api.delete<void>(`center/center-actions/${id}`);
   },
 
-  selectCenter: (center_id: string, role: UserRole) => {
-    return api.post<void>(`center-selection`, { center_id, role });
+  selectCenter: async (center_id: string, role: UserRole): Promise<void> => {
+    await api.post(`center-selection`, { center_id, role });
   },
 };

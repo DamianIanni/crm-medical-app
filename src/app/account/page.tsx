@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ProfileForm } from "@/components/forms/profile-form";
-import { ProfileFormSkeleton } from "@/components/skeletons/profileFormSkeleton";
+import { ProfileFormSkeleton } from "@/components/skeletons/ProfileFormSkeleton";
 import DashboardPageWrapper from "@/components/wrappers/dashboardPageWrapper";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/components/providers/AuthProvider";
@@ -105,7 +105,16 @@ export default function AccountPage() {
             </div>
             <Card>
               <CardContent>
-                <ProfileForm user={user} />
+                {user && (
+                  <ProfileForm
+                    user={{
+                      id: user.id,
+                      first_name: user.first_name,
+                      last_name: user.last_name,
+                      email: user.email,
+                    }}
+                  />
+                )}
               </CardContent>
             </Card>
           </div>

@@ -9,7 +9,6 @@ import { useGetAllCenters } from "@/hooks/center/useCenter";
 import { CentersSkeleton } from "@/components/skeletons/centerSkeleton";
 import { AlertMessage } from "@/components/feedback/AlertMessage";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { Center } from "@/types/center/index";
 import { AccountActions } from "@/components/nav/account-actions";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { PageAnimationWrapper } from "@/components/wrappers/pageAnimationWrapper";
@@ -28,11 +27,11 @@ export default function CentersPage() {
   } = useGetAllCenters(user!.id);
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const filteredCenters: Center[] = centers?.filter(
+  const filteredCenters = centers?.filter(
     (center) =>
-      center.center_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      center.center_address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      center.center_phone.includes(searchQuery)
+      center.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      center.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      center.phone.includes(searchQuery)
   );
 
   const handleAddCenter = () => {
@@ -112,10 +111,10 @@ export default function CentersPage() {
                   <h2 className="text-xl font-semibold mb-4 text-foreground">
                     {t("myCenters")}
                   </h2>
-                  {filteredCenters?.filter((center) => center.role === "admin")
+                  {filteredCenters!.filter((center) => center.role === "admin")
                     .length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {filteredCenters
+                      {filteredCenters!
                         .filter((center) => center.role === "admin")
                         .map((center) => (
                           <CenterCard
@@ -142,10 +141,10 @@ export default function CentersPage() {
                   <h2 className="text-xl font-semibold mb-4 text-foreground">
                     {t("invitedCenters")}
                   </h2>
-                  {filteredCenters?.filter((center) => center.role !== "admin")
+                  {filteredCenters!.filter((center) => center.role !== "admin")
                     .length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {filteredCenters
+                      {filteredCenters!
                         .filter((center) => center.role !== "admin")
                         .map((center) => (
                           <CenterCard

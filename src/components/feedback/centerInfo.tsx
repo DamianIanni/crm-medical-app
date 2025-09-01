@@ -1,4 +1,4 @@
-import { Center } from "@/types/center";
+import { Center } from "@/types/center/index";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Actions from "@/components/tables/actions";
 import { Button } from "@/components/ui/button";
@@ -6,21 +6,14 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-export type CenterStats = Center & {
-  total_patients: number;
-  total_users: number;
-};
-
-interface CenterInfoProps {
-  data: CenterStats;
-}
+export type CenterStats = { data: Center };
 
 /**
  * CenterInfo component.
  * Re-uses the visual style of EntityInfo to show a medical center's information.
  * Displays center name, phone, address, total patients and total users.
  */
-export default function CenterInfo({ data }: CenterInfoProps) {
+export default function CenterInfo({ data }: CenterStats) {
   const t = useTranslations("CenterInfo");
   const router = useRouter();
   const details: { label: string; value: string | number | undefined }[] = [
@@ -41,9 +34,7 @@ export default function CenterInfo({ data }: CenterInfoProps) {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           {t("title")}
         </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          {t("subtitle")}
-        </p>
+        <p className="text-gray-600 dark:text-gray-400">{t("subtitle")}</p>
       </div>
       <Card
         className="w-full max-w-2xl h-full flex flex-col rounded-xl p-6"

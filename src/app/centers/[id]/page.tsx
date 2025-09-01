@@ -26,7 +26,7 @@ export default function CenterInfoPage() {
           <div className="w-full max-w-2xl flex flex-col items-center justify-center mx-auto mt-10">
             <AlertMessage
               title="Error loading center"
-              description={`CODE: 3001 - Report this to Aisel team.`}
+              description={`CODE: 3001 - Report this to the team.`}
             />
             <div className="mt-4 flex justify-end">
               <Button onClick={() => refetch()}>Try Again</Button>

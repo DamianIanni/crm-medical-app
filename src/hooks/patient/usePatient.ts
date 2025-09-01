@@ -10,7 +10,7 @@
 import {
   useMutation,
   useQuery,
-  UseQueryResult,
+  // UseQueryResult,
   keepPreviousData,
 } from "@tanstack/react-query";
 import { ToastFeedback } from "@/components/feedback/toastFeedback";
@@ -21,24 +21,34 @@ import {
   updatePatient,
   deletePatient,
   getAllPatients,
-  getPatientById,
+  // getPatientById,
   PatientPayload,
 } from "@/services/api/patient";
 import { deletePatientNote } from "@/services/api/notes";
 import { useInvalidateQuery } from "../useInvalidateQuery";
 import { useDeleteState } from "@/components/providers/ContextProvider";
 import { createPatientNote } from "@/services/api/notes";
+import { PaginatedPatientsResponse } from "@/services/api/patient";
 
 export type NewNotePayload = {
   note: string;
 };
 
+type UpdatePatientVariables = {
+  patientId: string;
+  updated: Partial<PatientPayload>;
+};
+
 export function useCreatePatient() {
   const t = useTranslations("Feedback.Patient");
   const invalidate = useInvalidateQuery(["allPatient"]);
-  return useMutation({
+  return useMutation<
+    Patient, // 1. Tipo de dato que se devuelve en caso de ÉXITO
+    Error, // 2. Tipo de dato que se devuelve en caso de ERROR
+    PatientPayload // 3. Tipo de dato que recibe la función 'mutate'
+  >({
     mutationFn: (data: PatientPayload) => createPatient(data),
-    onSuccess: (data: Omit<Patient, "id" & "notes">) => {
+    onSuccess: (data) => {
       invalidate();
       ToastFeedback({
         type: "success",
@@ -60,15 +70,14 @@ export function useUpdatePatient() {
   const t = useTranslations("Feedback.Patient");
   const invalidate = useInvalidateQuery(["patient"]);
   const invalidateAll = useInvalidateQuery(["allPatient"]);
-  return useMutation({
-    mutationFn: ({
-      patientId,
-      updated,
-    }: {
-      patientId: string;
-      updated: Partial<PatientPayload>;
-    }) => updatePatient(patientId, updated),
-    onSuccess: (data: Partial<Patient>) => {
+  return useMutation<
+    PatientPayload, // 1. Tipo de dato que se devuelve en caso de ÉXITO
+    Error, // 2. Tipo de dato que se devuelve en caso de ERROR
+    UpdatePatientVariables // 3. Tipo de dato que recibe la función 'mutate'
+  >({
+    mutationFn: ({ patientId, updated }: UpdatePatientVariables) =>
+      updatePatient(patientId, updated),
+    onSuccess: (data) => {
       invalidate();
       invalidateAll();
       ToastFeedback({
@@ -113,18 +122,18 @@ export function useDeletePatient() {
   });
 }
 
-export function useGetSinglePatient(
-  userId: string
-): UseQueryResult<Patient, Error> {
-  return useQuery<Patient, Error>({
-    queryKey: ["patient", userId],
-    queryFn: () => getPatientById(userId),
-    enabled: !!userId,
-    refetchOnMount: true,
-    staleTime: 30_000,
-    refetchOnWindowFocus: false,
-  });
-}
+// export function useGetSinglePatient(
+//   userId: string
+// ): UseQueryResult<Patient, Error> {
+//   return useQuery<Patient, Error>({
+//     queryKey: ["patient", userId],
+//     queryFn: () => getPatientById(userId),
+//     enabled: !!userId,
+//     refetchOnMount: true,
+//     staleTime: 30_000,
+//     refetchOnWindowFocus: false,
+//   });
+// }
 
 export function useCreateNote(patientId: string) {
   const t = useTranslations("Feedback.Patient");
@@ -171,17 +180,6 @@ export function useDeleteNote(patientId: string) {
     },
   });
 }
-
-// 1. Define el tipo de la respuesta que esperas de tu API
-type PaginatedPatientsResponse = {
-  data: Patient[];
-  pagination: {
-    currentPage: number;
-    pageSize: number;
-    totalItems: number;
-    totalPages: number;
-  };
-};
 
 // 2. Define el tipo de los parámetros que recibirá el hook
 type GetPatientsParams = {

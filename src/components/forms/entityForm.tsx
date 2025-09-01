@@ -10,7 +10,7 @@ import { PatientForm } from "./patientForm";
 import { MemberForm } from "./memberForm";
 import { CenterForm } from "./centerForm";
 import { Patient } from "@/types/patient";
-import { Center } from "@/types/center";
+import { Center } from "@/types/center/index";
 import { DataUserFilter } from "@/lib/schemas/memberSchema";
 
 type FormType = "patient" | "member" | "auth" | "center";
@@ -37,11 +37,11 @@ export function EntityForm({
 }: EntityFormProps): React.ReactElement {
   switch (formType) {
     case "patient":
-      return <PatientForm mode={mode} data={data as Partial<Patient>} />;
+      return <PatientForm mode={mode} data={data as Patient} />;
     case "member":
-      return <MemberForm mode={mode} data={data as Partial<DataUserFilter>} />;
+      return <MemberForm mode={mode} data={data as DataUserFilter} />;
     case "center":
-      return <CenterForm mode={mode} data={data as Partial<Center>} />;
+      return <CenterForm mode={mode} data={data as Center} />;
     case "auth":
     default:
       return <LoginForm />;

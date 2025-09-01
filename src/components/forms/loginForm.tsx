@@ -167,7 +167,7 @@ export function LoginForm({
               <AlertMessage
                 title={invalidCredentials.title}
                 description={invalidCredentials.description}
-                data={invalidCredentials.data}
+                messages={invalidCredentials.data}
               />
             )}
           </div>

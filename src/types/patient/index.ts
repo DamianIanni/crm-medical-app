@@ -12,5 +12,5 @@ export type Patient = {
   phone: string;
   date_of_birth: string; // ISO date
   short_description: string;
-  notes: Notes[];
+  notes?: Notes[];
 };
