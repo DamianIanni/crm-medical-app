@@ -45,42 +45,44 @@ jest.mock("@/lib/api/jwtUtil", () => ({
 }));
 
 const mockPatient = {
-  id: 1,
-  firstName: "John",
-  lastName: "Doe",
+  id: "1", // Changed to string to match expected type
+  first_name: "John",
+  last_name: "Doe",
   email: "john@example.com",
-  phoneNumber: "+45 12345678",
-  dob: "1980-01-01",
+  phone: "+45 12345678",
+  date_of_birth: "1980-01-01",
   treatment: "CBT",
-  sessionsCompleted: 2,
-  sessions: [
+  short_description: "CBT",
+  notes: [
     {
+      id: "1",
       date: "2025-06-01",
-      notes: "Patient discussed progress.",
+      note: "Patient discussed progress.",
     },
     {
+      id: "2",
       date: "2025-06-08",
-      notes: "Reviewed exposure exercises.",
+      note: "Reviewed exposure exercises.",
     },
   ],
 };
 
 describe("EntityInfo", () => {
   it("renders patient info correctly", () => {
-    renderWithClient(<EntityInfo data={mockPatient} />);
+    renderWithClient(<EntityInfo data={mockPatient} type="patient" />);
     expect(screen.getByText("John Doe")).toBeInTheDocument();
     expect(screen.getByText("john@example.com")).toBeInTheDocument();
     expect(screen.getByText("CBT")).toBeInTheDocument();
   });
 
   it("renders accordion with session notes trigger", () => {
-    renderWithClient(<EntityInfo data={mockPatient} />);
-    expect(screen.getByText("Show session notes")).toBeInTheDocument();
+    renderWithClient(<EntityInfo data={mockPatient} type="patient" />);
+    expect(screen.getByText(/notes/i)).toBeInTheDocument();
   });
 
   it("shows session notes after clicking accordion", async () => {
-    renderWithClient(<EntityInfo data={mockPatient} />);
-    const trigger = screen.getByText("Show session notes");
+    renderWithClient(<EntityInfo data={mockPatient} type="patient" />);
+    const trigger = screen.getByText(/notes/i);
     await userEvent.click(trigger);
     expect(screen.getByText("Patient discussed progress.")).toBeInTheDocument();
     expect(
@@ -90,14 +92,18 @@ describe("EntityInfo", () => {
 
   it("does not show patient fields for a User object", () => {
     const userMock = {
-      id: 99,
-      firstName: "Alice",
-      lastName: "Walker",
+      id: "99", // Changed to string to match expected type
+      user_id: "99", // Added required field
+      first_name: "Alice",
+      last_name: "Walker",
       email: "alice@example.com",
+      role: "admin" as const, // Const assertion to match expected enum type
+      center_id: "1", // Added required field
+      status: "active" // Added required field
     };
-    renderWithClient(<EntityInfo data={userMock} />);
+    renderWithClient(<EntityInfo data={userMock} type="user" />);
     expect(screen.getByText("Alice Walker")).toBeInTheDocument();
-    expect(screen.queryByText("Treatment")).not.toBeInTheDocument();
-    expect(screen.queryByText("Show session notes")).not.toBeInTheDocument();
+    expect(screen.queryByText(/treatment/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/notes/i)).not.toBeInTheDocument();
   });
 });

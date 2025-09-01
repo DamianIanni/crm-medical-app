@@ -6,17 +6,22 @@ describe("AlertMessage", () => {
   it("renders title and description correctly", () => {
     render(
       <AlertMessage
+        variant="error"
         title="Error"
         description="Something went wrong"
-        data={["Missing email", "Invalid password"]}
+        messages={["Missing email", "Invalid password"]}
       />
     );
 
     // Assertions
     expect(screen.getByText("Error")).toBeInTheDocument();
     expect(screen.getByText("Something went wrong")).toBeInTheDocument();
-    expect(screen.getByText("Missing email")).toBeInTheDocument();
-    expect(screen.getByText("Invalid password")).toBeInTheDocument();
+    
+    // Check for list items instead of direct text
+    const listItems = screen.getAllByRole("listitem");
+    expect(listItems).toHaveLength(2);
+    expect(listItems[0].textContent).toContain("Missing email");
+    expect(listItems[1].textContent).toContain("Invalid password");
   });
 
   it("renders without optional props", () => {

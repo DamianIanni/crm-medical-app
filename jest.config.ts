@@ -215,10 +215,12 @@ const config: Config = {
   coverageDirectory: "coverage",
   coverageProvider: "v8",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
-  transformIgnorePatterns: ["/node_modules/(?!jose)/"],
+  transformIgnorePatterns: ["/node_modules/(?!(jose|next-intl|use-intl))/"],
   testEnvironment: "jest-environment-jsdom",
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
+    "^next-intl$": "<rootDir>/__mocks__/next-intl.js",
+    "^use-intl$": "<rootDir>/__mocks__/next-intl.js"
   },
 };
 
