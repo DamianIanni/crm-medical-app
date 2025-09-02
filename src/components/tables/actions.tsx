@@ -102,7 +102,10 @@ export default function Actions<T extends Route>({
       detailUrl: ROUTES.patientDetail(entityId),
       editUrl: ROUTES.patientEdit(entityId),
       displayName: getDisplayName(),
-      onDelete: () => deletePatient.mutate(entityId),
+      onDelete: () => {
+        deletePatient.mutate(entityId);
+        router.replace("/dashboard/patients");
+      },
     },
     centers: {
       title: entityT("center"),

@@ -34,6 +34,7 @@ export function TeamSwitcher() {
     isSuccessRejectInvitation,
     isErrorRejectInvitation,
   } = useAuth();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isCollapsed, setIsCollapsed] = React.useState(false);
   const router = useRouter();
   const isSmallScreen = useMediaQuery("(max-width: 768px)");
@@ -42,7 +43,7 @@ export function TeamSwitcher() {
   );
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const showIconOnly = isCollapsed || isMobile || isSmallScreen;
+  // const showIconOnly = isCollapsed || isMobile || isSmallScreen;
 
   // Refs para los elementos
   const dialogTriggerRef = useRef<HTMLButtonElement>(null);
@@ -160,23 +161,23 @@ export function TeamSwitcher() {
             title={selectedCenterName || t("selectCenter")}
             onClick={toggleDropdown}
           >
-            {showIconOnly ? (
+            {/* {showIconOnly ? (
               <div className="flex items-center justify-center">
                 <Home className="size-5" />
               </div>
-            ) : (
-              <div className="flex items-center gap-2 w-full">
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <Home className="size-4" />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight min-w-0">
-                  <span className="truncate font-medium">
-                    {selectedCenterName || t("selectCenter")}
-                  </span>
-                </div>
-                <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
+            ) : ( */}
+            <div className="flex items-center gap-2 w-full">
+              <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                <Home className="size-4" />
               </div>
-            )}
+              <div className="grid flex-1 text-left text-sm leading-tight min-w-0">
+                <span className="truncate font-medium">
+                  {selectedCenterName || t("selectCenter")}
+                </span>
+              </div>
+              <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
+            </div>
+            {/* )} */}
           </SidebarMenuButton>
 
           {isOpen && (
