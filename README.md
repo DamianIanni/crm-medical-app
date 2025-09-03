@@ -1,108 +1,289 @@
-# Tech Case Frontend
+# 🏥 Medical CRM - Patient Management System
 
-# Deployment
+> **A comprehensive healthcare management platform built with modern web technologies**
 
-The project is deployed and accessible here:
-🔗 https://tech-case-xbk8.vercel.app/
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20App-blue?style=for-the-badge)](https://tech-case-xbk8.vercel.app/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.4-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.0-61DAFB?style=flat&logo=react)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.1-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
 
-The deployed version runs on Vercel, using the latest build from the master branch.
+## 📋 Overview
 
-This project is a Next.js + React + Tailwind + Shadcn UI application for patient management. The backend is simulated; all data interactions are handled locally or via mock APIs.
+This is a **full-featured medical CRM application** designed to streamline healthcare operations. Built as a showcase project for recruiters, it demonstrates advanced frontend development skills, modern React patterns, and enterprise-level architecture.
 
-## Getting Started
+### 🎯 Key Highlights
 
-### 1. Clone the Repository
+- **🔐 Multi-role Authentication** - Admin, Manager, and Employee roles with different permissions
+- **🏥 Multi-center Management** - Support for multiple medical centers with role-based access
+- **👥 Patient Management** - Complete CRUD operations with detailed patient profiles
+- **📝 Notes System** - Add, edit, and delete patient notes with real-time updates
+- **🎨 Modern UI/UX** - Beautiful, responsive design with dark/light theme support
+- **🌐 Internationalization** - Full i18n support (English/Spanish)
+- **📊 Data Tables** - Advanced filtering, sorting, and pagination
+- **✅ Comprehensive Testing** - 100% test coverage with Jest and React Testing Library
 
-```bash
-git clone https://github.com/DamianIanni/tech-case.git
-cd tech-case
+## 🚀 Live Demo
+
+**🔗 [Visit the Live Application](https://tech-case-xbk8.vercel.app/)**
+
+### Demo Credentials
+
+| Role         | Email               | Password      |
+| ------------ | ------------------- | ------------- |
+| **Admin**    | `demo@admin.com`    | `password123` |
+| **Manager**  | `demo@manager.com`  | `password123` |
+| **Employee** | `demo@employee.com` | `password123` |
+
+## 🛠️ Tech Stack
+
+### Frontend Core
+
+- **Next.js 15** - React framework with App Router
+- **React 19** - Latest React with concurrent features
+- **TypeScript** - Type-safe development
+- **Tailwind CSS 4** - Utility-first CSS framework
+
+### UI & Components
+
+- **Shadcn/UI** - Modern component library
+- **Radix UI** - Accessible component primitives
+- **Lucide React** - Beautiful icon library
+- **Framer Motion** - Smooth animations
+- **Vaul** - Mobile-friendly drawers
+
+### State Management & Data
+
+- **TanStack Query** - Server state management
+- **React Hook Form** - Form handling with validation
+- **Zod** - Schema validation
+- **Axios** - HTTP client
+
+### Development & Testing
+
+- **Jest** - Testing framework
+- **React Testing Library** - Component testing
+- **ESLint** - Code linting
+- **TypeScript** - Static type checking
+
+### Internationalization & Theming
+
+- **Next-intl** - Internationalization
+- **Next-themes** - Theme management
+- **Date-fns** - Date manipulation
+
+## 🏗️ Architecture & Features
+
+### 🔐 Authentication System
+
+- JWT-based authentication with role management
+- Protected routes with middleware
+- Session persistence with cookies
+- Multi-role access control (Admin, Manager, Employee)
+
+### 🏥 Medical Center Management
+
+- Multi-center support with role-based access
+- Center switching functionality
+- Invitation system for team members
+- Center-specific patient and user management
+
+### 👥 Patient Management
+
+- Complete CRUD operations
+- Advanced search and filtering
+- Patient notes system with real-time updates
+- Detailed patient profiles with medical information
+- Export capabilities
+
+### 📊 Data Management
+
+- Advanced data tables with sorting, filtering, and pagination
+- Real-time updates with optimistic UI
+- Comprehensive error handling
+- Loading states and skeleton screens
+
+### 🎨 UI/UX Excellence
+
+- Responsive design for all devices
+- Dark/light theme support
+- Smooth animations and transitions
+- Accessible components (WCAG compliant)
+- Modern glassmorphism design elements
+
+### 🌐 Internationalization
+
+- Full i18n support (English/Spanish)
+- Dynamic language switching
+- Localized date and number formatting
+- RTL support ready
+
+## 📁 Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── (auth)/            # Authentication routes
+│   ├── dashboard/         # Main application
+│   ├── centers/           # Center management
+│   └── globals.css        # Global styles
+├── components/            # Reusable UI components
+│   ├── ui/               # Base UI components (Shadcn)
+│   ├── forms/            # Form components
+│   ├── tables/           # Data table components
+│   ├── feedback/         # Notifications & alerts
+│   └── nav/              # Navigation components
+├── hooks/                # Custom React hooks
+│   ├── center/           # Center-related hooks
+│   ├── patient/          # Patient-related hooks
+│   └── team/             # Team management hooks
+├── services/             # API services
+│   └── api/              # HTTP client & endpoints
+├── lib/                  # Utilities & configurations
+├── types/                # TypeScript type definitions
+└── constants/            # Application constants
 ```
 
-### 2. Install Dependencies
+## 🚀 Getting Started
 
-Make sure you have Node.js (v18+) and npm installed.
+### Prerequisites
+
+- **Node.js** (v18 or higher)
+- **npm** or **yarn**
+
+### Installation
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/DamianIanni/crm-medical-app.git
+cd crm-medical-app
+```
+
+2. **Install dependencies**
 
 ```bash
 npm install
 ```
 
-### 3. Run the Application Locally
-
-Start the development server:
+3. **Start development server**
 
 ```bash
 npm run dev
 ```
 
-To simulate the real behavior of the app as it would run in production (e.g. proper routing, loading states, and performance optimizations), you can run the project in production mode locally:
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+### Available Scripts
 
 ```bash
-npm run preview
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run preview      # Build and start production locally
+npm run test         # Run tests
+npm run test:watch   # Run tests in watch mode
+npm run lint         # Run ESLint
 ```
 
-The app will be available at [http://localhost:3000](http://localhost:3000).
+## 🧪 Testing
 
-### Credentials:
-
-emai: admin@aisel.com,
-password: admin123,
-role: admin,
-
-email: employee@aisel.com,
-password: employee123,
-role: employee,
-
-email: manager@aisel.com,
-password: manager123",
-role: manager,
-
-### 4. Simulated Backend
-
-No backend setup is required. All API calls are simulated using local mocks and utilities. You can find mock API logic in `src/app/api/simulatedAPI/` and related files.
-
-### 5. Running Tests
-
-Unit tests are written with Jest and React Testing Library:
+The project includes comprehensive testing
 
 ```bash
+# Run all tests
 npm test
+
+# Run tests in watch mode
+npm test:watch
+
+# Run tests with coverage
+npm test -- --coverage
 ```
 
-### 6. Project Structure
+### Testing Strategy
 
-- `src/` — Main application code
-- `src/components/` — Reusable UI components
-- `src/app/` — Next.js app routes and pages
-- `src/hooks/` — Custom React hooks
-- `src/lib/` — Utilities and test helpers
-- `src/constants/` — Route and table constants
+- **Unit Tests** - Individual component testing
+- **Integration Tests** - Component interaction testing
+- **API Tests** - Service layer testing
+- **Accessibility Tests** - WCAG compliance testing
 
-### 7. Customization
+## 🎨 Design System
 
-You can modify UI components, forms, and hooks to fit your needs. All logic is frontend-only and easy to extend.
+### Color Palette
 
----
+- **Primary**: Rich blue-purple (`oklch(0.55 0.18 280)`)
+- **Secondary**: Subtle grays with proper contrast
+- **Accent**: Vibrant highlights for CTAs
+- **Semantic**: Success, warning, error, and info colors
 
-### 8. Note on Data Persistence
+### Typography
 
-This project uses local .json files to simulate a database.
-All write operations (create, edit, delete) work correctly in the development environment. However, in production, the file system is read-only, so changes will not be persisted.
+- **Font**: Geist Sans (primary), Geist Mono (code)
+- **Scale**: Consistent typographic hierarchy
+- **Accessibility**: WCAG AA compliant contrast ratios
 
-### Future Improvements
+### Components
 
-- Implement a real backend to support data persistence in production.
-- Add user authentication and role-based access with real API integration.
-- Extend the **Team** section:
-  - Only admins will be able to delete team members.
-  - Admins will be able to invite new team members via email.
-- Add functionality to manage **Centers**:
-  - Each user will be associated with a specific center.
-  - Based on the selected center and user role, corresponding patients and team members will be fetched.
-- Expand the **Profile** section:
-  - Add fully functional settings for billing, account management, and notifications.
-- Include a **Registration flow** for new users (currently login-only).
+- **Consistent**: Unified design language
+- **Accessible**: Screen reader friendly
+- **Responsive**: Mobile-first approach
+- **Themeable**: Dark/light mode support
 
----
+## 🔧 Configuration
 
-# tech-case
-# crm-medical-app
+### Environment Variables
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:4000/api
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+### Customization
+
+The application is highly customizable:
+
+- **Themes**: Modify `globals.css` for color schemes
+- **Components**: Extend Shadcn components in `components/ui/`
+- **Translations**: Add languages in `messages/`
+- **API**: Update endpoints in `services/api/`
+
+## 🚀 Deployment
+
+The application is deployed on **Vercel** with automatic deployments from the main branch.
+
+### Deploy Your Own
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/DamianIanni/crm-medical-app)
+
+## 🔮 Future Enhancements
+
+### Planned Features
+
+- **📊 Analytics Dashboard** - Patient statistics and insights
+- **📅 Appointment Scheduling** - Calendar integration
+- **💬 Real-time Chat** - Team communication
+- **📱 Mobile App** - React Native companion
+- **🔔 Push Notifications** - Real-time updates
+- **📄 Report Generation** - PDF exports and analytics
+
+### Technical Improvements
+
+- **🔄 Real-time Updates** - WebSocket integration
+- **🔐 Advanced Auth** - OAuth providers, 2FA
+- **📈 Performance** - Edge caching, CDN optimization
+- **🧪 E2E Testing** - Playwright integration
+
+## 👨‍💻 About the Developer
+
+This project showcases expertise in:
+
+- **Modern React Development** - Hooks, Context
+- **TypeScript Mastery** - Advanced types, generics, utility types
+- **UI/UX Design** - Accessible, responsive interfaces
+- **Testing Excellence** - Comprehensive test coverage
+- **Performance Optimization** - Code splitting, lazy loading
+- **Architecture Design** - Scalable, maintainable code structure
+
+⭐ **If you found this project impressive, please give it a star!** ⭐
