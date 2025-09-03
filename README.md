@@ -3,6 +3,7 @@
 > **A comprehensive healthcare management platform built with modern web technologies**
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20App-blue?style=for-the-badge)](https://tech-case-xbk8.vercel.app/)
+[![Backend Repo](https://img.shields.io/badge/Backend-GitHub%20Repo-green?style=for-the-badge)](https://github.com/DamianIanni/tech-case-server)
 [![Next.js](https://img.shields.io/badge/Next.js-15.4-black?style=flat&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.0-61DAFB?style=flat&logo=react)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat&logo=typescript)](https://www.typescriptlang.org/)
