@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { 
+import {
   useReactTable,
   getCoreRowModel,
   getSortedRowModel,
@@ -68,7 +68,13 @@ export default function PatientsPage() {
     enabled: !!centerId && pagination.pageSize > 0,
   });
 
-  const patientsData: Patient[] = response?.data ?? [];
+  // Map PatientPayload[] to Patient[] ensuring all required fields are present
+  const patientsData = useMemo(() => {
+    return (response?.data ?? []).map(patient => ({
+      ...patient,
+      id: patient.id || '', // Ensure id is always a string, never undefined
+    })) as Patient[];
+  }, [response?.data]);
   const pageCount = response?.pagination?.totalPages ?? 0;
 
   // 4. Memoized and safe column selection
@@ -135,7 +141,7 @@ export default function PatientsPage() {
   return (
     <DashboardPageWrapper>
       {/* 7. Pass the table instance and necessary props to DataTable */}
-      <DataTable
+      <DataTable<Patient>
         table={table}
         columns={columns}
         totalItems={response?.pagination?.totalItems ?? 0}

@@ -12,7 +12,6 @@ import {
   useReactTable,
   PaginationState,
   Table as TanstackTable,
-  Row,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -29,7 +28,7 @@ import { useTranslations } from "next-intl";
 const ROW_HEIGHT_PX = 52;
 
 function useDynamicPageSize(
-  containerRef: React.RefObject<HTMLDivElement>,
+  containerRef: React.RefObject<HTMLDivElement | null>,
   defaultSize = 10
 ) {
   const [pageSize, setPageSize] = useState(defaultSize);
@@ -59,7 +58,7 @@ interface DataTableProps<TData, TValue> {
   onPageSizeChange?: (size: number) => void;
 }
 
-export const DataTable = ({
+export function DataTable<TData, TValue = unknown>({ 
   columns,
   data,
   table: serverSideTable, // Renamed the prop for clarity
@@ -67,7 +66,7 @@ export const DataTable = ({
   totalItems,
   setSearchTerm,
   onPageSizeChange,
-}: DataTableProps<any, any>) => {
+}: DataTableProps<TData, TValue>) {
   const t = useTranslations("Table");
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -80,7 +79,7 @@ export const DataTable = ({
   // Determine the operation mode
   const isServerSide = !!serverSideTable;
   const clientSideTable = useReactTable({
-    data,
+    data: data as TData[],
     columns,
     state: { sorting, pagination, globalFilter },
     onSortingChange: setSorting,
@@ -151,7 +150,7 @@ export const DataTable = ({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row: Row<any>) => (
+              table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="h-13">
@@ -206,4 +205,3 @@ export const DataTable = ({
     </div>
   );
 };
-DataTable.displayName = "DataTable";
