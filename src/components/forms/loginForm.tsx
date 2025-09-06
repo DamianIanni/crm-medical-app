@@ -82,60 +82,58 @@ export function LoginForm({
           <div className="grid gap-4">
             {/* Social login buttons section */}
             <div className="flex flex-col gap-4">
-              {process.env.NODE_ENV === "development" && (
-                <Alert>
-                  <Terminal className="h-4 w-4" />
-                  <AlertTitle className="font-bold">
-                    {t("demoAccount.title")}
-                  </AlertTitle>
-                  <AlertDescription>
-                    <div className="space-y-3 text-sm">
-                      <p>{t("demoAccount.description")}</p>
+              <Alert>
+                <Terminal className="h-4 w-4" />
+                <AlertTitle className="font-bold">
+                  {t("demoAccount.title")}
+                </AlertTitle>
+                <AlertDescription>
+                  <div className="space-y-3 text-sm">
+                    <p>{t("demoAccount.description")}</p>
 
-                      <div className="grid gap-2 p-2 rounded-md bg-muted/50">
-                        <div>
-                          <div className="font-medium text-xs uppercase tracking-wide text-muted-foreground mb-1">
-                            {t("demoAccount.email")}:
-                          </div>
-                          <div className="grid gap-1">
-                            <div className="flex items-center gap-2 bg-background/80 p-1.5 px-2 rounded border border-border/50">
-                              <span className="bg-purple-500/10 text-purple-500 px-1.5 py-0.5 rounded text-xs font-medium">
-                                Admin
-                              </span>
-                              <code className="text-sm">demo@admin.com</code>
-                            </div>
-                            <div className="flex items-center gap-2 bg-background/80 p-1.5 px-2 rounded border border-border/50">
-                              <span className="bg-blue-500/10 text-blue-500 px-1.5 py-0.5 rounded text-xs font-medium">
-                                Manager
-                              </span>
-                              <code className="text-sm">demo@manager.com</code>
-                            </div>
-                            <div className="flex items-center gap-2 bg-background/80 p-1.5 px-2 rounded border border-border/50">
-                              <span className="bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded text-xs font-medium">
-                                Employee
-                              </span>
-                              <code className="text-sm">demo@employee.com</code>
-                            </div>
-                          </div>
+                    <div className="grid gap-2 p-2 rounded-md bg-muted/50">
+                      <div>
+                        <div className="font-medium text-xs uppercase tracking-wide text-muted-foreground mb-1">
+                          {t("demoAccount.email")}:
                         </div>
-
-                        <div>
-                          <div className="font-medium text-xs uppercase tracking-wide text-muted-foreground mb-1">
-                            {t("demoAccount.password")}:
+                        <div className="grid gap-1">
+                          <div className="flex items-center gap-2 bg-background/80 p-1.5 px-2 rounded border border-border/50">
+                            <span className="bg-purple-500/10 text-purple-500 px-1.5 py-0.5 rounded text-xs font-medium">
+                              Admin
+                            </span>
+                            <code className="text-sm">demo@admin.com</code>
                           </div>
-                          <div className="bg-background/80 p-1.5 px-2 rounded border border-border/50">
-                            <code className="text-sm">password123</code>
+                          <div className="flex items-center gap-2 bg-background/80 p-1.5 px-2 rounded border border-border/50">
+                            <span className="bg-blue-500/10 text-blue-500 px-1.5 py-0.5 rounded text-xs font-medium">
+                              Manager
+                            </span>
+                            <code className="text-sm">demo@manager.com</code>
+                          </div>
+                          <div className="flex items-center gap-2 bg-background/80 p-1.5 px-2 rounded border border-border/50">
+                            <span className="bg-green-500/10 text-green-500 px-1.5 py-0.5 rounded text-xs font-medium">
+                              Employee
+                            </span>
+                            <code className="text-sm">demo@employee.com</code>
                           </div>
                         </div>
                       </div>
 
-                      <p className="text-xs text-muted-foreground italic">
-                        {t("demoAccount.note")}
-                      </p>
+                      <div>
+                        <div className="font-medium text-xs uppercase tracking-wide text-muted-foreground mb-1">
+                          {t("demoAccount.password")}:
+                        </div>
+                        <div className="bg-background/80 p-1.5 px-2 rounded border border-border/50">
+                          <code className="text-sm">password123</code>
+                        </div>
+                      </div>
                     </div>
-                  </AlertDescription>
-                </Alert>
-              )}
+
+                    <p className="text-xs text-muted-foreground italic">
+                      {t("demoAccount.note")}
+                    </p>
+                  </div>
+                </AlertDescription>
+              </Alert>
             </div>
 
             {/* Email/password login form */}
