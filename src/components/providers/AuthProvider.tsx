@@ -51,6 +51,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   // Query to get current user information
   const {
@@ -111,7 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   // Mutation for handling user logout
-  const router = useRouter();
+  // const router = useRouter();
   const { mutateAsync: logoutMutate, isSuccess: isSuccessLogout } = useMutation(
     {
       mutationFn: userLogout,
