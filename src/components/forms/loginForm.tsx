@@ -26,8 +26,6 @@ import { useForm } from "react-hook-form";
 
 import { AlertMessage } from "../feedback/AlertMessage";
 
-import { useRouter } from "next/navigation";
-
 import { Form } from "@/components/ui/form";
 
 import { ButtonLoading } from "../ui/ButtonLoading";
@@ -40,7 +38,6 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   // Get authentication functions and state from auth context
   const { login, isLoginPending, isErrorLogin } = useAuth();
-  const router = useRouter();
   const t = useTranslations("LoginForm");
   const v = useTranslations("ValidationErrors");
 
@@ -67,12 +64,7 @@ export function LoginForm({
    * @param values - Form values containing email and password
    */
   async function onSubmit(values: LoginFormValues) {
-    const loginSuccess = await login(values);
-
-    if (loginSuccess) {
-      router.replace("/centers");
-    } else {
-    }
+    await login(values);
   }
 
   return (
