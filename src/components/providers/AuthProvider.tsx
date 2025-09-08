@@ -77,6 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     mutationFn: (credentials: LoginBody) => login(credentials),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["me"] });
+      router.replace("/centers");
     },
   });
 
