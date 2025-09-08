@@ -68,7 +68,8 @@ export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   const tempToken = req.cookies.get("tempToken")?.value;
-  const sessionToken = req.cookies.get("sessionToken")?.value; // Asegúrate de que el nombre sea 'sessionToken' o el que uses
+  const sessionToken = req.cookies.get("token")?.value;
+  console.log(tempToken, sessionToken);
 
   const publicRoutes = [
     "/login",
