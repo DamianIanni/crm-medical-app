@@ -4,12 +4,13 @@ import { ErrorCode } from "@/types/errors";
 
 // Base API configuration
 // Dynamically select API URL based on environment
-const API_BASE_URL = process.env.NODE_ENV === 'production'
-  ? process.env.NEXT_PUBLIC_API_BASE_URL // Production URL
-  : process.env.NEXT_PUBLIC_API_BASE_URL_DEV || 'http://localhost:4000/api'; // Development URL with fallback
+// const API_BASE_URL =
+//   process.env.NODE_ENV === "production"
+//     ? process.env.BASE_URL // Production URL
+//     : process.env.BASE_URL_DEV || "http://localhost:4000/api"; // Development URL with fallback
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: "/api",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
