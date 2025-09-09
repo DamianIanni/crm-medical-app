@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 
 // Este es tu "puente".
-export async function handler(req: NextRequest) {
+async function handleProxy(req: NextRequest) {
   const path = req.nextUrl.pathname.replace("/api/", "");
   const backendUrl = `${process.env.BASE_URL}/${path}`;
 
@@ -17,10 +17,22 @@ export async function handler(req: NextRequest) {
   return response;
 }
 
-export {
-  handler as GET,
-  handler as POST,
-  handler as PATCH,
-  handler as DELETE,
-  handler as PUT,
-};
+export async function GET(req: NextRequest) {
+  return handleProxy(req);
+}
+
+export async function POST(req: NextRequest) {
+  return handleProxy(req);
+}
+
+export async function PATCH(req: NextRequest) {
+  return handleProxy(req);
+}
+
+export async function DELETE(req: NextRequest) {
+  return handleProxy(req);
+}
+
+export async function PUT(req: NextRequest) {
+  return handleProxy(req);
+}
