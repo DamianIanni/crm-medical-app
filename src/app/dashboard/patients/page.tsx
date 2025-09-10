@@ -64,15 +64,15 @@ export default function PatientsPage() {
     centerId: centerId,
     page: pagination.pageIndex + 1,
     limit: pagination.pageSize,
-    search: debouncedSearchTerm,
+    searchTerm: debouncedSearchTerm,
     enabled: !!centerId && pagination.pageSize > 0,
   });
 
   // Map PatientPayload[] to Patient[] ensuring all required fields are present
   const patientsData = useMemo(() => {
-    return (response?.data ?? []).map(patient => ({
+    return (response?.data ?? []).map((patient) => ({
       ...patient,
-      id: patient.id || '', // Ensure id is always a string, never undefined
+      id: patient.id || "", // Ensure id is always a string, never undefined
     })) as Patient[];
   }, [response?.data]);
   const pageCount = response?.pagination?.totalPages ?? 0;

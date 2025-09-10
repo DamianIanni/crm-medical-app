@@ -186,7 +186,7 @@ type GetPatientsParams = {
   centerId: string | null;
   page: number;
   limit: number;
-  search: string;
+  searchTerm: string;
   enabled: boolean;
 };
 
@@ -196,15 +196,15 @@ type GetPatientsParams = {
  * @returns The result of the React Query.
  */
 export function useGetPaginatedPatients(params: GetPatientsParams) {
-  const { centerId, page, limit, search, enabled } = params;
+  const { centerId, page, limit, searchTerm, enabled } = params;
 
   return useQuery<PaginatedPatientsResponse, Error>({
     // 3. The queryKey includes ALL parameters. If any change,
     // React Query will make a new request.
-    queryKey: ["allPatient", { centerId, page, limit, search }],
+    queryKey: ["allPatient", { centerId, page, limit, searchTerm }],
 
     // 4. The queryFn calls your service with the parameters.
-    queryFn: () => getAllPatients(page, limit, search),
+    queryFn: () => getAllPatients(page, limit, searchTerm),
 
     // 5. Only executes the query if centerId is available.
     enabled: enabled,

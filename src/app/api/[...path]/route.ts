@@ -3,7 +3,12 @@ import type { NextRequest } from "next/server";
 // Este es tu "puente".
 async function handleProxy(req: NextRequest) {
   const path = req.nextUrl.pathname.replace("/api/", "");
-  const backendUrl = `${process.env.BASE_URL}/${path}`;
+  const searchParams = req.nextUrl.search;
+  const URL_API =
+    process.env.NODE_ENV === "production"
+      ? process.env.BASE_URL
+      : process.env.BASE_URL_DEV;
+  const backendUrl = `${URL_API}/${path}${searchParams}`;
 
   const response = await fetch(backendUrl, {
     method: req.method,
