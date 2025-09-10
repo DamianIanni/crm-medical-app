@@ -52,12 +52,9 @@
       "description": "Use these credentials to explore the application.",
       "email": "Email:",
       "password": "Password:",
-      "note": "Note: The database resets automatically every 15 minutes."
+      "note": "Note: The database resets automatically every day at 0:00 GMT."
     },
-    "invalidCredentialsData": [
-      "Check your email",
-      "Check your password"
-    ],
+    "invalidCredentialsData": ["Check your email", "Check your password"],
     "forgotPasswordLink": "Forgot password?"
   },
   "RegisterForm": {

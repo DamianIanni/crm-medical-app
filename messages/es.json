@@ -52,7 +52,7 @@
       "description": "Utiliza estas credenciales para explorar la aplicación.",
       "email": "Correo electrónico:",
       "password": "Contraseña:",
-      "note": "Nota: La base de datos se reinicia automáticamente cada 15 minutos."
+      "note": "Nota: La base de datos se reinicia automáticamente cada dia a las 0:00 GMT."
     },
     "invalidCredentialsData": [
       "Verifica tu correo electrónico",
