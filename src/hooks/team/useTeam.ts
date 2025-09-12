@@ -50,12 +50,21 @@ export function useCreateMember() {
         description: t("inviteSuccess"),
       });
     },
-    onError: () => {
-      ToastFeedback({
-        type: "error",
-        title: t("inviteError"),
-        description: t("inviteError"),
-      });
+    onError: (error: { error?: { code?: string } }) => {
+      // Check if the error is a "AUTH_USER_NOT_FOUND" (user not found)
+      if (error?.error?.code === "AUTH_USER_NOT_FOUND") {
+        ToastFeedback({
+          type: "error",
+          title: t("userNotFoundTitle"),
+          description: t("userNotFoundDescription"),
+        });
+      } else {
+        ToastFeedback({
+          type: "error",
+          title: t("inviteError"),
+          description: t("inviteError"),
+        });
+      }
     },
   });
 }

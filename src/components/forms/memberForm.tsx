@@ -57,6 +57,7 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
         userId: data!.user_id!,
         updated: { role: values.role as "manager" | "employee" },
       });
+      router.replace(ROUTES.team);
     } catch (error) {
       console.log(error);
     }
@@ -68,6 +69,7 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
         email: values.email,
         role: values.role as "manager" | "employee",
       });
+      router.replace(ROUTES.team);
     } catch (error) {
       console.log(error);
     }
@@ -79,7 +81,7 @@ export function MemberForm(props: MemberFormProps): React.ReactElement {
     } else if (mode === "create") {
       await creating(values);
     }
-    router.replace(ROUTES.team);
+    // router.replace(ROUTES.team);
   }
 
   return (

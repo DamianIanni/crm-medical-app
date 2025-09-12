@@ -198,7 +198,9 @@
       "updateSuccess": "Team member {name} updated successfully",
       "updateError": "Failed to update team member. Please try again.",
       "deleteSuccess": "Team member removed successfully",
-      "deleteError": "Failed to remove team member. Please try again."
+      "deleteError": "Failed to remove team member. Please try again.",
+      "userNotFoundTitle": "User not found",
+      "userNotFoundDescription": "The user with this email does not exist. Please check the email address and try again."
     }
   },
   "Table": {

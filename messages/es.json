@@ -185,7 +185,9 @@
       "updateSuccess": "Miembro {name} actualizado exitosamente",
       "updateError": "Error al actualizar el miembro del equipo. Por favor, inténtalo de nuevo.",
       "deleteSuccess": "Miembro del equipo eliminado exitosamente",
-      "deleteError": "Error al eliminar al miembro del equipo. Por favor, inténtalo de nuevo."
+      "deleteError": "Error al eliminar al miembro del equipo. Por favor, inténtalo de nuevo.",
+      "userNotFoundTitle": "Usuario no encontrado",
+      "userNotFoundDescription": "El usuario con este correo electrónico no existe. Por favor, verifica la dirección de correo e inténtalo de nuevo."
     }
   },
   "TeamSwitcher": {
