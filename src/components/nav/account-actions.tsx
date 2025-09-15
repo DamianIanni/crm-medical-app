@@ -22,7 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/components/providers/AuthProvider";
 import Cookies from "js-cookie";
 import { cn } from "@/lib/utils";
@@ -65,12 +65,12 @@ export function AccountActions({ fullWidth = false }: AccountActionsProps) {
         <Button
           variant="ghost"
           className={cn(
-            "relative h-12  hover:bg-accent/50 ",
-            fullWidth ? "w-full justify-start px-3 gap-3" : "w-8"
+            "h-12 hover:bg-accent/50 ",
+            fullWidth ? "w-full justify-start px-3 gap-3" : "w-4"
           )}
         >
           <Avatar className="h-8 w-8">
-            <AvatarImage />
+            {/* <AvatarImage /> */}
             <AvatarFallback className="text-background bg-primary font-bold">
               {getInitials(user.first_name, user.last_name)}
             </AvatarFallback>

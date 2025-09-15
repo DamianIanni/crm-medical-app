@@ -2,7 +2,7 @@
 
 > **A comprehensive healthcare management platform built with modern web technologies**
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20App-blue?style=for-the-badge)](https://tech-case-xbk8.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20App-blue?style=for-the-badge)](https://crm-medical-app.vercel.app)
 [![Backend Repo](https://img.shields.io/badge/Backend-GitHub%20Repo-green?style=for-the-badge)](https://github.com/DamianIanni/tech-case-server)
 [![Next.js](https://img.shields.io/badge/Next.js-15.4-black?style=flat&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.0-61DAFB?style=flat&logo=react)](https://reactjs.org/)
@@ -237,8 +237,8 @@ npm test -- --coverage
 ### Environment Variables
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:4000/api
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+BASE_URL=your_prod_url
+BASE_URL_DEV=http://localhost:3000
 ```
 
 ### Customization

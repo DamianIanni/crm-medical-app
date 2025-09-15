@@ -13,11 +13,13 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth } from "../providers/AuthProvider";
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuth();
+  const { state } = useSidebar();
   const t = useTranslations("AppSidebar");
 
   if (!user) return null;
@@ -70,9 +72,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={navItems} />
       </SidebarContent>
-      <SidebarFooter className="px-3 pb-3">
-        <AccountActions fullWidth />
-      </SidebarFooter>
+      {state === "expanded" && (
+        <SidebarFooter className="px-3 pb-3">
+          <AccountActions fullWidth />
+        </SidebarFooter>
+      )}
       <SidebarRail />
     </Sidebar>
   );
